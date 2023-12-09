@@ -7,7 +7,7 @@
     <!-- Metadados -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenLibraryHub (0.0.1)</title>
+    <title>OpenLibraryHub (0.0.2)</title>
 
     <!-- CSS -->
     <style>
@@ -34,7 +34,7 @@
         const divHeader = document.getElementById("header");
         const divContent = document.getElementById("content");
         const divFooter = document.getElementById("footer");
-        const version = "0.0.1";
+        const version = "0.0.2";
 
         // Pages --------------------------------------------------------
         const openMainPage = () => {
@@ -131,11 +131,11 @@
 
         // localStorage -------------------------------------------------
         const saveBook = (id, name, author, pages, year) => {
-            console.log("localStorage: salvando livro '" + name + "'...");
+            console.log(`localStorage: salvando livro "${name}"...`);
             const book = new Book(id, name, author, pages, year);
             book.type = "Book";
             localStorage.setItem(localStorage.length++, JSON.stringify(book));
-            console.log("localStorage: livro '" + name + "' salvo com sucesso!");
+            console.log(`localStorage: livro "${name}" salvo com sucesso!`);
         }
 
         const getAllBooks = () => {
@@ -151,7 +151,7 @@
         }
 
         const getBookByName = (name) => {
-            console.log("localStorage: procurando livro '" + name + "'...")
+            console.log(`localStorage: procurando livro "${name}"...`);
             const books = getAllBooks();
             
             for (let i = 0; i < books.length; i++) {
@@ -161,11 +161,11 @@
                 }
             }
 
-            return console.error("localStorage: livro '" + name + "' não encontrado...");
+            return console.error(`localStorage: livro "${name}" não encontrado...`);
         }
 
         const getBookById = (id) => {
-            console.log("localStorage: procurando livro com id '" + id + "'...");
+            console.log(`localStorage: procurando livro com id "${id}"...`);
             const books = getAllBooks();
 
             if (books.length == 0) {
@@ -184,16 +184,16 @@
                 }
             }
 
-            return console.error("localStorage: livro com id '" + id + "' não encontrado...");
+            return console.error(`localStorage: livro com id "${id}" não encontrado...`);
         }
 
         const getBookByLocalStorageKey = (key) => {
-            console.log("localStorage: procurando livro com chave '" + key + "'...");
+            console.log(`localStorage: procurando livro com chave "${key}"...`);
             const book = localStorage.getItem(key);
             if (JSON.parse(book).type == "Book") {
                 return book;
             } else {
-                return console.error("localStorage: livro com chave '" + key + "' não encontrado...");
+                return console.error(`localStorage: livro com chave "${key}" não encontrado...`);
             }
         }
 
@@ -210,11 +210,11 @@
         }
 
         const addStudent = (id, name, currentClass) => {
-            console.log("localStorage: salvando estudante '" + name + "'...");
+            console.log(`localStorage: salvando estudante "${name}"...`);
             const student = new Student(id, name, currentClass);
             student.type = "Student";
             localStorage.setItem(localStorage.length++, JSON.stringify(student));
-            console.log("localStorage: estudante '" + name + "' salvo com sucesso!");
+            console.log(`localStorage: estudante "${name}" salvo com sucesso!`);
         }
 
         const getAllStudents = () => {
@@ -230,7 +230,7 @@
         }
 
         const getStudentById = (id) => {
-            console.log("localStorage: procurando estudante com id '" + id + "'...");
+            console.log(`localStorage: procurando estudante com id "${id}"...`);
             const students = getAllStudents();
 
             if (students.length == 0) {
@@ -249,16 +249,16 @@
                 }
             }
 
-            return console.error("localStorage: estudante com id '" + id + "' não encontrado...");
+            return console.error(`localStorage: estudante com id "${id}" não encontrado...`);
         }
 
         const getStudentByLocalStorageKey = (key) => {
-            console.log("localStorage: procurando estudante com chave '" + key + "'...");
+            console.log(`localStorage: procurando estudante com chave "${key}"...`);
             const student = localStorage.getItem(key);
             if (JSON.parse(student).type == "Student") {
                 return student;
             } else {
-                return console.error("localStorage: estudante com chave '" + key + "' não encontrado...");
+                return console.error(`localStorage: estudante com chave "${key}" não encontrado...`);
             }
         }
 
@@ -275,7 +275,7 @@
         }
 
         const addClass = (id, name) => {
-            console.log("localStorage: salvando turma '" + name + "'...");
+            console.log(`localStorage: salvando turma "${name}""...`);
             const schoolClass = new Class(id, name);
             schoolClass.type = "Class";
             localStorage.setItem(localStorage.length++, JSON.stringify(schoolClass));
@@ -295,7 +295,7 @@
         }
 
         const getClassById = (id) => {
-            console.log("localStorage: procurando turma com id '" + id + "'...");
+            console.log(`localStorage: procurando turma com id "${id}"...`);
             const classes = getAllClasses();
 
             if (classes.length == 0) {
@@ -314,16 +314,16 @@
                 }
             }
 
-            return console.error("localStorage: turma com id '" + id + "' não encontrada...");
+            return console.error(`localStorage: turma com id "${id}" não encontrada...`);
         }
 
         const getClassByLocalStorageKey = (key) => {
-            console.log("localStorage: procurando turma com chave '" + key + "'...");
+            console.log(`localStorage: procurando turma com chave "${key}"...`);
             const schoolClass = localStorage.getItem(key);
             if (JSON.parse(schoolClass).type == "Class") {
                 return schoolClass;
             } else {
-                return console.error("localStorage: turma com chave '" + key + "' não encontrada...");
+                return console.error(`localStorage: turma com chave "${key}" não encontrada...`);
             }
         }
 
@@ -368,9 +368,9 @@
 
             if (bookName.value) {
                 if (getBookById(bookName.value)) {
-                    alert("O livro com id '" + bookName.value + "' está cadastrado.");
+                    alert(`O livro com id "${bookName.value}" está cadastrado.`);
                 } else {
-                    alert("O livro com id '" + bookName.value + "' não está cadastrado.");
+                    alert(`O livro com id "${bookName.value}" não está cadastrado.`);
                 }
             } else {
                 alert("Por favor, insira o id do livro.");
@@ -397,9 +397,9 @@
 
             if (studentId.value) {
                 if (getStudentById(studentId.value)) {
-                    alert("O estudante com id '" + studentId.value + "' está cadastrado.");
+                    alert(`O estudante com id "${studentId.value}" está cadastrado.`);
                 } else {
-                    alert("O estudante com id '" + studentId.value + "' não está cadastrado.");
+                    alert(`O estudante com id "${studentId.value}" não está cadastrado.`);
                 }
             } else {
                 alert("Por favor, insira o id do estudante.");
@@ -426,9 +426,9 @@
 
             if (classId.value) {
                 if (getClassById(classId.value)) {
-                    alert("A turma com id '" + classId.value + "' está cadastrada.");
+                    alert(`A turma com id "${classId.value}" está cadastrada.`);
                 } else {
-                    alert("A turma com id '" + classId.value + "' não está cadastrada.");
+                    alert(`A turma com id "${classId.value}" não está cadastrada.`);
                 }
             } else {
                 alert("Por favor, insira o id da turma.");
@@ -445,21 +445,25 @@
                     return response.text();
                 })
                 .then((data) => {
-                    if (data != version) {
-                        console.log("Retorno: " + data);
-                        alert("Há uma atualização disponível! Acesse 'https://github.com/1ukidev/OpenLibraryHub' para baixar a nova versão.");
-                    } else {
+                    console.log(`Versão atual: ${version}`);
+                    console.log(`Retorno: ${data}`);
+
+                    if (data == version) {
                         alert("Você está usando a versão mais recente!");
+                        console.log("Você está usando a versão mais recente!");
+                    } else {
+                        alert("Há uma atualização disponível! Acesse 'https://github.com/1ukidev/OpenLibraryHub' para baixar a nova versão.");
+                        console.log("Há uma atualização disponível! Acesse 'https://github.com/1ukidev/OpenLibraryHub' para baixar a nova versão.");
                     }
                 })
                 .catch((error) => {
-                    return console.error("Erro ao verificar atualizações: " + error);
+                    return console.error(`Erro ao verificar atualizações: ${error}`);
                 });
         }
 
         // Initialization ----------------------------------------------- 
         document.body.onload = () => {
-            console.log("Inicializando OpenLibraryHub (" + version + ")...");
+            console.log(`Inicializando OpenLibraryHub (${version})...`);
             openMainPage();
             console.log("Inicializado com sucesso!");
         }
