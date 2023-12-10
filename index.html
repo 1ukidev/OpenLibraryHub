@@ -7,7 +7,7 @@
     <!-- Metadados -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenLibraryHub (0.0.2)</title>
+    <title>OpenLibraryHub (0.0.3)</title>
 
     <!-- CSS -->
     <style>
@@ -30,11 +30,11 @@
 
     <!-- JavaScript -->
     <script>
-        // Global variables ----------------------------------------------
+        // Global variables ---------------------------------------------
         const divHeader = document.getElementById("header");
         const divContent = document.getElementById("content");
         const divFooter = document.getElementById("footer");
-        const version = "0.0.2";
+        const version = "0.0.3";
 
         // Pages --------------------------------------------------------
         const openMainPage = () => {
@@ -82,6 +82,15 @@
                     <label>Verificar se a turma está cadastrada pelo id:</label>
                     <input type="text" id="classId">
                     <button onclick="runForm6()">Buscar</button>
+                </div>
+                <br>
+
+                <div id="form7">
+                    <label>Emprestar livro de id:</label>
+                    <input type="text" id="bookId2">
+                    <label>para o estudante de id:</label>
+                    <input type="text" id="studentId2">
+                    <button onclick="runForm7()">Emprestar</button>
                 </div>
                 <hr>
                 
@@ -150,20 +159,6 @@
             return books;
         }
 
-        const getBookByName = (name) => {
-            console.log(`localStorage: procurando livro "${name}"...`);
-            const books = getAllBooks();
-            
-            for (let i = 0; i < books.length; i++) {
-                const book = JSON.parse(books[i]);
-                if (book.name == name && book.type == "Book") {
-                    return book;
-                }
-            }
-
-            return console.error(`localStorage: livro "${name}" não encontrado...`);
-        }
-
         const getBookById = (id) => {
             console.log(`localStorage: procurando livro com id "${id}"...`);
             const books = getAllBooks();
@@ -176,9 +171,7 @@
                 if (books[i] == null) {
                     continue;
                 }
-
                 const book = JSON.parse(books[i]);
-
                 if (book.id == id) {
                     return book;
                 }
@@ -207,6 +200,14 @@
                 li.textContent = book;
                 bookList.appendChild(li);
             });
+        }
+
+        const removeBookById = (id) => {
+            console.log(`localStorage: removendo livro com id "${id}"...`);
+            const book = getBookById(id);
+            localStorage.removeItem(id);
+            showBookList();
+            console.log(`localStorage: livro "${book.name}" removido com sucesso!`);
         }
 
         const addStudent = (id, name, currentClass) => {
@@ -241,9 +242,7 @@
                 if (students[i] == null) {
                     continue;
                 }
-
                 const student = JSON.parse(students[i]);
-
                 if (student.id == id) {
                     return student;
                 }
@@ -272,6 +271,14 @@
                 li.textContent = student;
                 studentList.appendChild(li);
             });
+        }
+
+        const removeStudentById = (id) => {
+            console.log(`localStorage: removendo estudante com id "${id}"...`);
+            const student = getStudentById(id);
+            localStorage.removeItem(id);
+            showStudentList();
+            console.log(`localStorage: estudante "${student.name}" removido com sucesso!`);
         }
 
         const addClass = (id, name) => {
@@ -306,9 +313,7 @@
                 if (classes[i] == null) {
                     continue;
                 }
-
                 const schoolClass = JSON.parse(classes[i]);
-
                 if (schoolClass.id == id) {
                     return schoolClass;
                 }
@@ -337,6 +342,26 @@
                 li.textContent = schoolClass;
                 classList.appendChild(li);
             });
+        }
+
+        const removeClassById = (id) => {
+            console.log(`localStorage: removendo turma com id "${id}"...`);
+            const schoolClass = getClassById(id);
+            localStorage.removeItem(id);
+            showClassList();
+            console.log(`localStorage: turma "${schoolClass.name}" removida com sucesso!`);
+        }
+
+        const lendBook = (bookId, studentId) => {
+            console.log(`localStorage: emprestando livro "${bookId}" para o estudante "${studentId}"...`);
+            const book = getBookById(bookId);
+            const student = getStudentById(studentId);
+            book.lent = true;
+            book.lentTo = studentId;
+            student.lentBook = bookId;
+            localStorage.setItem(bookId, JSON.stringify(book));
+            localStorage.setItem(studentId, JSON.stringify(student));
+            console.log(`localStorage: livro "${bookId}" emprestado para o estudante "${studentId}" com sucesso!`);
         }
 
         const deleteLocalStorage = () => {
@@ -436,10 +461,33 @@
             }
         }
 
+        const runForm7 = () => {
+            const bookId = document.getElementById("bookId2");
+            const studentId = document.getElementById("studentId2");
+
+            if (bookId.value && studentId.value) {
+                if (getBookById(bookId.value) && getStudentById(studentId.value)) {
+                    lendBook(bookId.value, studentId.value);
+                    bookId.value = "";
+                    studentId.value = "";
+                    showBookList();
+                    showStudentList();
+                    return false;
+                } else {
+                    alert("O livro ou o estudante não está cadastrado.");
+                    return false;
+                }
+            } else {
+                alert("Por favor, insira o id do livro e do estudante.");
+                return false;
+            }
+        }
+
         // Others -------------------------------------------------------
         const checkUpdate = () => {
             console.log("Verificando atualizações...");
 
+            // TODO: fix this
             fetch("https://raw.githubusercontent.com/1ukidev/OpenLibraryHub/main/VERSION")
                 .then((response) => {
                     return response.text();
@@ -461,7 +509,7 @@
                 });
         }
 
-        // Initialization ----------------------------------------------- 
+        // Initialization -----------------------------------------------
         document.body.onload = () => {
             console.log(`Inicializando OpenLibraryHub (${version})...`);
             openMainPage();
