@@ -7,12 +7,12 @@
     <!-- Metadados -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenLibraryHub (0.0.3)</title>
+    <title>OpenLibraryHub (0.0.4)</title>
 
     <!-- CSS -->
     <style>
         * {
-            font-family: 'Segoe UI', Helvetica, sans-serif;
+            font-family: 'Segoe UI Variable Display', 'Segoe UI', Helvetica, sans-serif;
         }
         
         body {
@@ -34,7 +34,7 @@
         const divHeader = document.getElementById("header");
         const divContent = document.getElementById("content");
         const divFooter = document.getElementById("footer");
-        const version = "0.0.3";
+        const version = "0.0.4";
 
         // Pages --------------------------------------------------------
         const openMainPage = () => {
@@ -93,7 +93,11 @@
                     <button onclick="runForm7()">Emprestar</button>
                 </div>
                 <hr>
-                
+
+                <button onclick="deleteLocalStorage()">Resetar tudo</button>
+                <button onclick="makeBackupLocalStorage()">Fazer backup dos dados</button>
+                <hr>
+
                 <h2>Lista de livros:</h2>
                 <ul id="bookList"></ul>
 
@@ -103,8 +107,6 @@
                 <h2>Lista de turmas:</h2>
                 <ul id="classList"></ul>
                 <br>
-
-                <button onclick="deleteLocalStorage()">Resetar tudo</button>
             `;
             
             showBookList();
@@ -205,9 +207,11 @@
         const removeBookById = (id) => {
             console.log(`localStorage: removendo livro com id "${id}"...`);
             const book = getBookById(id);
-            localStorage.removeItem(id);
-            showBookList();
-            console.log(`localStorage: livro "${book.name}" removido com sucesso!`);
+            if (book) {
+                localStorage.removeItem(id);
+                showBookList();
+                console.log(`localStorage: livro removido com sucesso!`);
+            }
         }
 
         const addStudent = (id, name, currentClass) => {
@@ -276,9 +280,11 @@
         const removeStudentById = (id) => {
             console.log(`localStorage: removendo estudante com id "${id}"...`);
             const student = getStudentById(id);
-            localStorage.removeItem(id);
-            showStudentList();
-            console.log(`localStorage: estudante "${student.name}" removido com sucesso!`);
+            if (student) {
+                localStorage.removeItem(id);
+                showStudentList();
+                console.log(`localStorage: estudante removido com sucesso!`);
+            }
         }
 
         const addClass = (id, name) => {
@@ -347,9 +353,11 @@
         const removeClassById = (id) => {
             console.log(`localStorage: removendo turma com id "${id}"...`);
             const schoolClass = getClassById(id);
-            localStorage.removeItem(id);
-            showClassList();
-            console.log(`localStorage: turma "${schoolClass.name}" removida com sucesso!`);
+            if (schoolClass) {
+                localStorage.removeItem(id);
+                showClassList();
+                console.log(`localStorage: turma removida com sucesso!`);
+            }
         }
 
         const lendBook = (bookId, studentId) => {
@@ -372,6 +380,9 @@
             showClassList();
             console.log("localStorage: os dados foram apagados com sucesso!");
         }
+
+        // IndexedDB ----------------------------------------------------
+        // TODO
 
         // Forms --------------------------------------------------------
         const runForm1 = () => {
@@ -507,6 +518,27 @@
                 .catch((error) => {
                     return console.error(`Erro ao verificar atualizações: ${error}`);
                 });
+        }
+
+        const makeBackupLocalStorage = () => {
+            console.log("Fazendo backup...");
+            let values;
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                values += localStorage.getItem(key);
+            }
+            if (values == undefined) {
+                alert("Erro ao fazer backup: nenhum dado encontrado.");
+                return console.error("Erro ao fazer backup: nenhum dado encontrado.");
+            }
+            const valuesBase64 = btoa(values.replace("undefined", ""));
+
+            const link = document.createElement("a");
+            link.href = `data:text/plain;base64,${valuesBase64}`;
+            link.download = "OpenLibraryHubBackup.txt";
+            link.click();
+
+            console.log("Backup feito com sucesso!");
         }
 
         // Initialization -----------------------------------------------
