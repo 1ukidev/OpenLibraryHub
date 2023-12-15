@@ -7,7 +7,7 @@
     <!-- Metadados -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenLibraryHub (0.0.5)</title>
+    <title>OpenLibraryHub (0.0.6)</title>
 
     <!-- CSS -->
     <style>
@@ -21,9 +21,9 @@
         }
 
         #header {
-            padding-top: 10px;
-            padding-left: 5px;
-            padding-right: 5px;
+            padding-top: 20px;
+            padding-left: 20px;
+            padding-right: 20px;
         }
 
         #header ul {
@@ -32,6 +32,7 @@
             padding: 0;
             overflow: hidden;
             background-color: #0a0a0a;
+            border-radius: 14px;
         }
 
         #header li {
@@ -50,14 +51,30 @@
             background-color: #111111;
         }
 
+        .a-1 {
+            background-color: #353535;
+        }
+
+        .a-2 {
+            background-color: #303030;
+        }
+
+        .a-3 {
+            background-color: #252525;
+        }
+
+        .a-4 {
+            background-color: #202020;
+        }
+
         #content {
-            padding-left: 5px;
-            padding-right: 5px;
+            padding-left: 25px;
+            padding-top: 15px;
         }
     </style>
 </head>
 
-<body>
+<body onhashchange="route()">
      <!-- Divs -->
      <div id="header"></div>
      <div id="content"></div>
@@ -69,16 +86,40 @@
         const divHeader = document.getElementById("header");
         const divContent = document.getElementById("content");
         const divFooter = document.getElementById("footer");
-        const version = "0.0.5";
+        const version = "0.0.6";
 
         // Pages --------------------------------------------------------
+        const changePage = (hash) => {
+            return location.hash = hash;
+        }
+
+        const route = () => {
+            switch (location.hash) {
+                case "":
+                    openMainContent();
+                    break;
+                case "#livros":
+                    openBookPage();
+                    break;
+                case "#estudantes":
+                    openStudentPage();
+                    break;
+                case "#turmas":
+                    openClassPage();
+                    break;
+                default:
+                    openMainContent();
+                    break;
+            }
+        }
+
         const openMainHeader = () => {
             divHeader.innerHTML = `
                 <ul>
-                    <li><a onclick="openHomePage()">&nbsp;📖 OpenLibraryHub&nbsp;</a></li>
-                    <li><a onclick="openBookPage()">&nbsp;📚 Livros&nbsp;</a></li>
-                    <li><a onclick="openStudentPage()">&nbsp;🏫 Turmas&nbsp;</a></li>
-                    <li><a onclick="openClassPage()">&nbsp;🧑‍🎓 Estudantes&nbsp;</a></li>
+                    <li><a onclick="changePage('#')" class="a-1">&nbsp;📖 Status&nbsp;</a></li>
+                    <li><a onclick="changePage('livros')" class="a-2">&nbsp;📚 Livros&nbsp;</a></li>
+                    <li><a onclick="changePage('turmas')" class="a-3">&nbsp;🏫 Turmas&nbsp;</a></li>
+                    <li><a onclick="changePage('estudantes')" class="a-4">&nbsp;🧑 Estudantes&nbsp;</a></li>
                 </ul>
                 <br>
             `;
@@ -86,8 +127,20 @@
 
         const openMainContent = () => {
             divContent.innerHTML = `
-                <h2>🚧 Em construção... 🚧</h2>
-            `;            
+                <b><span class="generic-text" id="main-text-1" style="font-size: 24px;"></span></b>
+            `;
+
+            const mainText1 = document.getElementById("main-text-1");
+            const hours = new Date().getHours();
+            if (hours >=8 && hours < 12) {
+                mainText1.innerHTML = "Bom dia! ";
+            } else if (hours >= 12 && hours < 18) {
+                mainText1.innerHTML = "Boa tarde! ";
+            } else {
+                mainText1.innerHTML = "Boa noite! ";
+            }
+            const opcoes = { year: 'numeric', month: 'long', day: 'numeric' };
+            mainText1.innerHTML += new Date().toLocaleString('pt-BR', opcoes);
         }
 
         const openBookPage = () => {
@@ -103,6 +156,15 @@
                     <label>Verificar se o livro está cadastro pelo id:</label>
                     <input type="text" id="bookId">
                     <button onclick="runForm2()">Buscar</button>
+                </div>
+                <br>
+
+                <div id="form7">
+                    <label>Emprestar livro de id:</label>
+                    <input type="text" id="bookId2">
+                    <label>para o estudante de id:</label>
+                    <input type="text" id="studentId2">
+                    <button onclick="runForm7()">Emprestar</button>
                 </div>
                 <br>
 
@@ -158,15 +220,6 @@
                 </div>
                 <br>
 
-                <div id="form7">
-                    <label>Emprestar livro de id:</label>
-                    <input type="text" id="bookId2">
-                    <label>para o estudante de id:</label>
-                    <input type="text" id="studentId2">
-                    <button onclick="runForm7()">Emprestar</button>
-                </div>
-                <br>
-
                 <button onclick="deleteLocalStorage()">Resetar tudo</button>
                 <button onclick="makeBackupLocalStorage()">Fazer backup dos dados</button>
 
@@ -176,11 +229,6 @@
             `;
             
             showClassList();
-        }
-
-        const openHomePage = () => {
-            openMainHeader();
-            openMainContent();
         }
 
         // Classes ------------------------------------------------------
@@ -444,13 +492,25 @@
         const deleteLocalStorage = () => {
             console.log("localStorage: apagando todos os dados...");
             localStorage.clear();
+
             try {
                 showBookList();
-                showStudentList();
-                showClassList();
-            } catch (error) {
-                return true;
+            } catch {
+                console.log("localStorage: nenhum livro encontrado...");
             }
+
+            try {
+                showStudentList();
+            } catch {
+                console.log("localStorage: nenhum estudante encontrado...");
+            }
+
+            try {
+                showClassList();
+            } catch {
+                console.log("localStorage: nenhuma turma encontrada...");
+            }
+
             console.log("localStorage: os dados foram apagados com sucesso!");
         }
 
@@ -617,7 +677,8 @@
         // Initialization -----------------------------------------------
         document.body.onload = () => {
             console.log(`Inicializando OpenLibraryHub (${version})...`);
-            openHomePage();
+            openMainHeader();
+            route();
             console.log("Inicializado com sucesso!");
         }
     </script>
