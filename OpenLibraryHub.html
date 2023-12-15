@@ -7,7 +7,7 @@
     <!-- Metadados -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenLibraryHub (0.0.6)</title>
+    <title>OpenLibraryHub (0.0.6.1)</title>
 
     <!-- CSS -->
     <style>
@@ -86,7 +86,7 @@
         const divHeader = document.getElementById("header");
         const divContent = document.getElementById("content");
         const divFooter = document.getElementById("footer");
-        const version = "0.0.6";
+        const version = "0.0.6.1";
 
         // Pages --------------------------------------------------------
         const changePage = (hash) => {
@@ -495,21 +495,15 @@
 
             try {
                 showBookList();
-            } catch {
-                console.log("localStorage: nenhum livro encontrado...");
-            }
+            } catch {}
 
             try {
                 showStudentList();
-            } catch {
-                console.log("localStorage: nenhum estudante encontrado...");
-            }
+            } catch {}
 
             try {
                 showClassList();
-            } catch {
-                console.log("localStorage: nenhuma turma encontrada...");
-            }
+            } catch {}
 
             console.log("localStorage: os dados foram apagados com sucesso!");
         }
