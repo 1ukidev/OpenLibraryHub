@@ -7,7 +7,7 @@
     <!-- Metadados -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenLibraryHub (0.0.6.2)</title>
+    <title>OpenLibraryHub (0.0.7)</title>
 
     <!-- CSS -->
     <style>
@@ -86,7 +86,7 @@
         const divHeader = document.getElementById("header");
         const divContent = document.getElementById("content");
         const divFooter = document.getElementById("footer");
-        const version = "0.0.6.2";
+        const version = "0.0.7";
 
         // Pages --------------------------------------------------------
         const changePage = (hash) => {
@@ -146,24 +146,27 @@
         const openBookPage = () => {
             divContent.innerHTML = `
                 <div id="form1">
-                    <label>Adicionar livro pelo nome:</label>
-                    <input type="text" id="bookName1">
+                    <label for="bookName">Adicionar livro:</label>
+                    <input type="text" id="bookName" placeholder="Nome">
+                    <input type="text" id="bookAuthor" placeholder="Autor">
+                    <input type="text" id="bookPages" placeholder="Quantidade de páginas">
+                    <input type="text" id="bookYear" placeholder="Ano">
                     <button onclick="runForm1()">Adicionar</button>
                 </div>
                 <br>
 
                 <div id="form2">
-                    <label>Verificar se o livro está cadastro pelo id:</label>
+                    <label for="bookId">Verificar se o livro está cadastro pelo id:</label>
                     <input type="text" id="bookId">
                     <button onclick="runForm2()">Buscar</button>
                 </div>
                 <br>
 
                 <div id="form7">
-                    <label>Emprestar livro de id:</label>
+                    <label for="bookId2">Emprestar livro de id:</label>
                     <input type="text" id="bookId2">
-                    <label>para o estudante de id:</label>
-                    <input type="text" id="studentId2">
+                    <label for="studentId">para o estudante de id:</label>
+                    <input type="text" id="studentId">
                     <button onclick="runForm7()">Emprestar</button>
                 </div>
                 <br>
@@ -181,14 +184,14 @@
         const openStudentPage = () => {
             divContent.innerHTML = `
                 <div id="form3">
-                    <label>Adicionar estudante:</label>
-                    <input type="text" id="studentName">
+                    <label for="studentName">Adicionar estudante:</label>
+                    <input type="text" id="studentName" placeholder="Nome">
                     <button onclick="runForm3()">Adicionar</button>
                 </div>
                 <br>
 
                 <div id="form4">
-                    <label>Verificar se o estudante está cadastrado pelo id:</label>
+                    <label for="studentId">Verificar se o estudante está cadastrado pelo id:</label>
                     <input type="text" id="studentId">
                     <button onclick="runForm4()">Buscar</button>
                 </div>
@@ -207,14 +210,14 @@
         const openClassPage = () => {
             divContent.innerHTML = `
                 <div id="form5">
-                    <label>Adicionar turma:</label>
-                    <input type="text" id="className">
+                    <label for="className">Adicionar turma:</label>
+                    <input type="text" id="className" placeholder="Ex.: 3º Info">
                     <button onclick="runForm5()">Adicionar</button>
                 </div>
                 <br>
 
                 <div id="form6">
-                    <label>Verificar se a turma está cadastrada pelo id:</label>
+                    <label for="classId">Verificar se a turma está cadastrada pelo id:</label>
                     <input type="text" id="classId">
                     <button onclick="runForm6()">Buscar</button>
                 </div>
@@ -258,7 +261,7 @@
         }
 
         // localStorage -------------------------------------------------
-        const saveBook = (id, name, author, pages, year) => {
+        const addBook = (id, name, author, pages, year) => {
             console.log(`localStorage: salvando livro "${name}"...`);
             const book = new Book(id, name, author, pages, year);
             book.type = "Book";
@@ -510,15 +513,21 @@
 
         // Forms --------------------------------------------------------
         const runForm1 = () => {
-            const bookName = document.getElementById("bookName1");
+            const bookName = document.getElementById("bookName");
+            const bookAuthor = document.getElementById("bookAuthor");
+            const bookPages = document.getElementById("bookPages");
+            const bookYear = document.getElementById("bookYear");
 
-            if (bookName.value) {
-                saveBook(localStorage.length++, bookName.value);
+            if (bookName.value && bookAuthor.value && bookPages.value && bookYear.value) {
+                addBook(localStorage.length++, bookName.value, bookAuthor.value, bookPages.value, bookYear.value);
                 bookName.value = "";
+                bookAuthor.value = "";
+                bookPages.value = "";
+                bookYear.value = "";
                 showBookList();
                 return false;
             } else {
-                alert("Por favor, insira o nome do livro.");
+                alert("Por favor, insira todos os dados do livro.");
                 return false;
             }
         }
@@ -598,7 +607,7 @@
 
         const runForm7 = () => {
             const bookId = document.getElementById("bookId2");
-            const studentId = document.getElementById("studentId2");
+            const studentId = document.getElementById("studentId");
 
             if (bookId.value && studentId.value) {
                 if (getBookById(bookId.value) && getStudentById(studentId.value)) {
