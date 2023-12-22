@@ -7,7 +7,7 @@
     <!-- Metadados -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenLibraryHub (0.0.7)</title>
+    <title>OpenLibraryHub (0.0.8)</title>
 
     <!-- CSS -->
     <style>
@@ -86,7 +86,7 @@
         const divHeader = document.getElementById("header");
         const divContent = document.getElementById("content");
         const divFooter = document.getElementById("footer");
-        const version = "0.0.7";
+        const version = "0.0.8";
 
         // Pages --------------------------------------------------------
         const changePage = (hash) => {
@@ -149,25 +149,39 @@
                     <label for="bookName">Adicionar livro:</label>
                     <input type="text" id="bookName" placeholder="Nome">
                     <input type="text" id="bookAuthor" placeholder="Autor">
-                    <input type="text" id="bookPages" placeholder="Quantidade de páginas">
-                    <input type="text" id="bookYear" placeholder="Ano">
+                    <input type="number" id="bookPages" placeholder="Quantidade de páginas">
+                    <input type="number" id="bookYear" placeholder="Ano">
                     <button onclick="runForm1()">Adicionar</button>
                 </div>
                 <br>
 
                 <div id="form2">
                     <label for="bookId">Verificar se o livro está cadastro pelo id:</label>
-                    <input type="text" id="bookId">
+                    <input type="number" id="bookId">
                     <button onclick="runForm2()">Buscar</button>
                 </div>
                 <br>
 
                 <div id="form7">
                     <label for="bookId2">Emprestar livro de id:</label>
-                    <input type="text" id="bookId2">
+                    <input type="number" id="bookId2">
                     <label for="studentId">para o estudante de id:</label>
-                    <input type="text" id="studentId">
+                    <input type="number" id="studentId">
                     <button onclick="runForm7()">Emprestar</button>
+                </div>
+                <br>
+
+                <div id="form8">
+                    <label for="bookId3">Verificar se está emprestado o livro de id:</label>
+                    <input type="number" id="bookId3">
+                    <button onclick="runForm8()">Buscar</button>
+                </div>
+                <br>
+
+                <div id="form9">
+                    <label for="bookId4">Devolver livro de id:</label>
+                    <input type="number" id="bookId4">
+                    <button onclick="runForm9()">Devolver</button>
                 </div>
                 <br>
 
@@ -186,13 +200,14 @@
                 <div id="form3">
                     <label for="studentName">Adicionar estudante:</label>
                     <input type="text" id="studentName" placeholder="Nome">
+                    <select id="studentClass"></select>
                     <button onclick="runForm3()">Adicionar</button>
                 </div>
                 <br>
 
                 <div id="form4">
                     <label for="studentId">Verificar se o estudante está cadastrado pelo id:</label>
-                    <input type="text" id="studentId">
+                    <input type="number" id="studentId">
                     <button onclick="runForm4()">Buscar</button>
                 </div>
                 <br>
@@ -204,6 +219,13 @@
                 <ul id="studentList"></ul>
             `;
             
+            getAllClasses().forEach((schoolClass) => {
+                const option = document.createElement("option");
+                const schoolClassObject = JSON.parse(schoolClass);
+                option.textContent = schoolClassObject.name;
+                document.getElementById("studentClass").appendChild(option);
+            });
+
             showStudentList();
         }
 
@@ -218,7 +240,7 @@
 
                 <div id="form6">
                     <label for="classId">Verificar se a turma está cadastrada pelo id:</label>
-                    <input type="text" id="classId">
+                    <input type="number" id="classId">
                     <button onclick="runForm6()">Buscar</button>
                 </div>
                 <br>
@@ -236,12 +258,14 @@
 
         // Classes ------------------------------------------------------
         class Book {
-            constructor(id, name, author, pages, year) {
+            constructor(id, name, author, pages, year, lent, lentTo) {
                 this.id = id;
                 this.name = name;
                 this.author = author;
                 this.pages = pages;
                 this.year = year;
+                this.lent = false;
+                this.lentTo = null;
             }
         }
 
@@ -319,7 +343,14 @@
             bookList.innerHTML = "";
             books.forEach((book) => {
                 const li = document.createElement("li");
-                li.textContent = book;
+                const bookObject = JSON.parse(book);
+                li.textContent = "Nome: " + bookObject.name;
+                li.textContent += " / Autor: " + bookObject.author;
+                li.textContent += " / Páginas: " + bookObject.pages;
+                li.textContent += " / Ano: " + bookObject.year;
+                li.textContent += " / Id: " + bookObject.id;
+                li.textContent += " / Emprestado: " + bookObject.lent;
+                li.textContent += " / Emprestado para: " + bookObject.lentTo;
                 bookList.appendChild(li);
             });
         }
@@ -392,7 +423,10 @@
             studentList.innerHTML = "";
             students.forEach((student) => {
                 const li = document.createElement("li");
-                li.textContent = student;
+                const studentObject = JSON.parse(student);
+                li.textContent = "Nome: " + studentObject.name;
+                li.textContent += " / Turma: " + studentObject.schoolClass;
+                li.textContent += " / Id: " + studentObject.id;
                 studentList.appendChild(li);
             });
         }
@@ -465,7 +499,9 @@
             classList.innerHTML = "";
             classes.forEach((schoolClass) => {
                 const li = document.createElement("li");
-                li.textContent = schoolClass;
+                const schoolClassObject = JSON.parse(schoolClass);
+                li.textContent = "Nome: " + schoolClassObject.name;
+                li.textContent += " / Id: " + schoolClassObject.id;
                 classList.appendChild(li);
             });
         }
@@ -549,9 +585,10 @@
 
         const runForm3 = () => {
             const studentName = document.getElementById("studentName");
+            const studentClass = document.getElementById("studentClass");
 
             if (studentName.value) {
-                addStudent(localStorage.length++, studentName.value);
+                addStudent(localStorage.length++, studentName.value, studentClass.value);
                 studentName.value = "";
                 showStudentList();
                 return false;
@@ -615,13 +652,57 @@
                     bookId.value = "";
                     studentId.value = "";
                     showBookList();
-                    return false;
+                    alert("Livro emprestado com sucesso!");
                 } else {
                     alert("O livro ou o estudante não está cadastrado.");
                     return false;
                 }
             } else {
                 alert("Por favor, insira o id do livro e do estudante.");
+                return false;
+            }
+        }
+
+        const runForm8 = () => {
+            const bookId = document.getElementById("bookId3");
+
+            if (bookId.value) {
+                const book = getBookById(bookId.value);
+                if (book) {
+                    if (book.lent) {
+                        alert(`O livro com id "${bookId.value}" está emprestado para o estudante com id "${book.lentTo}".`);
+                    } else {
+                        alert(`O livro com id "${bookId.value}" não está emprestado.`);
+                    }
+                }
+            } else {
+                alert("Por favor, insira o id do livro.");
+                return false;
+            }
+        }
+
+        const runForm9 = () => {
+            const bookId = document.getElementById("bookId4");
+
+            if (bookId.value) {
+                const book = getBookById(bookId.value);
+                const student = getStudentById(book.lentTo);
+
+                if (book && student) {
+                    if (book.lent) {
+                        book.lent = false;
+                        book.lentTo = null;
+                        student.lentBook = null;
+                        localStorage.setItem(bookId.value, JSON.stringify(book));
+                        localStorage.setItem(student.id, JSON.stringify(student));
+                        showBookList();
+                        alert(`O livro com id "${bookId.value}" foi devolvido com sucesso!`);
+                    } else {
+                        alert(`O livro com id "${bookId.value}" não está emprestado.`);
+                    }
+                }
+            } else {
+                alert("Por favor, insira o id do livro.");
                 return false;
             }
         }
