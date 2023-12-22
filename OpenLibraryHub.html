@@ -7,7 +7,7 @@
     <!-- Metadados -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenLibraryHub (0.0.6.1)</title>
+    <title>OpenLibraryHub (0.0.6.2)</title>
 
     <!-- CSS -->
     <style>
@@ -86,7 +86,7 @@
         const divHeader = document.getElementById("header");
         const divContent = document.getElementById("content");
         const divFooter = document.getElementById("footer");
-        const version = "0.0.6.1";
+        const version = "0.0.6.2";
 
         // Pages --------------------------------------------------------
         const changePage = (hash) => {
@@ -508,9 +508,6 @@
             console.log("localStorage: os dados foram apagados com sucesso!");
         }
 
-        // IndexedDB ----------------------------------------------------
-        // TODO
-
         // Forms --------------------------------------------------------
         const runForm1 = () => {
             const bookName = document.getElementById("bookName1");
@@ -609,7 +606,6 @@
                     bookId.value = "";
                     studentId.value = "";
                     showBookList();
-                    showStudentList();
                     return false;
                 } else {
                     alert("O livro ou o estudante não está cadastrado.");
