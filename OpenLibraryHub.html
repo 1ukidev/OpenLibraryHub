@@ -7,7 +7,7 @@
     <!-- Metadados -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenLibraryHub (0.0.9)</title>
+    <title>OpenLibraryHub (0.1.0)</title>
 
     <!-- CSS -->
     <style>
@@ -86,7 +86,7 @@
         const divHeader = document.getElementById("header");
         const divContent = document.getElementById("content");
         const divFooter = document.getElementById("footer");
-        const version = "0.0.9";
+        const version = "0.1.0";
 
         // Pages --------------------------------------------------------
         const changePage = (hash) => {
@@ -218,6 +218,13 @@
                 </div>
                 <br>
 
+                <div id="form10">
+                    <label for="bookId5">Remover livro de id:</label>
+                    <input type="number" id="bookId5">
+                    <button onclick="runForm10()">Remover</button>
+                </div>
+                <br>
+
                 <button onclick="deleteLocalStorage()">Resetar tudo</button>
                 <button onclick="makeBackupLocalStorage()">Fazer backup dos dados</button>
 
@@ -242,6 +249,13 @@
                     <label for="studentId">Verificar se o estudante está cadastrado pelo id:</label>
                     <input type="number" id="studentId">
                     <button onclick="runForm4()">Buscar</button>
+                </div>
+                <br>
+
+                <div id="form11">
+                    <label>Remover estudante de id:</label>
+                    <input type="number" id="studentId2">
+                    <button onclick="runForm11()">Remover</button>
                 </div>
                 <br>
 
@@ -278,6 +292,13 @@
                 </div>
                 <br>
 
+                <div id="form12">
+                    <label>Remover turma de id:</label>
+                    <input type="number" id="classId2">
+                    <button onclick="runForm12()">Remover</button>
+                </div>
+                <br>
+
                 <button onclick="deleteLocalStorage()">Resetar tudo</button>
                 <button onclick="makeBackupLocalStorage()">Fazer backup dos dados</button>
 
@@ -304,10 +325,11 @@
         }
 
         class Student {
-            constructor(id, name, schoolClass) {
+            constructor(id, name, schoolClass, lentBook) {
                 this.id = id;
                 this.name = name;
                 this.schoolClass = schoolClass;
+                this.lentBook = null;
             }
         }
 
@@ -394,6 +416,16 @@
             console.log(`localStorage: removendo livro com id "${id}"...`);
             const book = getBookById(id);
             if (book) {
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    const student = localStorage.getItem(key);
+                    if (JSON.parse(student).type == "Student" && JSON.parse(student).lentBook == id) {
+                        const studentObject = JSON.parse(student);
+                        studentObject.lentBook = null;
+                        localStorage.setItem(studentObject.id, JSON.stringify(studentObject));
+                    }
+                }
+
                 localStorage.removeItem(id);
                 showBookList();
                 console.log(`localStorage: livro removido com sucesso!`);
@@ -470,6 +502,18 @@
             console.log(`localStorage: removendo estudante com id "${id}"...`);
             const student = getStudentById(id);
             if (student) {
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    const book = localStorage.getItem(key);
+                    if (JSON.parse(book).type == "Book" && JSON.parse(book).lentTo == id) {
+                        const bookObject = JSON.parse(book);
+                        bookObject.lent = false;
+                        bookObject.lentTo = null;
+                        bookObject.lentDate = null;
+                        localStorage.setItem(bookObject.id, JSON.stringify(bookObject));
+                    }
+                }
+
                 localStorage.removeItem(id);
                 showStudentList();
                 console.log(`localStorage: estudante removido com sucesso!`);
@@ -742,6 +786,39 @@
                 }
             } else {
                 alert("Por favor, insira o id do livro.");
+                return false;
+            }
+        }
+
+        const runForm10 = () => {
+            const bookId = document.getElementById("bookId5");
+
+            if (bookId.value) {
+                removeBookById(bookId.value);
+            } else {
+                alert("Por favor, insira o id do livro.");
+                return false;
+            }
+        }
+
+        const runForm11 = () => {
+            const studentId = document.getElementById("studentId2");
+
+            if (studentId.value) {
+                removeStudentById(studentId.value);
+            } else {
+                alert("Por favor, insira o id do estudante.");
+                return false;
+            }
+        }
+
+        const runForm12 = () => {
+            const classId = document.getElementById("classId2");
+
+            if (classId.value) {
+                removeClassById(classId.value);
+            } else {
+                alert("Por favor, insira o id da turma.");
                 return false;
             }
         }
