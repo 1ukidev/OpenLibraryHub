@@ -2,7 +2,7 @@
 const divHeader = document.getElementById("header");
 const divContent = document.getElementById("content");
 const divFooter = document.getElementById("footer");
-const version = "0.2.0";
+const version = "0.2.1";
 
 // Pages --------------------------------------------------------
 const Pages = {
@@ -232,7 +232,7 @@ const Pages = {
 
 // Abstract classes ---------------------------------------------
 class Book {
-    constructor(id, name, author, pages, year, lent, lentTo, lentDate) {
+    constructor(id, name, author, pages, year) {
         this.id = id;
         this.name = name;
         this.author = author;
@@ -245,7 +245,7 @@ class Book {
 }
 
 class Student {
-    constructor(id, name, schoolClass, lentBook) {
+    constructor(id, name, schoolClass) {
         this.id = id;
         this.name = name;
         this.schoolClass = schoolClass;
@@ -653,6 +653,8 @@ const Forms = {
                 } else {
                     alert(`O livro com id "${bookId.value}" não está emprestado.`);
                 }
+            } else {
+                alert(`O livro com id "${bookId.value}" não está cadastrado.`);
             }
         } else {
             alert("Por favor, insira o id do livro.");
