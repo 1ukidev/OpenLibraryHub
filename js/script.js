@@ -2,7 +2,7 @@
 const divHeader = document.getElementById("header");
 const divContent = document.getElementById("content");
 const divFooter = document.getElementById("footer");
-const version = "0.1.1";
+const version = "0.1.2";
 
 // Pages --------------------------------------------------------
 const changePage = (hash) => {
@@ -156,7 +156,9 @@ const openStudentPage = () => {
         <div id="form3">
             <label for="studentName">Adicionar estudante:</label>
             <input type="text" id="studentName" placeholder="Nome">
-            <select id="studentClass"></select>
+            <select id="studentClass">
+                <option value="" disabled selected>Selecione a turma</option>
+            </select>
             <button onclick="runForm3()">Adicionar</button>
         </div>
         <br>
@@ -309,23 +311,25 @@ const getBookByLocalStorageKey = (key) => {
 }
 
 const showBookList = () => {
-    const bookList = document.getElementById("bookList");
-    const books = getAllBooks();
-
-    bookList.innerHTML = "";
-    books.forEach((book) => {
-        const li = document.createElement("li");
-        const bookObject = JSON.parse(book);
-        li.textContent = "Nome: " + bookObject.name;
-        li.textContent += " / Autor: " + bookObject.author;
-        li.textContent += " / Páginas: " + bookObject.pages;
-        li.textContent += " / Ano: " + bookObject.year;
-        li.textContent += " / Id: " + bookObject.id;
-        li.textContent += " / Emprestado: " + bookObject.lent;
-        li.textContent += " / Emprestado para: " + bookObject.lentTo;
-        li.textContent += " / Data de entrega: " + bookObject.lentDate;
-        bookList.appendChild(li);
-    });
+    try {
+        const bookList = document.getElementById("bookList");
+        const books = getAllBooks();
+    
+        bookList.innerHTML = "";
+        books.forEach((book) => {
+            const li = document.createElement("li");
+            const bookObject = JSON.parse(book);
+            li.textContent = "Nome: " + bookObject.name;
+            li.textContent += " / Autor: " + bookObject.author;
+            li.textContent += " / Páginas: " + bookObject.pages;
+            li.textContent += " / Ano: " + bookObject.year;
+            li.textContent += " / Id: " + bookObject.id;
+            li.textContent += " / Emprestado: " + bookObject.lent;
+            li.textContent += " / Emprestado para: " + bookObject.lentTo;
+            li.textContent += " / Data de entrega: " + bookObject.lentDate;
+            bookList.appendChild(li);
+        });
+    } catch { }
 }
 
 const removeBookById = (id) => {
@@ -345,6 +349,9 @@ const removeBookById = (id) => {
         localStorage.removeItem(id);
         showBookList();
         console.log(`localStorage: livro removido com sucesso!`);
+    } else {
+        console.error(`localStorage: livro com id "${id}" não encontrado...`);
+        alert(`O livro com id "${id}" não foi encontrado.`);
     }
 }
 
@@ -400,18 +407,20 @@ const getStudentByLocalStorageKey = (key) => {
 }
 
 const showStudentList = () => {
-    const studentList = document.getElementById("studentList");
-    const students = getAllStudents();
+    try {
+        const studentList = document.getElementById("studentList");
+        const students = getAllStudents();
 
-    studentList.innerHTML = "";
-    students.forEach((student) => {
-        const li = document.createElement("li");
-        const studentObject = JSON.parse(student);
-        li.textContent = "Nome: " + studentObject.name;
-        li.textContent += " / Turma: " + studentObject.schoolClass;
-        li.textContent += " / Id: " + studentObject.id;
-        studentList.appendChild(li);
-    });
+        studentList.innerHTML = "";
+        students.forEach((student) => {
+            const li = document.createElement("li");
+            const studentObject = JSON.parse(student);
+            li.textContent = "Nome: " + studentObject.name;
+            li.textContent += " / Turma: " + studentObject.schoolClass;
+            li.textContent += " / Id: " + studentObject.id;
+            studentList.appendChild(li);
+        });
+    } catch { }
 }
 
 const removeStudentById = (id) => {
@@ -433,6 +442,9 @@ const removeStudentById = (id) => {
         localStorage.removeItem(id);
         showStudentList();
         console.log(`localStorage: estudante removido com sucesso!`);
+    } else {
+        console.error(`localStorage: estudante com id "${id}" não encontrado...`);
+        alert(`O estudante com id "${id}" não foi encontrado.`);
     }
 }
 
@@ -488,17 +500,19 @@ const getClassByLocalStorageKey = (key) => {
 }
 
 const showClassList = () => {
-    const classList = document.getElementById("classList");
-    const classes = getAllClasses();
+    try {
+        const classList = document.getElementById("classList");
+        const classes = getAllClasses();
 
-    classList.innerHTML = "";
-    classes.forEach((schoolClass) => {
-        const li = document.createElement("li");
-        const schoolClassObject = JSON.parse(schoolClass);
-        li.textContent = "Nome: " + schoolClassObject.name;
-        li.textContent += " / Id: " + schoolClassObject.id;
-        classList.appendChild(li);
-    });
+        classList.innerHTML = "";
+        classes.forEach((schoolClass) => {
+            const li = document.createElement("li");
+            const schoolClassObject = JSON.parse(schoolClass);
+            li.textContent = "Nome: " + schoolClassObject.name;
+            li.textContent += " / Id: " + schoolClassObject.id;
+            classList.appendChild(li);
+        });
+    } catch { }
 }
 
 const removeClassById = (id) => {
@@ -508,6 +522,9 @@ const removeClassById = (id) => {
         localStorage.removeItem(id);
         showClassList();
         console.log(`localStorage: turma removida com sucesso!`);
+    } else {
+        console.error(`localStorage: turma com id "${id}" não encontrada...`);
+        alert(`A turma com id "${id}" não foi encontrada.`);
     }
 }
 
@@ -527,19 +544,9 @@ const lendBook = (bookId, studentId, lentDate) => {
 const deleteLocalStorage = () => {
     console.log("localStorage: apagando todos os dados...");
     localStorage.clear();
-
-    try {
-        showBookList();
-    } catch { }
-
-    try {
-        showStudentList();
-    } catch { }
-
-    try {
-        showClassList();
-    } catch { }
-
+    showBookList();
+    showStudentList();
+    showClassList();
     console.log("localStorage: os dados foram apagados com sucesso!");
 }
 
@@ -643,8 +650,8 @@ const runForm7 = () => {
     const studentId = document.getElementById("studentId");
     const lentDate = document.getElementById("lentDate");
 
-    if (bookId.value && studentId.value) {
-        if (getBookById(bookId.value) && getStudentById(studentId.value) && lentDate.value) {
+    if (bookId.value && studentId.value && lentDate.value) {
+        if (getBookById(bookId.value) && getStudentById(studentId.value)) {
             lendBook(bookId.value, studentId.value, lentDate.value);
             bookId.value = "";
             studentId.value = "";
