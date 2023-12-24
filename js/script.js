@@ -2,7 +2,7 @@
 const divHeader = document.getElementById("header");
 const divContent = document.getElementById("content");
 const divFooter = document.getElementById("footer");
-const version = "0.2.1";
+const version = "0.2.2";
 
 // Pages --------------------------------------------------------
 const Pages = {
@@ -68,9 +68,9 @@ const Pages = {
         for (let i = 0; i < localStorage.length; i++) {
             const key = localStorage.key(i);
             const student = localStorage.getItem(key);
+            const studentObject = JSON.parse(student);
 
-            if (JSON.parse(student).type === "Student" && JSON.parse(student).lentBook !== null) {
-                const studentObject = JSON.parse(student);
+            if (studentObject.type === "Student" && studentObject.lentBook !== null) {
                 const bookObject = JSON.parse(Books.getBookByLocalStorageKey(studentObject.lentBook));
                 lentBooks.push(`${studentObject.name} - ${studentObject.schoolClass} - ${bookObject.name} - Data de entrega: ${bookObject.lentDate}`);
             }
