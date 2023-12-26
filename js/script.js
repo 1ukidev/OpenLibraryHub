@@ -2,7 +2,7 @@
 const divHeader = document.getElementById("header");
 const divContent = document.getElementById("content");
 const divFooter = document.getElementById("footer");
-const version = "0.2.2";
+const version = "0.2.3";
 
 // Pages --------------------------------------------------------
 const Pages = {
@@ -51,6 +51,7 @@ const Pages = {
 
         const mainText1 = document.getElementById("main-text-1");
         const hours = new Date().getHours();
+
         if (hours >= 8 && hours < 12) {
             mainText1.innerHTML = "Bom dia! ";
         } else if (hours >= 12 && hours < 18) {
@@ -58,17 +59,17 @@ const Pages = {
         } else {
             mainText1.innerHTML = "Boa noite! ";
         }
+
         const opcoes = { year: 'numeric', month: 'long', day: 'numeric' };
         mainText1.innerHTML += new Date().toLocaleString('pt-BR', opcoes);
 
         const mainText2 = document.getElementById("main-text-2");
         mainText2.innerHTML = "Alunos que estão com livros emprestados: ";
-        let lentBooks = [];
+        const lentBooks = [];
+        const students = Students.getAllStudents();
 
-        for (let i = 0; i < localStorage.length; i++) {
-            const key = localStorage.key(i);
-            const student = localStorage.getItem(key);
-            const studentObject = JSON.parse(student);
+        for (let i = 0; i < students.length; i++) {
+            const studentObject = JSON.parse(students[i]);
 
             if (studentObject.type === "Student" && studentObject.lentBook !== null) {
                 const bookObject = JSON.parse(Books.getBookByLocalStorageKey(studentObject.lentBook));
@@ -144,6 +145,7 @@ const Pages = {
 
             <button onclick="Others.deleteLocalStorage()">Resetar tudo</button>
             <button onclick="Others.makeBackupLocalStorage()">Fazer backup dos dados</button>
+            <button onclick="Others.checkUpdate()">Verificar se há atualizações</button>
 
             <h2>Lista de livros:</h2>
             <ul id="bookList"></ul>
@@ -180,6 +182,7 @@ const Pages = {
 
             <button onclick="Others.deleteLocalStorage()">Resetar tudo</button>
             <button onclick="Others.makeBackupLocalStorage()">Fazer backup dos dados</button>
+            <button onclick="Others.checkUpdate()">Verificar se há atualizações</button>
 
             <h2>Lista de estudantes:</h2>
             <ul id="studentList"></ul>
@@ -220,6 +223,7 @@ const Pages = {
 
             <button onclick="Others.deleteLocalStorage()">Resetar tudo</button>
             <button onclick="Others.makeBackupLocalStorage()">Fazer backup dos dados</button>
+            <button onclick="Others.checkUpdate()">Verificar se há atualizações</button>
 
             <h2>Lista de turmas:</h2>
             <ul id="classList"></ul>
@@ -317,14 +321,10 @@ const Books = {
         console.log(`localStorage: removendo livro com id "${id}"...`);
         const book = Books.getBookById(id);
         if (book) {
-            for (let i = 0; i < localStorage.length; i++) {
-                const key = localStorage.key(i);
-                const student = localStorage.getItem(key);
-                if (JSON.parse(student).type == "Student" && JSON.parse(student).lentBook == id) {
-                    const studentObject = JSON.parse(student);
-                    studentObject.lentBook = null;
-                    localStorage.setItem(studentObject.id, JSON.stringify(studentObject));
-                }
+            const student = Students.getStudentById(book.lentTo);
+            if (student) {
+                student.lentBook = null;
+                localStorage.setItem(student.id, JSON.stringify(student));
             }
 
             localStorage.removeItem(id);
@@ -406,16 +406,12 @@ const Students = {
         console.log(`localStorage: removendo estudante com id "${id}"...`);
         const student = Students.getStudentById(id);
         if (student) {
-            for (let i = 0; i < localStorage.length; i++) {
-                const key = localStorage.key(i);
-                const book = localStorage.getItem(key);
-                if (JSON.parse(book).type == "Book" && JSON.parse(book).lentTo == id) {
-                    const bookObject = JSON.parse(book);
-                    bookObject.lent = false;
-                    bookObject.lentTo = null;
-                    bookObject.lentDate = null;
-                    localStorage.setItem(bookObject.id, JSON.stringify(bookObject));
-                }
+            const book = Books.getBookById(student.lentBook);
+            if (book) {
+                book.lent = false;
+                book.lentTo = null;
+                book.lentDate = null;
+                localStorage.setItem(book.id, JSON.stringify(book));
             }
 
             localStorage.removeItem(id);
@@ -730,6 +726,7 @@ const Lists = {
                 const studentObject = JSON.parse(student);
                 li.textContent = "Nome: " + studentObject.name;
                 li.textContent += " / Turma: " + studentObject.schoolClass;
+                li.textContent += " / Livro emprestado: " + studentObject.lentBook;
                 li.textContent += " / Id: " + studentObject.id;
                 studentList.appendChild(li);
             });
@@ -758,7 +755,6 @@ const Others = {
     checkUpdate: () => {
         console.log("Verificando atualizações...");
 
-        // TODO: fix this
         fetch("https://raw.githubusercontent.com/1ukidev/OpenLibraryHub/main/VERSION")
             .then((response) => {
                 return response.text();
@@ -767,7 +763,7 @@ const Others = {
                 console.log(`Versão atual: ${version}`);
                 console.log(`Retorno: ${data}`);
     
-                if (data == version) {
+                if (data.trim() == version) {
                     alert("Você está usando a versão mais recente!");
                     console.log("Você está usando a versão mais recente!");
                 } else {
