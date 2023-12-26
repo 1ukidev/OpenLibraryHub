@@ -2,7 +2,7 @@
 const divHeader = document.getElementById("header");
 const divContent = document.getElementById("content");
 const divFooter = document.getElementById("footer");
-const version = "0.2.3";
+const version = "0.2.4";
 
 // Pages --------------------------------------------------------
 const Pages = {
@@ -72,7 +72,7 @@ const Pages = {
             const studentObject = JSON.parse(students[i]);
 
             if (studentObject.type === "Student" && studentObject.lentBook !== null) {
-                const bookObject = JSON.parse(Books.getBookByLocalStorageKey(studentObject.lentBook));
+                const bookObject = JSON.parse(Books.getBookById(studentObject.lentBook));
                 lentBooks.push(`${studentObject.name} - ${studentObject.schoolClass} - ${bookObject.name} - Data de entrega: ${bookObject.lentDate}`);
             }
         }
@@ -288,32 +288,12 @@ const Books = {
 
     getBookById: (id) => {
         console.log(`localStorage: procurando livro com id "${id}"...`);
-        const books = Books.getAllBooks();
+        const book = localStorage.getItem(id);
 
-        if (books.length == 0) {
-            return console.error("localStorage: nenhum livro encontrado...");
-        }
-
-        for (let i = 0; i < localStorage.length; i++) {
-            if (books[i] == null) {
-                continue;
-            }
-            const book = JSON.parse(books[i]);
-            if (book.id == id) {
-                return book;
-            }
-        }
-
-        return console.error(`localStorage: livro com id "${id}" não encontrado...`);
-    },
-
-    getBookByLocalStorageKey: (key) => {
-        console.log(`localStorage: procurando livro com chave "${key}"...`);
-        const book = localStorage.getItem(key);
         if (JSON.parse(book).type == "Book") {
             return book;
         } else {
-            return console.error(`localStorage: livro com chave "${key}" não encontrado...`);
+            return console.error(`localStorage: livro com id "${id}" não encontrado...`);
         }
     },
 
@@ -373,32 +353,12 @@ const Students = {
 
     getStudentById: (id) => {
         console.log(`localStorage: procurando estudante com id "${id}"...`);
-        const students = Students.getAllStudents();
+        const student = localStorage.getItem(id);
 
-        if (students.length == 0) {
-            return console.error("localStorage: nenhum estudante encontrado...");
-        }
-
-        for (let i = 0; i < localStorage.length; i++) {
-            if (students[i] == null) {
-                continue;
-            }
-            const student = JSON.parse(students[i]);
-            if (student.id == id) {
-                return student;
-            }
-        }
-
-        return console.error(`localStorage: estudante com id "${id}" não encontrado...`);
-    },
-
-    getStudentByLocalStorageKey: (key) => {
-        console.log(`localStorage: procurando estudante com chave "${key}"...`);
-        const student = localStorage.getItem(key);
-        if (JSON.parse(student).type == "Student") {
+        if (student && JSON.parse(student).type == "Student") {
             return student;
         } else {
-            return console.error(`localStorage: estudante com chave "${key}" não encontrado...`);
+            return console.error(`localStorage: estudante com id "${id}" não encontrado...`);
         }
     },
 
@@ -447,32 +407,12 @@ const Classes = {
 
     getClassById: (id) => {
         console.log(`localStorage: procurando turma com id "${id}"...`);
-        const classes = Classes.getAllClasses();
+        const schoolClass = localStorage.getItem(id);
 
-        if (classes.length == 0) {
-            return console.error("localStorage: nenhuma turma encontrada...");
-        }
-
-        for (let i = 0; i < localStorage.length; i++) {
-            if (classes[i] == null) {
-                continue;
-            }
-            const schoolClass = JSON.parse(classes[i]);
-            if (schoolClass.id == id) {
-                return schoolClass;
-            }
-        }
-
-        return console.error(`localStorage: turma com id "${id}" não encontrada...`);
-    },
-
-    getClassByLocalStorageKey: (key) => {
-        console.log(`localStorage: procurando turma com chave "${key}"...`);
-        const schoolClass = localStorage.getItem(key);
         if (JSON.parse(schoolClass).type == "Class") {
             return schoolClass;
         } else {
-            return console.error(`localStorage: turma com chave "${key}" não encontrada...`);
+            return console.error(`localStorage: turma com id "${id}" não encontrada...`);
         }
     },
 
