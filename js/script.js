@@ -2,12 +2,12 @@
 const divHeader = document.getElementById("header");
 const divContent = document.getElementById("content");
 const divFooter = document.getElementById("footer");
-const version = "0.2.4";
+const version = "0.2.5";
 
 // Pages --------------------------------------------------------
 const Pages = {
     changePage: (hash) => {
-        return location.hash = hash;
+        location.hash = hash;
     },
 
     route: () => {
@@ -72,7 +72,7 @@ const Pages = {
             const studentObject = JSON.parse(students[i]);
 
             if (studentObject.type === "Student" && studentObject.lentBook !== null) {
-                const bookObject = JSON.parse(Books.getBookById(studentObject.lentBook));
+                const bookObject = Books.getBookById(studentObject.lentBook);
                 lentBooks.push(`${studentObject.name} - ${studentObject.schoolClass} - ${bookObject.name} - Data de entrega: ${bookObject.lentDate}`);
             }
         }
@@ -98,24 +98,24 @@ const Pages = {
                 <label for="bookName">Adicionar livro:</label>
                 <input type="text" id="bookName" placeholder="Nome">
                 <input type="text" id="bookAuthor" placeholder="Autor">
-                <input type="number" id="bookPages" placeholder="Quantidade de páginas">
-                <input type="number" id="bookYear" placeholder="Ano">
+                <input type="number" id="bookPages" placeholder="Quantidade de páginas" onkeydown="return Others.numberMask(event)">
+                <input type="number" id="bookYear" placeholder="Ano" onkeydown="return Others.numberMask(event)">
                 <button onclick="Forms.runForm1()">Adicionar</button>
             </div>
             <br>
 
             <div id="form2">
                 <label for="bookId">Verificar se o livro está cadastro pelo id:</label>
-                <input type="number" id="bookId">
+                <input type="number" id="bookId" onkeydown="return Others.numberMask(event)">
                 <button onclick="Forms.runForm2()">Buscar</button>
             </div>
             <br>
 
             <div id="form7">
                 <label for="bookId2">Emprestar livro de id:</label>
-                <input type="number" id="bookId2">
+                <input type="number" id="bookId2" onkeydown="return Others.numberMask(event)">
                 <label for="studentId">para o estudante de id:</label>
-                <input type="number" id="studentId">
+                <input type="number" id="studentId" onkeydown="return Others.numberMask(event)">
                 <label for="lentDate">Data de entrega:</label>
                 <input type="date" id="lentDate">
                 <button onclick="Forms.runForm7()">Emprestar</button>
@@ -124,21 +124,21 @@ const Pages = {
 
             <div id="form8">
                 <label for="bookId3">Verificar se está emprestado o livro de id:</label>
-                <input type="number" id="bookId3">
+                <input type="number" id="bookId3" onkeydown="return Others.numberMask(event)">
                 <button onclick="Forms.runForm8()">Buscar</button>
             </div>
             <br>
 
             <div id="form9">
                 <label for="bookId4">Devolver livro de id:</label>
-                <input type="number" id="bookId4">
+                <input type="number" id="bookId4" onkeydown="return Others.numberMask(event)">
                 <button onclick="Forms.runForm9()">Devolver</button>
             </div>
             <br>
 
             <div id="form10">
                 <label for="bookId5">Remover livro de id:</label>
-                <input type="number" id="bookId5">
+                <input type="number" id="bookId5" onkeydown="return Others.numberMask(event)">
                 <button onclick="Forms.runForm10()">Remover</button>
             </div>
             <br>
@@ -168,14 +168,14 @@ const Pages = {
 
             <div id="form4">
                 <label for="studentId">Verificar se o estudante está cadastrado pelo id:</label>
-                <input type="number" id="studentId">
+                <input type="number" id="studentId" onkeydown="return Others.numberMask(event)">
                 <button onclick="Forms.runForm4()">Buscar</button>
             </div>
             <br>
 
             <div id="form11">
                 <label for="studentId2">Remover estudante de id:</label>
-                <input type="number" id="studentId2">
+                <input type="number" id="studentId2" onkeydown="return Others.numberMask(event)">
                 <button onclick="Forms.runForm11()">Remover</button>
             </div>
             <br>
@@ -209,14 +209,14 @@ const Pages = {
 
             <div id="form6">
                 <label for="classId">Verificar se a turma está cadastrada pelo id:</label>
-                <input type="number" id="classId">
+                <input type="number" id="classId" onkeydown="return Others.numberMask(event)">
                 <button onclick="Forms.runForm6()">Buscar</button>
             </div>
             <br>
 
             <div id="form12">
                 <label for="classId2">Remover turma de id:</label>
-                <input type="number" id="classId2">
+                <input type="number" id="classId2" onkeydown="return Others.numberMask(event)">
                 <button onclick="Forms.runForm12()">Remover</button>
             </div>
             <br>
@@ -279,7 +279,8 @@ const Books = {
         for (let i = 0; i < localStorage.length; i++) {
             const key = localStorage.key(i);
             const book = localStorage.getItem(key);
-            if (JSON.parse(book).type == "Book") {
+            const bookObject = JSON.parse(book);
+            if (bookObject.type == "Book") {
                 books.push(book);
             }
         }
@@ -289,11 +290,13 @@ const Books = {
     getBookById: (id) => {
         console.log(`localStorage: procurando livro com id "${id}"...`);
         const book = localStorage.getItem(id);
+        const bookOject = JSON.parse(book);
 
-        if (JSON.parse(book).type == "Book") {
-            return book;
+        if (book && bookOject.type == "Book") {
+            return bookOject;
         } else {
-            return console.error(`localStorage: livro com id "${id}" não encontrado...`);
+            console.error(`localStorage: livro com id "${id}" não encontrado...`);
+            return false;
         }
     },
 
@@ -301,8 +304,8 @@ const Books = {
         console.log(`localStorage: removendo livro com id "${id}"...`);
         const book = Books.getBookById(id);
         if (book) {
-            const student = Students.getStudentById(book.lentTo);
-            if (student) {
+            if (book.lentTo != null || book.lentTo != undefined) {
+                const student = Students.getStudentById(book.lentTo);
                 student.lentBook = null;
                 localStorage.setItem(student.id, JSON.stringify(student));
             }
@@ -310,9 +313,11 @@ const Books = {
             localStorage.removeItem(id);
             Lists.showBookList();
             console.log(`localStorage: livro removido com sucesso!`);
+            return true;
         } else {
             alert(`O livro com id "${id}" não foi encontrado.`);
             console.error(`localStorage: livro com id "${id}" não encontrado...`);
+            return false;
         }
     },
 
@@ -344,7 +349,8 @@ const Students = {
         for (let i = 0; i < localStorage.length; i++) {
             const key = localStorage.key(i);
             const student = localStorage.getItem(key);
-            if (JSON.parse(student).type == "Student") {
+            const studentObject = JSON.parse(student);
+            if (studentObject.type == "Student") {
                 students.push(student);
             }
         }
@@ -354,11 +360,13 @@ const Students = {
     getStudentById: (id) => {
         console.log(`localStorage: procurando estudante com id "${id}"...`);
         const student = localStorage.getItem(id);
+        const studentObject = JSON.parse(student);
 
-        if (student && JSON.parse(student).type == "Student") {
-            return student;
+        if (student && studentObject.type == "Student") {
+            return studentObject;
         } else {
-            return console.error(`localStorage: estudante com id "${id}" não encontrado...`);
+            console.error(`localStorage: estudante com id "${id}" não encontrado...`);
+            return false;
         }
     },
 
@@ -366,8 +374,8 @@ const Students = {
         console.log(`localStorage: removendo estudante com id "${id}"...`);
         const student = Students.getStudentById(id);
         if (student) {
-            const book = Books.getBookById(student.lentBook);
-            if (book) {
+            if (student.lentBook != null || student.lentBook != undefined) {
+                const book = Books.getBookById(student.lentBook);
                 book.lent = false;
                 book.lentTo = null;
                 book.lentDate = null;
@@ -377,9 +385,11 @@ const Students = {
             localStorage.removeItem(id);
             Lists.showStudentList();
             console.log(`localStorage: estudante removido com sucesso!`);
+            return true;
         } else {
             alert(`O estudante com id "${id}" não foi encontrado.`);
             console.error(`localStorage: estudante com id "${id}" não encontrado...`);
+            return false;
         }
     }
 }
@@ -398,7 +408,8 @@ const Classes = {
         for (let i = 0; i < localStorage.length; i++) {
             const key = localStorage.key(i);
             const schoolClass = localStorage.getItem(key);
-            if (JSON.parse(schoolClass).type == "Class") {
+            const schoolClassObject = JSON.parse(schoolClass);
+            if (schoolClassObject.type == "Class") {
                 classes.push(schoolClass);
             }
         }
@@ -408,11 +419,13 @@ const Classes = {
     getClassById: (id) => {
         console.log(`localStorage: procurando turma com id "${id}"...`);
         const schoolClass = localStorage.getItem(id);
+        const schoolClassObject = JSON.parse(schoolClass);
 
-        if (JSON.parse(schoolClass).type == "Class") {
-            return schoolClass;
+        if (schoolClass && schoolClassObject.type == "Class") {
+            return schoolClassObject;
         } else {
-            return console.error(`localStorage: turma com id "${id}" não encontrada...`);
+            console.error(`localStorage: turma com id "${id}" não encontrada...`);
+            return false;
         }
     },
 
@@ -423,9 +436,11 @@ const Classes = {
             localStorage.removeItem(id);
             Lists.showClassList();
             console.log(`localStorage: turma removida com sucesso!`);
+            return true;
         } else {
             alert(`A turma com id "${id}" não foi encontrada.`);
             console.error(`localStorage: turma com id "${id}" não encontrada...`);
+            return false;
         }
     }
 }
@@ -744,6 +759,18 @@ const Others = {
         Lists.showStudentList();
         Lists.showClassList();
         console.log("localStorage: os dados foram apagados com sucesso!");
+    },
+
+    numberMask: (event) => {
+        const validKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight'];
+        
+        if (validKeys.includes(event.code)) {
+            return true;
+        } else if (!isNaN(Number(event.key)) && event.code !== 'Space') {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
 
