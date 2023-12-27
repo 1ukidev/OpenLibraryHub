@@ -2,7 +2,7 @@
 const divHeader = document.getElementById("header");
 const divContent = document.getElementById("content");
 const divFooter = document.getElementById("footer");
-const version = "0.2.6";
+const version = "0.2.7";
 
 // Pages --------------------------------------------------------
 const Pages = {
@@ -272,6 +272,7 @@ const Books = {
         book.type = "Book";
         localStorage.setItem(localStorage.length++, JSON.stringify(book));
         console.log(`localStorage: livro "${name}" salvo com sucesso!`);
+        return;
     },
 
     getAllBooks: () => {
@@ -332,6 +333,7 @@ const Books = {
         localStorage.setItem(bookId, JSON.stringify(book));
         localStorage.setItem(studentId, JSON.stringify(student));
         console.log(`localStorage: livro "${bookId}" emprestado para o estudante "${studentId}" com sucesso!`);
+        return;
     }
 }
 
@@ -342,6 +344,7 @@ const Students = {
         student.type = "Student";
         localStorage.setItem(localStorage.length++, JSON.stringify(student));
         console.log(`localStorage: estudante "${name}" salvo com sucesso!`);
+        return;
     },
 
     getAllStudents: () => {
@@ -401,6 +404,7 @@ const Classes = {
         schoolClass.type = "Class";
         localStorage.setItem(localStorage.length++, JSON.stringify(schoolClass));
         console.log("localStorage: turma '" + name + "' salva com sucesso!");
+        return;
     },
 
     getAllClasses: () => {
@@ -460,7 +464,7 @@ const Forms = {
             bookPages.value = "";
             bookYear.value = "";
             Lists.showBookList();
-            return false;
+            return true;
         } else {
             alert("Por favor, insira todos os dados do livro.");
             return false;
@@ -473,8 +477,10 @@ const Forms = {
         if (bookName.value) {
             if (Books.getBookById(bookName.value)) {
                 alert(`O livro com id "${bookName.value}" está cadastrado.`);
+                return true;
             } else {
                 alert(`O livro com id "${bookName.value}" não está cadastrado.`);
+                return false;
             }
         } else {
             alert("Por favor, insira o id do livro.");
@@ -490,7 +496,7 @@ const Forms = {
             Students.addStudent(localStorage.length++, studentName.value, studentClass.value);
             studentName.value = "";
             Lists.showStudentList();
-            return false;
+            return true;
         } else {
             alert("Por favor, insira o nome do estudante.");
             return false;
@@ -503,8 +509,10 @@ const Forms = {
         if (studentId.value) {
             if (Students.getStudentById(studentId.value)) {
                 alert(`O estudante com id "${studentId.value}" está cadastrado.`);
+                return true;
             } else {
                 alert(`O estudante com id "${studentId.value}" não está cadastrado.`);
+                return false;
             }
         } else {
             alert("Por favor, insira o id do estudante.");
@@ -519,7 +527,7 @@ const Forms = {
             Classes.addClass(localStorage.length++, className.value);
             className.value = "";
             Lists.showClassList();
-            return false;
+            return true;
         } else {
             alert("Por favor, insira o nome da turma.");
             return false;
@@ -532,8 +540,10 @@ const Forms = {
         if (classId.value) {
             if (Classes.getClassById(classId.value)) {
                 alert(`A turma com id "${classId.value}" está cadastrada.`);
+                return true;
             } else {
                 alert(`A turma com id "${classId.value}" não está cadastrada.`);
+                return false;
             }
         } else {
             alert("Por favor, insira o id da turma.");
@@ -554,6 +564,7 @@ const Forms = {
                 lentDate.value = "";
                 Lists.showBookList();
                 alert("Livro emprestado com sucesso!");
+                return true;
             } else {
                 alert("O livro ou o estudante não está cadastrado.");
                 return false;
@@ -572,11 +583,14 @@ const Forms = {
             if (book) {
                 if (book.lent) {
                     alert(`O livro com id "${bookId.value}" está emprestado para o estudante com id "${book.lentTo}".`);
+                    return true;
                 } else {
                     alert(`O livro com id "${bookId.value}" não está emprestado.`);
+                    return false;
                 }
             } else {
                 alert(`O livro com id "${bookId.value}" não está cadastrado.`);
+                return false;
             }
         } else {
             alert("Por favor, insira o id do livro.");
@@ -601,11 +615,14 @@ const Forms = {
                     localStorage.setItem(student.id, JSON.stringify(student));
                     Lists.showBookList();
                     alert(`O livro com id "${bookId.value}" foi devolvido com sucesso!`);
+                    return true;
                 } else {
                     alert(`O livro com id "${bookId.value}" não está emprestado.`);
+                    return false;
                 }
             } else {
                 alert(`O livro com id "${bookId.value}" não está cadastrado.`);
+                return false;
             }
         } else {
             alert("Por favor, insira o id do livro.");
@@ -618,6 +635,7 @@ const Forms = {
 
         if (bookId.value) {
             Books.removeBookById(bookId.value);
+            return true;
         } else {
             alert("Por favor, insira o id do livro.");
             return false;
@@ -629,6 +647,7 @@ const Forms = {
 
         if (studentId.value) {
             Students.removeStudentById(studentId.value);
+            return true;
         } else {
             alert("Por favor, insira o id do estudante.");
             return false;
@@ -640,6 +659,7 @@ const Forms = {
 
         if (classId.value) {
             Classes.removeClassById(classId.value);
+            return true;
         } else {
             alert("Por favor, insira o id da turma.");
             return false;
@@ -727,7 +747,8 @@ const Others = {
                 }
             })
             .catch((error) => {
-                return console.error(`Erro ao verificar atualizações: ${error}`);
+                console.error(`Erro ao verificar atualizações: ${error}`);
+                return false;
             });
     },
 
@@ -738,9 +759,10 @@ const Others = {
             const key = localStorage.key(i);
             values += localStorage.getItem(key);
         }
-        if (values == undefined) {
+        if (values == undefined || values == null) {
             alert("Erro ao fazer backup: nenhum dado encontrado.");
-            return console.error("Erro ao fazer backup: nenhum dado encontrado.");
+            console.error("Erro ao fazer backup: nenhum dado encontrado.");
+            return false;
         }
         const valuesBase64 = btoa(values.replace("undefined", ""));
     
