@@ -2,7 +2,7 @@
 const divHeader = document.getElementById("header");
 const divContent = document.getElementById("content");
 const divFooter = document.getElementById("footer");
-const version = "0.2.5";
+const version = "0.2.6";
 
 // Pages --------------------------------------------------------
 const Pages = {
@@ -396,7 +396,7 @@ const Students = {
 
 const Classes = {
     addClass: (id, name) => {
-        console.log(`localStorage: salvando turma "${name}""...`);
+        console.log(`localStorage: salvando turma "${name}"...`);
         const schoolClass = new Class(id, name);
         schoolClass.type = "Class";
         localStorage.setItem(localStorage.length++, JSON.stringify(schoolClass));
