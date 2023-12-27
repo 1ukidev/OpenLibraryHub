@@ -2,10 +2,10 @@
 const divHeader = document.getElementById("header");
 const divContent = document.getElementById("content");
 const divFooter = document.getElementById("footer");
-const version = "0.2.7";
+const version = "0.2.8";
 
 // Pages --------------------------------------------------------
-const Pages = {
+const Pages = Object.freeze({
     changePage: (hash) => {
         location.hash = hash;
     },
@@ -232,10 +232,10 @@ const Pages = {
 
         Lists.showClassList();
     }
-}
+});
 
 // Abstract classes ---------------------------------------------
-class Book {
+const Book = class {
     constructor(id, name, author, pages, year) {
         this.id = id;
         this.name = name;
@@ -248,7 +248,7 @@ class Book {
     }
 }
 
-class Student {
+const Student = class {
     constructor(id, name, schoolClass) {
         this.id = id;
         this.name = name;
@@ -257,7 +257,7 @@ class Student {
     }
 }
 
-class Class {
+const Class = class {
     constructor(id, name) {
         this.id = id;
         this.name = name;
@@ -265,7 +265,7 @@ class Class {
 }
 
 // localStorage -------------------------------------------------
-const Books = {
+const Books = Object.freeze({
     addBook: (id, name, author, pages, year) => {
         console.log(`localStorage: salvando livro "${name}"...`);
         const book = new Book(id, name, author, pages, year);
@@ -335,9 +335,9 @@ const Books = {
         console.log(`localStorage: livro "${bookId}" emprestado para o estudante "${studentId}" com sucesso!`);
         return;
     }
-}
+});
 
-const Students = {
+const Students = Object.freeze({
     addStudent: (id, name, schoolClass) => {
         console.log(`localStorage: salvando estudante "${name}"...`);
         const student = new Student(id, name, schoolClass);
@@ -395,9 +395,9 @@ const Students = {
             return false;
         }
     }
-}
+});
 
-const Classes = {
+const Classes = Object.freeze({
     addClass: (id, name) => {
         console.log(`localStorage: salvando turma "${name}"...`);
         const schoolClass = new Class(id, name);
@@ -447,10 +447,10 @@ const Classes = {
             return false;
         }
     }
-}
+});
 
 // Forms --------------------------------------------------------
-const Forms = {
+const Forms = Object.freeze({
     runForm1: () => {
         const bookName = document.getElementById("bookName");
         const bookAuthor = document.getElementById("bookAuthor");
@@ -665,9 +665,10 @@ const Forms = {
             return false;
         }
     }
-}
+});
 
-const Lists = {
+// Lists --------------------------------------------------------
+const Lists = Object.freeze({
     showBookList: () => {
         try {
             const bookList = document.getElementById("bookList");
@@ -723,10 +724,10 @@ const Lists = {
             });
         } catch { }
     }
-}
+});
 
 // Others -------------------------------------------------------
-const Others = {
+const Others = Object.freeze({
     checkUpdate: () => {
         console.log("Verificando atualizações...");
 
@@ -794,7 +795,7 @@ const Others = {
             return false;
         }
     }
-}
+});
 
 // Initialization -----------------------------------------------
 document.body.onload = () => {
