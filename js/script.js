@@ -2,7 +2,7 @@
 const divHeader = document.getElementById("header");
 const divContent = document.getElementById("content");
 const divFooter = document.getElementById("footer");
-const version = "0.2.8";
+const version = "0.2.9";
 
 // Pages --------------------------------------------------------
 const Pages = Object.freeze({
@@ -272,7 +272,6 @@ const Books = Object.freeze({
         book.type = "Book";
         localStorage.setItem(localStorage.length++, JSON.stringify(book));
         console.log(`localStorage: livro "${name}" salvo com sucesso!`);
-        return;
     },
 
     getAllBooks: () => {
@@ -333,7 +332,6 @@ const Books = Object.freeze({
         localStorage.setItem(bookId, JSON.stringify(book));
         localStorage.setItem(studentId, JSON.stringify(student));
         console.log(`localStorage: livro "${bookId}" emprestado para o estudante "${studentId}" com sucesso!`);
-        return;
     }
 });
 
@@ -344,7 +342,6 @@ const Students = Object.freeze({
         student.type = "Student";
         localStorage.setItem(localStorage.length++, JSON.stringify(student));
         console.log(`localStorage: estudante "${name}" salvo com sucesso!`);
-        return;
     },
 
     getAllStudents: () => {
@@ -404,7 +401,6 @@ const Classes = Object.freeze({
         schoolClass.type = "Class";
         localStorage.setItem(localStorage.length++, JSON.stringify(schoolClass));
         console.log("localStorage: turma '" + name + "' salva com sucesso!");
-        return;
     },
 
     getAllClasses: () => {
