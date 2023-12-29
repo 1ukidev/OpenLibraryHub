@@ -3,7 +3,7 @@ const divLock = document.getElementById("lock");
 const divHeader = document.getElementById("header");
 const divContent = document.getElementById("content");
 const divFooter = document.getElementById("footer");
-const version = "0.3.0";
+const version = "0.3.1";
 
 // Pages --------------------------------------------------------
 const Pages = Object.freeze({
@@ -42,8 +42,17 @@ const Pages = Object.freeze({
             <h1>Bem-vindo ao OpenLibraryHub (${version})!</h1>
             <h2>Crie uma senha antes de começar:</h2>
             <input type="password" id="password" placeholder="Senha">
-            <button onclick="Locks.createLock()">Cadastrar</button>
+            <button id="submit" onclick="Locks.createLock()">Cadastrar</button>
         `;
+
+        const submit = document.getElementById("password");
+        submit.focus();
+        submit.addEventListener("keypress", (event) => {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                document.getElementById("submit").click();
+            }
+        });
     },
 
     openLockScreen: () => {
@@ -59,8 +68,17 @@ const Pages = Object.freeze({
             <h1>Bem-vindo ao OpenLibraryHub (${version})!</h1>
             <h2>Insira a senha cadastrada para continuar:</h2>
             <input type="password" id="password" placeholder="Senha">
-            <button onclick="Locks.unlock()">Entrar</button>
+            <button id="submit" onclick="Locks.unlock()">Entrar</button>
         `;
+
+        const submit = document.getElementById("password");
+        submit.focus();
+        submit.addEventListener("keypress", (event) => {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                document.getElementById("submit").click();
+            }
+        });
     },
 
     openMainHeader: () => {
