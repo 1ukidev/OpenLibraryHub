@@ -3,7 +3,7 @@ const divLock = document.getElementById("lock");
 const divHeader = document.getElementById("header");
 const divContent = document.getElementById("content");
 const divFooter = document.getElementById("footer");
-const version = "0.3.1";
+const version = "0.3.2";
 
 // Pages --------------------------------------------------------
 const Pages = Object.freeze({
@@ -856,12 +856,12 @@ const Others = Object.freeze({
 });
 
 const Locks = Object.freeze({
-    createLock: () => {
+    createLock: async () => {
         console.log("Criando bloqueio...");
         const password = document.getElementById("password").value;
 
         if (password) {
-            const passwordHash = CryptoJS.SHA256(password).toString();
+            const passwordHash = await Locks.SHA256(password);
             const lock = new Lock(passwordHash, "unlocked");
             localStorage.setItem("lock", JSON.stringify(lock));
             divLock.innerHTML = "";
@@ -872,13 +872,13 @@ const Locks = Object.freeze({
         }
     },
 
-    unlock: () => {
+    unlock: async () => {
         console.log("Desbloqueando...");
         const password = document.getElementById("password").value;
 
         if (password) {
             const lock = JSON.parse(localStorage.getItem("lock"));
-            const passwordHash = CryptoJS.SHA256(password).toString();
+            const passwordHash = await Locks.SHA256(password);
 
             if (lock.password == passwordHash) {
                 lock.status = "unlocked";
@@ -911,6 +911,14 @@ const Locks = Object.freeze({
         if (JSON.parse(localStorage.getItem("lock")).status == "locked") {
             throw new Error("localStorage: a página está bloqueada!");
         }
+    },
+
+    SHA256: async (password) => {
+        const msgBuffer = new TextEncoder().encode(password);                    
+        const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        return hashHex;
     }
 });
 
