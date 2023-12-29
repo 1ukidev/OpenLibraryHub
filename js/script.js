@@ -1,4 +1,5 @@
 // Global variables ---------------------------------------------
+const divLock = document.getElementById("lock");
 const divHeader = document.getElementById("header");
 const divContent = document.getElementById("content");
 const divFooter = document.getElementById("footer");
@@ -11,6 +12,7 @@ const Pages = Object.freeze({
     },
 
     route: () => {
+        Locks.checkLock();
         switch (location.hash) {
             case "":
                 Pages.openMainContent();
@@ -30,19 +32,53 @@ const Pages = Object.freeze({
         }
     },
 
+    openCreateLock: () => {
+        if (localStorage.getItem("lock") != null) {
+            console.error("localStorage: já existe um bloqueio criado!");
+            return false;
+        }
+
+        divLock.innerHTML = `
+            <h1>Bem-vindo ao OpenLibraryHub (${version})!</h1>
+            <h2>Crie uma senha antes de começar:</h2>
+            <input type="password" id="password" placeholder="Senha">
+            <button onclick="Locks.createLock()">Cadastrar</button>
+        `;
+    },
+
+    openLockScreen: () => {
+        if (JSON.parse(localStorage.getItem("lock")).status == "unlocked") {
+            console.error("localStorage: o bloqueio já foi desbloqueado!");
+            return false;
+        } else if (localStorage.getItem("lock") == null) {
+            console.error("localStorage: não existe um bloqueio criado!");
+            return false;
+        }
+
+        divLock.innerHTML = `
+            <h1>Bem-vindo ao OpenLibraryHub (${version})!</h1>
+            <h2>Insira a senha cadastrada para continuar:</h2>
+            <input type="password" id="password" placeholder="Senha">
+            <button onclick="Locks.unlock()">Entrar</button>
+        `;
+    },
+
     openMainHeader: () => {
+        Locks.checkLock();
         divHeader.innerHTML = `
             <ul>
                 <li><a onclick="Pages.changePage('#')" class="a-1">&nbsp;📖 Status&nbsp;</a></li>
                 <li><a onclick="Pages.changePage('livros')" class="a-2">&nbsp;📚 Livros&nbsp;</a></li>
                 <li><a onclick="Pages.changePage('turmas')" class="a-3">&nbsp;🏫 Turmas&nbsp;</a></li>
                 <li><a onclick="Pages.changePage('estudantes')" class="a-4">&nbsp;🧑 Estudantes&nbsp;</a></li>
+                <li><a onclick="Locks.lock()" class="a-5">&nbsp;🔒 Sair&nbsp;</a></li>
             </ul>
             <br>
         `;
     },
 
     openMainContent: () => {
+        Locks.checkLock();
         divContent.innerHTML = `
             <b><span class="generic-text" id="main-text-1" style="font-size: 24px;"></span></b>
             <br><br>
@@ -93,6 +129,7 @@ const Pages = Object.freeze({
     },
 
     openBookPage: () => {
+        Locks.checkLock();
         divContent.innerHTML = `
             <div id="form1">
                 <label for="bookName">Adicionar livro:</label>
@@ -155,6 +192,7 @@ const Pages = Object.freeze({
     },
 
     openStudentPage: () => {
+        Locks.checkLock();
         divContent.innerHTML = `
             <div id="form3">
                 <label for="studentName">Adicionar estudante:</label>
@@ -199,6 +237,7 @@ const Pages = Object.freeze({
     },
 
     openClassPage: () => {
+        Locks.checkLock();
         divContent.innerHTML = `
             <div id="form5">
                 <label for="className">Adicionar turma:</label>
@@ -235,6 +274,13 @@ const Pages = Object.freeze({
 });
 
 // Abstract classes ---------------------------------------------
+const Lock = class {
+    constructor(password, status) {
+        this.password = password;
+        this.status = status;
+    }
+}
+
 const Book = class {
     constructor(id, name, author, pages, year) {
         this.id = id;
@@ -774,10 +820,7 @@ const Others = Object.freeze({
     deleteLocalStorage: () => {
         console.log("localStorage: apagando todos os dados...");
         localStorage.clear();
-        Lists.showBookList();
-        Lists.showStudentList();
-        Lists.showClassList();
-        console.log("localStorage: os dados foram apagados com sucesso!");
+        location.href = "";
     },
 
     numberMask: (event) => {
@@ -793,10 +836,80 @@ const Others = Object.freeze({
     }
 });
 
+const Locks = Object.freeze({
+    createLock: () => {
+        console.log("Criando bloqueio...");
+        const password = document.getElementById("password").value;
+
+        if (password) {
+            const passwordHash = CryptoJS.SHA256(password).toString();
+            const lock = new Lock(passwordHash, "unlocked");
+            localStorage.setItem("lock", JSON.stringify(lock));
+            divLock.innerHTML = "";
+            Pages.openMainHeader();
+            Pages.route()
+        } else {
+            alert('Insira uma senha válida!');
+        }
+    },
+
+    unlock: () => {
+        console.log("Desbloqueando...");
+        const password = document.getElementById("password").value;
+
+        if (password) {
+            const lock = JSON.parse(localStorage.getItem("lock"));
+            const passwordHash = CryptoJS.SHA256(password).toString();
+
+            if (lock.password == passwordHash) {
+                lock.status = "unlocked";
+                localStorage.setItem("lock", JSON.stringify(lock));
+                divLock.innerHTML = "";
+                Pages.openMainHeader();
+                Pages.route();
+                console.log("Desbloqueado com sucesso!");
+            } else {
+                alert("Senha incorreta!");
+            }
+        } else {
+            alert("Insira uma senha válida!");
+        }
+    },
+
+    lock: () => {
+        console.log("Bloqueando...");
+        const lock = JSON.parse(localStorage.getItem("lock"));
+        lock.status = "locked";
+        localStorage.setItem("lock", JSON.stringify(lock));
+        divHeader.innerHTML = "";
+        divContent.innerHTML = "";
+        divFooter.innerHTML = "";
+        Pages.openLockScreen();
+        console.log("Bloqueado com sucesso!");
+    },
+
+    checkLock: () => {
+        if (JSON.parse(localStorage.getItem("lock")).status == "locked") {
+            throw new Error("localStorage: a página está bloqueada!");
+        }
+    }
+});
+
 // Initialization -----------------------------------------------
 document.body.onload = () => {
     console.log(`Inicializando OpenLibraryHub (${version})...`);
-    Pages.openMainHeader();
-    Pages.route();
+
+    if (localStorage.getItem("lock") == null) {
+        Pages.openCreateLock();
+    } else {
+        const lock = JSON.parse(localStorage.getItem("lock"));
+        if (lock && lock.status == "unlocked") {
+            Pages.openMainHeader();
+            Pages.route();
+        } else {
+            Pages.openLockScreen();
+        }
+    }
+
     console.log("Inicializado com sucesso!");
 }
