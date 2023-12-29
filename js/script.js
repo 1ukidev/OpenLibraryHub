@@ -3,7 +3,7 @@ const divLock = document.getElementById("lock");
 const divHeader = document.getElementById("header");
 const divContent = document.getElementById("content");
 const divFooter = document.getElementById("footer");
-const version = "0.2.9";
+const version = "0.3.0";
 
 // Pages --------------------------------------------------------
 const Pages = Object.freeze({
@@ -819,6 +819,7 @@ const Others = Object.freeze({
 
     deleteLocalStorage: () => {
         console.log("localStorage: apagando todos os dados...");
+        Locks.checkLock();
         localStorage.clear();
         location.href = "";
     },
