@@ -1,7 +1,7 @@
 /**
  * OpenLibraryHub
  * 
- * @version 0.3.4
+ * @version 0.3.5
  * @license GPL-3.0-or-later
  * @author 1ukidev <me@1uki.cloud>
  * @author Leonardo Monteiro <leo.monteiro06@live.com>
@@ -12,7 +12,7 @@ const divLock = document.getElementById("lock");
 const divHeader = document.getElementById("header");
 const divContent = document.getElementById("content");
 const divFooter = document.getElementById("footer");
-const version = "0.3.4";
+const version = "0.3.5";
 
 // Páginas ------------------------------------------------------
 const Pages = Object.freeze({
@@ -249,7 +249,7 @@ const Pages = Object.freeze({
 
             <button onclick="Others.deleteLocalStorage()">Resetar tudo</button>
             <button onclick="Others.makeBackupLocalStorage()">Fazer backup dos dados</button>
-            <button onclick="(async () => await Others.checkUpdate())()">Verificar se há atualizações</button>
+            <button onclick="Others.checkUpdate()">Verificar se há atualizações</button>
 
             <h2>Lista de livros:</h2>
             <ul id="bookList"></ul>
@@ -293,7 +293,7 @@ const Pages = Object.freeze({
 
             <button onclick="Others.deleteLocalStorage()">Resetar tudo</button>
             <button onclick="Others.makeBackupLocalStorage()">Fazer backup dos dados</button>
-            <button onclick="(async () => await Others.checkUpdate())()">Verificar se há atualizações</button>
+            <button onclick="Others.checkUpdate()">Verificar se há atualizações</button>
 
             <h2>Lista de estudantes:</h2>
             <ul id="studentList"></ul>
@@ -341,7 +341,7 @@ const Pages = Object.freeze({
 
             <button onclick="Others.deleteLocalStorage()">Resetar tudo</button>
             <button onclick="Others.makeBackupLocalStorage()">Fazer backup dos dados</button>
-            <button onclick="(async () => await Others.checkUpdate())()">Verificar se há atualizações</button>
+            <button onclick="Others.checkUpdate()">Verificar se há atualizações</button>
 
             <h2>Lista de turmas:</h2>
             <ul id="classList"></ul>
@@ -493,7 +493,7 @@ const Books = Object.freeze({
         console.log(`localStorage: removendo livro com id "${id}"...`);
         const book = Books.getBookById(id);
         if (book) {
-            if (book.lentTo != null || book.lentTo != undefined) {
+            if (book.lentTo != null) {
                 const student = Students.getStudentById(book.lentTo);
                 student.lentBook = null;
                 localStorage.setItem(student.id, JSON.stringify(student));
@@ -597,7 +597,7 @@ const Students = Object.freeze({
         console.log(`localStorage: removendo estudante com id "${id}"...`);
         const student = Students.getStudentById(id);
         if (student) {
-            if (student.lentBook != null || student.lentBook != undefined) {
+            if (student.lentBook != null) {
                 const book = Books.getBookById(student.lentBook);
                 book.lent = false;
                 book.lentTo = null;
@@ -751,7 +751,7 @@ const Forms = Object.freeze({
         const studentClass = document.getElementById("studentClass");
 
         if (studentName.value) {
-            if (studentClass.value == null || studentClass.value == undefined || studentClass.value == "" || studentClass.value == "Selecione a turma") {
+            if (studentClass.value == null || studentClass.value == "" || studentClass.value == "Selecione a turma") {
                 alert("Por favor, selecione a turma do estudante.");
                 return false;
             }
@@ -1134,15 +1134,14 @@ const Locks = Object.freeze({
     /**
      * Salva a senha do input no localStorage e desbloqueia a página.
      * 
-     * @async
      * @returns {void}
      */
-    createLock: async () => {
+    createLock: () => {
         console.log("Criando bloqueio...");
         const password = document.getElementById("password").value;
 
         if (password) {
-            const passwordHash = await Locks.SHA256(password);
+            const passwordHash = Locks.SHA256(password);
             const lock = new Lock(passwordHash, "unlocked");
             localStorage.setItem("lock", JSON.stringify(lock));
             divLock.innerHTML = "";
@@ -1156,16 +1155,15 @@ const Locks = Object.freeze({
     /**
      * Desbloqueia a página com a senha inserida no input.
      * 
-     * @async
      * @returns {void}
      */
-    unlock: async () => {
+    unlock: () => {
         console.log("Desbloqueando...");
         const password = document.getElementById("password").value;
 
         if (password) {
             const lock = JSON.parse(localStorage.getItem("lock"));
-            const passwordHash = await Locks.SHA256(password);
+            const passwordHash = Locks.SHA256(password);
 
             if (lock.password == passwordHash) {
                 lock.status = "unlocked";
