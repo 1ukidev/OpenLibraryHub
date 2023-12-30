@@ -1,8 +1,10 @@
 /**
  * OpenLibraryHub
- * @version 0.3.3
+ * 
+ * @version 0.3.4
  * @license GPL-3.0-or-later
  * @author 1ukidev <me@1uki.cloud>
+ * @author Leonardo Monteiro <leo.monteiro06@live.com>
  */
 
 // Variáveis globais --------------------------------------------
@@ -10,7 +12,7 @@ const divLock = document.getElementById("lock");
 const divHeader = document.getElementById("header");
 const divContent = document.getElementById("content");
 const divFooter = document.getElementById("footer");
-const version = "0.3.3";
+const version = "0.3.4";
 
 // Páginas ------------------------------------------------------
 const Pages = Object.freeze({
@@ -247,7 +249,7 @@ const Pages = Object.freeze({
 
             <button onclick="Others.deleteLocalStorage()">Resetar tudo</button>
             <button onclick="Others.makeBackupLocalStorage()">Fazer backup dos dados</button>
-            <button onclick="Others.checkUpdate()">Verificar se há atualizações</button>
+            <button onclick="(async () => await Others.checkUpdate())()">Verificar se há atualizações</button>
 
             <h2>Lista de livros:</h2>
             <ul id="bookList"></ul>
@@ -291,7 +293,7 @@ const Pages = Object.freeze({
 
             <button onclick="Others.deleteLocalStorage()">Resetar tudo</button>
             <button onclick="Others.makeBackupLocalStorage()">Fazer backup dos dados</button>
-            <button onclick="Others.checkUpdate()">Verificar se há atualizações</button>
+            <button onclick="(async () => await Others.checkUpdate())()">Verificar se há atualizações</button>
 
             <h2>Lista de estudantes:</h2>
             <ul id="studentList"></ul>
@@ -339,7 +341,7 @@ const Pages = Object.freeze({
 
             <button onclick="Others.deleteLocalStorage()">Resetar tudo</button>
             <button onclick="Others.makeBackupLocalStorage()">Fazer backup dos dados</button>
-            <button onclick="Others.checkUpdate()">Verificar se há atualizações</button>
+            <button onclick="(async () => await Others.checkUpdate())()">Verificar se há atualizações</button>
 
             <h2>Lista de turmas:</h2>
             <ul id="classList"></ul>
@@ -374,9 +376,9 @@ const Lock = class {
  * @param {string} author - Autor do livro.
  * @param {number} pages - Quantidade de páginas do livro.
  * @param {number} year - Ano do livro.
- * @param {boolean} lent - Se o livro está emprestado.
- * @param {number} lentTo - Id do estudante que pegou o livro emprestado.
- * @param {string} lentDate - Data de entrega do livro.
+ * @param {boolean} lent - Se o livro está emprestado. Padrão: false.
+ * @param {number} lentTo - Id do estudante que pegou o livro emprestado. Padrão: null.
+ * @param {string} lentDate - Data de entrega do livro. Padrão: null.
  */
 const Book = class {
     constructor(id, name, author, pages, year) {
@@ -398,7 +400,7 @@ const Book = class {
  * @param {number} id - Id do estudante.
  * @param {string} name - Nome do estudante.
  * @param {string} schoolClass - Turma do estudante.
- * @param {number} lentBook - Id do livro que o estudante pegou emprestado.
+ * @param {number} lentBook - Id do livro que o estudante pegou emprestado. Padrão: null.
  */ 
 const Student = class {
     constructor(id, name, schoolClass) {
@@ -1053,29 +1055,21 @@ const Others = Object.freeze({
      * 
      * @returns {void}
      */
-    checkUpdate: () => {
+    checkUpdate: async () => {
         console.log("Verificando atualizações...");
-
-        fetch("https://raw.githubusercontent.com/1ukidev/OpenLibraryHub/main/VERSION")
-            .then((response) => {
-                return response.text();
-            })
-            .then((data) => {
-                console.log(`Versão atual: ${version}`);
-                console.log(`Retorno: ${data}`);
-    
-                if (data.trim() == version) {
-                    alert("Você está usando a versão mais recente!");
-                    console.log("Você está usando a versão mais recente!");
-                } else {
-                    alert("Há uma atualização disponível! Acesse 'https://github.com/1ukidev/OpenLibraryHub' para baixar a nova versão.");
-                    console.log("Há uma atualização disponível! Acesse 'https://github.com/1ukidev/OpenLibraryHub' para baixar a nova versão.");
-                }
-            })
-            .catch((error) => {
-                console.error(`Erro ao verificar atualizações: ${error}`);
-                return false;
-            });
+        const response = await fetch("https://raw.githubusercontent.com/1ukidev/OpenLibraryHub/main/VERSION");
+        const data = await response.text();
+      
+        console.log(`Versão atual: ${version}`);
+        console.log(`Retorno: ${data}`);
+      
+        if (data.trim() == version) {
+            alert("Você está usando a versão mais recente!");
+            console.log("Você está usando a versão mais recente!");
+        } else {
+            alert("Há uma atualização disponível! Acesse 'https://github.com/1ukidev/OpenLibraryHub' para baixar a nova versão.");
+            console.log("Há uma atualização disponível! Acesse 'https://github.com/1ukidev/OpenLibraryHub' para baixar a nova versão.");
+        }
     },
 
     /**
@@ -1105,6 +1099,11 @@ const Others = Object.freeze({
         console.log("Backup feito com sucesso!");
     },
 
+    /**
+     * Apaga todos os dados do localStorage.
+     * 
+     * @returns {void}
+     */
     deleteLocalStorage: () => {
         console.log("localStorage: apagando todos os dados...");
         Locks.checkLock();
@@ -1201,6 +1200,11 @@ const Locks = Object.freeze({
         console.log("Bloqueado com sucesso!");
     },
 
+    /**
+     * Verifica se a página está bloqueada.
+     * 
+     * @returns {void}
+     */
     checkLock: () => {
         if (JSON.parse(localStorage.getItem("lock")).status == "locked") {
             throw new Error("localStorage: a página está bloqueada!");
@@ -1227,13 +1231,6 @@ const Locks = Object.freeze({
 document.body.onload = () => {
     console.log(`Inicializando OpenLibraryHub (${version})...`);
 
-    /**
-     * Verifica se o localStorage está vazio.
-     * Se estiver, abre a página de criação de senha.
-     * Se não estiver, verifica se o bloqueio está desbloqueado.
-     * Se estiver desbloqueado, abre a página principal.
-     * Se não estiver, abre a página de bloqueio.
-     */
     if (localStorage.getItem("lock") == null) {
         Pages.openCreateLock();
     } else {
