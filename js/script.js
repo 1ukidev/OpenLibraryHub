@@ -1,16 +1,35 @@
-// Global variables ---------------------------------------------
+/**
+ * OpenLibraryHub
+ * @version 0.3.3
+ * @license GPL-3.0-or-later
+ * @author 1ukidev <me@1uki.cloud>
+ */
+
+// Variáveis globais --------------------------------------------
 const divLock = document.getElementById("lock");
 const divHeader = document.getElementById("header");
 const divContent = document.getElementById("content");
 const divFooter = document.getElementById("footer");
-const version = "0.3.2";
+const version = "0.3.3";
 
-// Pages --------------------------------------------------------
+// Páginas ------------------------------------------------------
 const Pages = Object.freeze({
+    /**
+     * Altera o hash do site.
+     * O método Pages.route() será executado para alterar a página.
+     * 
+     * @param {string} hash - Hash da página.
+     * @returns {void}
+     */
     changePage: (hash) => {
         location.hash = hash;
     },
 
+    /**
+     * Altera a página de acordo com o hash.
+     * 
+     * @returns {void}
+     */
     route: () => {
         Locks.checkLock();
         switch (location.hash) {
@@ -32,6 +51,12 @@ const Pages = Object.freeze({
         }
     },
 
+    /**
+     * Abre a tela para a criação da senha de bloqueio.
+     * Esta é a primeira página ao abrir pela primeira vez o site.
+     * 
+     * @returns {void}
+     */
     openCreateLock: () => {
         if (localStorage.getItem("lock") != null) {
             console.error("localStorage: já existe um bloqueio criado!");
@@ -55,6 +80,11 @@ const Pages = Object.freeze({
         });
     },
 
+    /**
+     * Abre o bloqueio.
+     * 
+     * @returns {void}
+     */
     openLockScreen: () => {
         if (JSON.parse(localStorage.getItem("lock")).status == "unlocked") {
             console.error("localStorage: o bloqueio já foi desbloqueado!");
@@ -81,6 +111,11 @@ const Pages = Object.freeze({
         });
     },
 
+    /**
+     * Abre o cabeçalho principal.
+     * 
+     * @returns {void}
+     */
     openMainHeader: () => {
         Locks.checkLock();
         divHeader.innerHTML = `
@@ -95,6 +130,12 @@ const Pages = Object.freeze({
         `;
     },
 
+    /**
+     * Abre o conteúdo principal.
+     * Hash padrão: #
+     * 
+     * @returns {void}
+     */
     openMainContent: () => {
         Locks.checkLock();
         divContent.innerHTML = `
@@ -146,6 +187,12 @@ const Pages = Object.freeze({
         }
     },
 
+    /**
+     * Abre a página de livros.
+     * Hash padrão: #livros
+     * 
+     * @returns {void}
+     */
     openBookPage: () => {
         Locks.checkLock();
         divContent.innerHTML = `
@@ -209,6 +256,12 @@ const Pages = Object.freeze({
         Lists.showBookList();
     },
 
+    /**
+     * Abre a página de estudantes.
+     * Hash padrão: #estudantes
+     * 
+     * @returns {void}
+     */
     openStudentPage: () => {
         Locks.checkLock();
         divContent.innerHTML = `
@@ -254,6 +307,12 @@ const Pages = Object.freeze({
         Lists.showStudentList();
     },
 
+    /**
+     * Abre a página de turmas.
+     * Hash padrão: #turmas
+     * 
+     * @returns {void}
+     */
     openClassPage: () => {
         Locks.checkLock();
         divContent.innerHTML = `
@@ -291,7 +350,14 @@ const Pages = Object.freeze({
     }
 });
 
-// Abstract classes ---------------------------------------------
+// Classes abstratas --------------------------------------------
+/**
+ * Representa um bloqueio.
+ * 
+ * @constructor
+ * @param {string} password - Senha do bloqueio.
+ * @param {string} status - Status do bloqueio.
+ */
 const Lock = class {
     constructor(password, status) {
         this.password = password;
@@ -299,6 +365,19 @@ const Lock = class {
     }
 }
 
+/**
+ * Representa um livro.
+ * 
+ * @constructor
+ * @param {number} id - Id do livro.
+ * @param {string} name - Nome do livro.
+ * @param {string} author - Autor do livro.
+ * @param {number} pages - Quantidade de páginas do livro.
+ * @param {number} year - Ano do livro.
+ * @param {boolean} lent - Se o livro está emprestado.
+ * @param {number} lentTo - Id do estudante que pegou o livro emprestado.
+ * @param {string} lentDate - Data de entrega do livro.
+ */
 const Book = class {
     constructor(id, name, author, pages, year) {
         this.id = id;
@@ -312,6 +391,15 @@ const Book = class {
     }
 }
 
+/**
+ * Representa um estudante.
+ * 
+ * @constructor
+ * @param {number} id - Id do estudante.
+ * @param {string} name - Nome do estudante.
+ * @param {string} schoolClass - Turma do estudante.
+ * @param {number} lentBook - Id do livro que o estudante pegou emprestado.
+ */ 
 const Student = class {
     constructor(id, name, schoolClass) {
         this.id = id;
@@ -321,6 +409,13 @@ const Student = class {
     }
 }
 
+/**
+ * Representa uma turma.
+ * 
+ * @constructor
+ * @param {number} id - Id da turma.
+ * @param {string} name - Nome da turma.
+ */
 const Class = class {
     constructor(id, name) {
         this.id = id;
@@ -330,6 +425,16 @@ const Class = class {
 
 // localStorage -------------------------------------------------
 const Books = Object.freeze({
+    /**
+     * Adiciona um livro ao localStorage.
+     * 
+     * @param {number} id - Id do livro.
+     * @param {string} name - Nome do livro.
+     * @param {string} author - Autor do livro.
+     * @param {number} pages - Quantidade de páginas do livro.
+     * @param {number} year - Ano do livro.
+     * @returns {void}
+     */
     addBook: (id, name, author, pages, year) => {
         console.log(`localStorage: salvando livro "${name}"...`);
         const book = new Book(id, name, author, pages, year);
@@ -338,6 +443,11 @@ const Books = Object.freeze({
         console.log(`localStorage: livro "${name}" salvo com sucesso!`);
     },
 
+    /**
+     * Busca todos os livros.
+     * 
+     * @returns {Array} - Array com todos os livros.
+     */
     getAllBooks: () => {
         const books = [];
         for (let i = 0; i < localStorage.length; i++) {
@@ -351,6 +461,13 @@ const Books = Object.freeze({
         return books;
     },
 
+    /**
+     * Busca um livro pelo o seu id.
+     * 
+     * @param {number} id - Id do livro.
+     * @returns {Object} - Objeto do livro.
+     * @returns {boolean} - Retorna false se o livro não foi encontrado.
+     */
     getBookById: (id) => {
         console.log(`localStorage: procurando livro com id "${id}"...`);
         const book = localStorage.getItem(id);
@@ -364,6 +481,12 @@ const Books = Object.freeze({
         }
     },
 
+    /**
+     * Remove um livro pelo o seu id.
+     * 
+     * @param {number} id - Id do livro.
+     * @returns {boolean} - Retorna true se o livro foi removido com sucesso.
+     */
     removeBookById: (id) => {
         console.log(`localStorage: removendo livro com id "${id}"...`);
         const book = Books.getBookById(id);
@@ -385,6 +508,14 @@ const Books = Object.freeze({
         }
     },
 
+    /**
+     * Empresta um livro para um estudante.
+     * 
+     * @param {number} bookId - Id do livro.
+     * @param {number} studentId - Id do estudante.
+     * @param {string} lentDate - Data de entrega.
+     * @returns {void}
+     */
     lendBook: (bookId, studentId, lentDate) => {
         console.log(`localStorage: emprestando livro "${bookId}" para o estudante "${studentId}"...`);
         const book = Books.getBookById(bookId);
@@ -400,6 +531,14 @@ const Books = Object.freeze({
 });
 
 const Students = Object.freeze({
+    /**
+     * Adiciona um estudante ao localStorage.
+     * 
+     * @param {number} id - Id do estudante.
+     * @param {string} name - Nome do estudante.
+     * @param {string} schoolClass - Turma do estudante.
+     * @returns {void}
+     */
     addStudent: (id, name, schoolClass) => {
         console.log(`localStorage: salvando estudante "${name}"...`);
         const student = new Student(id, name, schoolClass);
@@ -408,6 +547,11 @@ const Students = Object.freeze({
         console.log(`localStorage: estudante "${name}" salvo com sucesso!`);
     },
 
+    /**
+     * Busca todos os estudantes.
+     * 
+     * @returns {Array} - Array com todos os estudantes.
+     */
     getAllStudents: () => {
         const students = [];
         for (let i = 0; i < localStorage.length; i++) {
@@ -421,6 +565,13 @@ const Students = Object.freeze({
         return students;
     },
 
+    /**
+     * Busca um estudante pelo o seu id.
+     * 
+     * @param {number} id - Id do estudante.
+     * @returns {Object} - Objeto do estudante.
+     * @returns {boolean} - Retorna false se o estudante não foi encontrado.
+     */
     getStudentById: (id) => {
         console.log(`localStorage: procurando estudante com id "${id}"...`);
         const student = localStorage.getItem(id);
@@ -434,6 +585,12 @@ const Students = Object.freeze({
         }
     },
 
+    /**
+     * Remove um estudante pelo o seu id.
+     * 
+     * @param {number} id - Id do estudante.
+     * @returns {boolean} - Retorna true se o estudante foi removido com sucesso.
+     */
     removeStudentById: (id) => {
         console.log(`localStorage: removendo estudante com id "${id}"...`);
         const student = Students.getStudentById(id);
@@ -459,6 +616,12 @@ const Students = Object.freeze({
 });
 
 const Classes = Object.freeze({
+    /**
+     * Adiciona uma turma ao localStorage.
+     * 
+     * @param {number} id - Id da turma.
+     * @param {string} name - Nome da turma.
+     */
     addClass: (id, name) => {
         console.log(`localStorage: salvando turma "${name}"...`);
         const schoolClass = new Class(id, name);
@@ -467,6 +630,11 @@ const Classes = Object.freeze({
         console.log("localStorage: turma '" + name + "' salva com sucesso!");
     },
 
+    /**
+     * Busca todas as turmas.
+     * 
+     * @returns {Array} - Array com todas as turmas.
+     */
     getAllClasses: () => {
         const classes = [];
         for (let i = 0; i < localStorage.length; i++) {
@@ -480,6 +648,13 @@ const Classes = Object.freeze({
         return classes;
     },
 
+    /**
+     * Busca uma turma pelo o seu id.
+     * 
+     * @param {number} id - Id da turma.
+     * @returns {Object} - Objeto da turma.
+     * @returns {boolean} - Retorna false se a turma não foi encontrada.
+     */
     getClassById: (id) => {
         console.log(`localStorage: procurando turma com id "${id}"...`);
         const schoolClass = localStorage.getItem(id);
@@ -493,6 +668,12 @@ const Classes = Object.freeze({
         }
     },
 
+    /**
+     * Remove uma turma pelo o seu id.
+     * 
+     * @param {number} id - Id da turma.
+     * @returns {boolean} - Retorna true se a turma foi removida com sucesso. 
+     */
     removeClassById: (id) => {
         console.log(`localStorage: removendo turma com id "${id}"...`);
         const schoolClass = Classes.getClassById(id);
@@ -509,8 +690,13 @@ const Classes = Object.freeze({
     }
 });
 
-// Forms --------------------------------------------------------
+// Formulários --------------------------------------------------
 const Forms = Object.freeze({
+    /**
+     * Executa o formulário (form1) para adicionar um livro.
+     * 
+     * @returns {boolean} - Retorna true se o livro foi adicionado com sucesso.
+     */
     runForm1: () => {
         const bookName = document.getElementById("bookName");
         const bookAuthor = document.getElementById("bookAuthor");
@@ -531,6 +717,11 @@ const Forms = Object.freeze({
         }
     },
 
+    /**
+     * Executa o formulário (form2) para verificar se um livro está cadastrado pelo o seu id.
+     * 
+     * @returns {boolean} - Retorna true se o livro está cadastrado.
+     */
     runForm2: () => {
         const bookName = document.getElementById("bookId");
 
@@ -548,11 +739,20 @@ const Forms = Object.freeze({
         }
     },
 
+    /**
+     * Executa o formulário (form3) para adicionar um estudante.
+     * 
+     * @returns {boolean} - Retorna true se o estudante foi adicionado com sucesso.
+     */
     runForm3: () => {
         const studentName = document.getElementById("studentName");
         const studentClass = document.getElementById("studentClass");
 
         if (studentName.value) {
+            if (studentClass.value == null || studentClass.value == undefined || studentClass.value == "" || studentClass.value == "Selecione a turma") {
+                alert("Por favor, selecione a turma do estudante.");
+                return false;
+            }
             Students.addStudent(localStorage.length++, studentName.value, studentClass.value);
             studentName.value = "";
             Lists.showStudentList();
@@ -563,6 +763,11 @@ const Forms = Object.freeze({
         }
     },
 
+    /**
+     * Executa o formulário (form4) para verificar se um estudante está cadastrado pelo o seu id.
+     * 
+     * @returns {boolean} - Retorna true se o estudante está cadastrado.
+     */
     runForm4: () => {
         const studentId = document.getElementById("studentId");
 
@@ -580,6 +785,11 @@ const Forms = Object.freeze({
         }
     },
 
+    /**
+     * Executa o formulário (form5) para adicionar uma turma.
+     * 
+     * @returns {boolean} - Retorna true se a turma foi adicionada com sucesso.
+     */
     runForm5: () => {
         const className = document.getElementById("className");
 
@@ -594,6 +804,11 @@ const Forms = Object.freeze({
         }
     },
 
+    /**
+     * Executa o formulário (form6) para verificar se uma turma está cadastrada pelo o seu id.
+     * 
+     * @returns {boolean} - Retorna true se a turma está cadastrada.
+     */
     runForm6: () => {
         const classId = document.getElementById("classId");
 
@@ -611,6 +826,11 @@ const Forms = Object.freeze({
         }
     },
 
+    /**
+     * Executa o formulário (form7) para emprestar um livro pelo o seu id.
+     * 
+     * @returns {boolean} - Retorna true se o livro foi emprestado com sucesso.
+     */
     runForm7: () => {
         const bookId = document.getElementById("bookId2");
         const studentId = document.getElementById("studentId");
@@ -635,6 +855,11 @@ const Forms = Object.freeze({
         }
     },
 
+    /**
+     * Executa o formulário (form8) para verificar se um livro está emprestado pelo o seu id.
+     * 
+     * @returns {boolean} - Retorna true se o livro está emprestado.
+     */
     runForm8: () => {
         const bookId = document.getElementById("bookId3");
 
@@ -658,6 +883,11 @@ const Forms = Object.freeze({
         }
     },
 
+    /**
+     * Executa o formulário (form9) para devolver um livro pelo o seu id.
+     * 
+     * @returns {boolean} - Retorna true se o livro foi devolvido com sucesso.
+     */
     runForm9: () => {
         const bookId = document.getElementById("bookId4");
 
@@ -690,6 +920,11 @@ const Forms = Object.freeze({
         }
     },
 
+    /**
+     * Executa o formulário (form10) para remover um livro pelo o seu id.
+     * 
+     * @returns {boolean} - Retorna true se o livro foi removido com sucesso.
+     */
     runForm10: () => {
         const bookId = document.getElementById("bookId5");
 
@@ -702,6 +937,11 @@ const Forms = Object.freeze({
         }
     },
 
+    /**
+     * Executa o formulário (form11) para remover um estudante pelo o seu id.
+     * 
+     * @returns {boolean} - Retorna true se o estudante foi removido com sucesso.
+     */
     runForm11: () => {
         const studentId = document.getElementById("studentId2");
 
@@ -714,6 +954,11 @@ const Forms = Object.freeze({
         }
     },
 
+    /**
+     * Executa o formulário (form12) para remover uma turma pelo o seu id.
+     * 
+     * @returns {boolean} - Retorna true se a turma foi removida com sucesso.
+     */
     runForm12: () => {
         const classId = document.getElementById("classId2");
 
@@ -727,8 +972,13 @@ const Forms = Object.freeze({
     }
 });
 
-// Lists --------------------------------------------------------
+// Listas -------------------------------------------------------
 const Lists = Object.freeze({
+    /**
+     * Mostra todos os livros no elemento bookList.
+     * 
+     * @returns {void}
+     */
     showBookList: () => {
         try {
             const bookList = document.getElementById("bookList");
@@ -751,6 +1001,11 @@ const Lists = Object.freeze({
         } catch { }
     },
 
+    /**
+     * Mostra todos os estudantes no elemento studentList.
+     * 
+     * @returns {void}
+     */
     showStudentList: () => {
         try {
             const studentList = document.getElementById("studentList");
@@ -769,6 +1024,11 @@ const Lists = Object.freeze({
         } catch { }
     },
 
+    /**
+     * Mostra todas as turmas no elemento classList.
+     * 
+     * @returns {void}
+     */
     showClassList: () => {
         try {
             const classList = document.getElementById("classList");
@@ -786,8 +1046,13 @@ const Lists = Object.freeze({
     }
 });
 
-// Others -------------------------------------------------------
+// Outros -------------------------------------------------------
 const Others = Object.freeze({
+    /**
+     * Verifica se há atualizações.
+     * 
+     * @returns {void}
+     */
     checkUpdate: () => {
         console.log("Verificando atualizações...");
 
@@ -813,6 +1078,11 @@ const Others = Object.freeze({
             });
     },
 
+    /**
+     * Faz backup dos dados do localStorage.
+     * 
+     * @returns {boolean} - Retorna true se o backup foi feito com sucesso.
+     */
     makeBackupLocalStorage: () => {
         console.log("Fazendo backup...");
         let values;
@@ -842,6 +1112,12 @@ const Others = Object.freeze({
         location.href = "";
     },
 
+    /**
+     * Máscara para inputs de números.
+     * 
+     * @param {*} event - Evento do input.
+     * @returns {boolean} - Retorna true se o input for um número.
+     */
     numberMask: (event) => {
         const validKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight'];
         
@@ -856,6 +1132,12 @@ const Others = Object.freeze({
 });
 
 const Locks = Object.freeze({
+    /**
+     * Salva a senha do input no localStorage e desbloqueia a página.
+     * 
+     * @async
+     * @returns {void}
+     */
     createLock: async () => {
         console.log("Criando bloqueio...");
         const password = document.getElementById("password").value;
@@ -872,6 +1154,12 @@ const Locks = Object.freeze({
         }
     },
 
+    /**
+     * Desbloqueia a página com a senha inserida no input.
+     * 
+     * @async
+     * @returns {void}
+     */
     unlock: async () => {
         console.log("Desbloqueando...");
         const password = document.getElementById("password").value;
@@ -895,6 +1183,12 @@ const Locks = Object.freeze({
         }
     },
 
+    /**
+     * Bloqueia a página.
+     * Após o bloqueio, o usuário irá desbloquear utilizando a senha cadastrada.
+     * 
+     * @returns {void}
+     */
     lock: () => {
         console.log("Bloqueando...");
         const lock = JSON.parse(localStorage.getItem("lock"));
@@ -913,6 +1207,13 @@ const Locks = Object.freeze({
         }
     },
 
+    /**
+     * Criptografa uma senha com SHA256.
+     * 
+     * @async
+     * @param {string} password - Senha a ser criptografada.
+     * @returns {string} - Retorna a senha criptografada.
+     */
     SHA256: async (password) => {
         const msgBuffer = new TextEncoder().encode(password);                    
         const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
@@ -922,10 +1223,17 @@ const Locks = Object.freeze({
     }
 });
 
-// Initialization -----------------------------------------------
+// Inicialização da página -------------------------------------
 document.body.onload = () => {
     console.log(`Inicializando OpenLibraryHub (${version})...`);
 
+    /**
+     * Verifica se o localStorage está vazio.
+     * Se estiver, abre a página de criação de senha.
+     * Se não estiver, verifica se o bloqueio está desbloqueado.
+     * Se estiver desbloqueado, abre a página principal.
+     * Se não estiver, abre a página de bloqueio.
+     */
     if (localStorage.getItem("lock") == null) {
         Pages.openCreateLock();
     } else {
