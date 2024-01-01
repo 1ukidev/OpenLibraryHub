@@ -99,10 +99,12 @@ export const Pages = Object.freeze({
             <h2>Insira a senha cadastrada para continuar:</h2>
             <input type="password" id="password" placeholder="Senha">
             <button id="submit">Entrar</button>
+            <h2>É aluno e deseja ver os livros disponíveis? <a id="btn1" class="btn1">Clique aqui!</a></h2>
         `;
 
         const password = document.getElementById("password");
         const submit = document.getElementById("submit");
+        const btn1 = document.getElementById("btn1");
 
         password.focus();
         password.addEventListener("keypress", (event) => {
@@ -111,6 +113,11 @@ export const Pages = Object.freeze({
                 submit.click();
             }
         });
+
+        btn1.onclick = () => {
+            DOM.divs.lock.innerHTML = "";
+            Pages.openAllBooksPage();
+        }
 
         submit.onclick = async () => await Locks.unlock();
     },
@@ -314,7 +321,7 @@ export const Pages = Object.freeze({
             if (event.key === "Enter") {
                 event.preventDefault();
                 btnForm1.click();
-                bookYear.blur();
+                bookName.focus();
             } else if (!Others.numberMask(event)) {
                 event.preventDefault();
             }
@@ -436,5 +443,31 @@ export const Pages = Object.freeze({
         document.getElementById("classId2").onkeydown = (event) => Others.numberMask(event);
 
         Lists.showClassList();
+    },
+
+    /**
+     * Abre a página que exibe todos os livros (para estudantes).
+     * 
+     * @returns {void}
+     */
+    openAllBooksPage: () => {
+        DOM.divs.content.innerHTML = `
+            <h1>Lista de livros:</h1>
+            <ul id="bookList"></ul>
+        `;
+
+        const books = Books.getAllBooks();
+        const bookList = document.getElementById("bookList");
+
+        books.forEach((book) => {
+            const bookObject = JSON.parse(book);
+
+            if (bookObject.type === "Book") {
+                const li = document.createElement("li");
+                li.style = "font-size: 18px;";
+                li.textContent = `Nome: ${bookObject.name} / Autor: ${bookObject.author} / ${bookObject.pages} páginas / Ano: ${bookObject.year}`;
+                bookList.appendChild(li);
+            }
+        });
     }
 });

@@ -58,6 +58,12 @@ body {
     background-color: #1a1a1a;
 }
 
+.btn1 {
+    color: #a8a8a8;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
 #content {
     padding-left: 25px;
     padding-top: 15px;
