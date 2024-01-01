@@ -389,6 +389,17 @@ export const Pages = Object.freeze({
             document.getElementById("studentClass").appendChild(option);
         });
 
+        const studentName = document.getElementById("studentName");
+        const studentClass = document.getElementById("studentClass");
+
+        studentName.focus();
+        studentName.addEventListener("keypress", (event) => {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                studentClass.focus();
+            }
+        });
+
         Lists.showStudentList();
     },
 
@@ -441,6 +452,18 @@ export const Pages = Object.freeze({
 
         document.getElementById("classId").onkeydown = (event) => Others.numberMask(event);
         document.getElementById("classId2").onkeydown = (event) => Others.numberMask(event);
+
+        const className = document.getElementById("className");
+        const btnForm5 = document.getElementById("btnForm5");
+
+        className.focus();
+        className.addEventListener("keypress", (event) => {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                btnForm5.click();
+                className.focus();
+            }
+        });
 
         Lists.showClassList();
     },
