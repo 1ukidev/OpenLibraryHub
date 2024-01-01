@@ -1,20 +1,20 @@
 /**
  * OpenLibraryHub
  * 
- * @version 0.3.6
+ * @version 0.3.7
  * @license GPL-3.0-or-later
  * @author 1ukidev <me@1uki.cloud>
  * @author Leonardo Monteiro <leo.monteiro06@live.com>
  */
 
-// Variáveis globais --------------------------------------------
+// Variáveis globais
 const divLock = document.getElementById("lock");
 const divHeader = document.getElementById("header");
 const divContent = document.getElementById("content");
 const divFooter = document.getElementById("footer");
-const version = "0.3.6";
+const version = "0.3.7";
 
-// Páginas ------------------------------------------------------
+// Páginas
 const Pages = Object.freeze({
     /**
      * Altera o hash do site.
@@ -352,7 +352,7 @@ const Pages = Object.freeze({
     }
 });
 
-// Classes abstratas --------------------------------------------
+// Classes abstratas
 /**
  * Representa um bloqueio.
  * 
@@ -425,7 +425,7 @@ const Class = class {
     }
 }
 
-// localStorage -------------------------------------------------
+// localStorage
 const Books = Object.freeze({
     /**
      * Adiciona um livro ao localStorage.
@@ -692,7 +692,7 @@ const Classes = Object.freeze({
     }
 });
 
-// Formulários --------------------------------------------------
+// Formulários
 const Forms = Object.freeze({
     /**
      * Executa o formulário (form1) para adicionar um livro.
@@ -974,7 +974,7 @@ const Forms = Object.freeze({
     }
 });
 
-// Listas -------------------------------------------------------
+// Listas
 const Lists = Object.freeze({
     /**
      * Mostra todos os livros no elemento bookList.
@@ -1048,11 +1048,12 @@ const Lists = Object.freeze({
     }
 });
 
-// Outros -------------------------------------------------------
+// Outros
 const Others = Object.freeze({
     /**
      * Verifica se há atualizações.
      * 
+     * @async
      * @returns {void}
      */
     checkUpdate: async () => {
@@ -1227,7 +1228,7 @@ const Locks = Object.freeze({
     }
 });
 
-// Inicialização da página -------------------------------------
+// Inicialização da página
 document.body.onload = () => {
     console.log(`Inicializando OpenLibraryHub (${version})...`);
 
