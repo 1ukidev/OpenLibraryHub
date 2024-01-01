@@ -3,4 +3,4 @@
  * 
  * @type {string}
  */
-export const version = "0.4.2";
+export const version = "0.4.3";

@@ -63,7 +63,7 @@ export const Pages = Object.freeze({
             <h1>Bem-vindo ao OpenLibraryHub (${version})!</h1>
             <h2>Crie uma senha antes de começar:</h2>
             <input type="password" id="password" placeholder="Senha">
-            <button id="submit">Cadastrar</button>
+            <button id="submit">🚪 Cadastrar</button>
         `;
 
         const password = document.getElementById("password");
