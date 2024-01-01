@@ -1,4 +1,5 @@
 import { Class } from "./Abstract.mjs";
+import { Lists } from "./Lists.mjs";
 
 export const Classes = Object.freeze({
     /**

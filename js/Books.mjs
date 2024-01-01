@@ -1,5 +1,6 @@
 import { Book } from "./Abstract.mjs";
 import { Students } from "./Students.mjs";
+import { Lists } from "./Lists.mjs";
 
 export const Books = Object.freeze({
     /**
