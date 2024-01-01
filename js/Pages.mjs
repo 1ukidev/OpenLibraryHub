@@ -98,7 +98,7 @@ export const Pages = Object.freeze({
             <h1>Bem-vindo ao OpenLibraryHub (${version})!</h1>
             <h2>Insira a senha cadastrada para continuar:</h2>
             <input type="password" id="password" placeholder="Senha">
-            <button id="submit">Entrar</button>
+            <button id="submit">🚪 Entrar</button>
             <h2>É aluno e deseja ver os livros disponíveis? <a id="btn1" class="btn1">Clique aqui!</a></h2>
         `;
 
@@ -474,13 +474,19 @@ export const Pages = Object.freeze({
      * @returns {void}
      */
     openAllBooksPage: () => {
-        DOM.divs.content.innerHTML = `
+        DOM.divs.others.innerHTML = `
+            <br>
+            <button id="back">◀️ Voltar</button>
             <h1>Lista de livros:</h1>
+            <label for="search">Pesquise pelo nome:</label>
+            <input type="text" id="search">
             <ul id="bookList"></ul>
         `;
 
         const books = Books.getAllBooks();
         const bookList = document.getElementById("bookList");
+        const search = document.getElementById("search");
+        const back = document.getElementById("back");
 
         books.forEach((book) => {
             const bookObject = JSON.parse(book);
@@ -488,9 +494,33 @@ export const Pages = Object.freeze({
             if (bookObject.type === "Book") {
                 const li = document.createElement("li");
                 li.style = "font-size: 18px;";
-                li.textContent = `Nome: ${bookObject.name} / Autor: ${bookObject.author} / ${bookObject.pages} páginas / Ano: ${bookObject.year}`;
+                li.textContent = `Nome: ${bookObject.name}`;
+                li.textContent += ` / Autor: ${bookObject.author}`;
+                li.textContent += ` / Páginas: ${bookObject.pages}`;
+                li.textContent += ` / Ano: ${bookObject.year}`;
                 bookList.appendChild(li);
             }
         });
+
+        search.onkeyup = () => {
+            const searchValue = search.value.toUpperCase();
+            const lis = bookList.getElementsByTagName("li");
+
+            for (let i = 0; i < lis.length; i++) {
+                const li = lis[i];
+                const txtValue = li.textContent || li.innerText;
+
+                if (txtValue.toUpperCase().indexOf(searchValue) > -1) {
+                    li.style.display = "";
+                } else {
+                    li.style.display = "none";
+                }
+            }
+        }
+
+        back.onclick = () => {
+            DOM.divs.others.innerHTML = "";
+            Pages.openLockScreen();
+        }
     }
 });

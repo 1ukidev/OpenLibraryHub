@@ -8,6 +8,7 @@ export const DOM = Object.freeze({
         lock: window.document.getElementById("lock"),
         header: window.document.getElementById("header"),
         content: window.document.getElementById("content"),
-        footer: window.document.getElementById("footer")
+        footer: window.document.getElementById("footer"),
+        others: document.getElementById("others")
     })
 });
