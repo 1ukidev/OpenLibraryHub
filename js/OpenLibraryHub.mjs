@@ -1,7 +1,7 @@
 /**
  * OpenLibraryHub
  * 
- * @version 0.4.5
+ * @version 0.4.6
  * @license GPL-3.0-or-later
  * @author 1ukidev <me@1uki.cloud>
  * @author Leonardo Monteiro <leo.monteiro06@live.com>
@@ -26,10 +26,10 @@ document.body.onload = () => {
         }
     }
 
+    // Eventos
+    window.addEventListener("hashchange", () => {
+        Pages.route();
+    });
+
     console.log("Inicializado com sucesso!");
 }
-
-// Eventos
-window.addEventListener("hashchange", () => {
-    Pages.route();
-});

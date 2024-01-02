@@ -5,24 +5,31 @@ export const Others = Object.freeze({
     /**
      * Verifica se há atualizações.
      * 
-     * @async
      * @returns {void}
      */
-    checkUpdate: async () => {
+    checkUpdate: () => {
         console.log("Verificando atualizações...");
-        const response = await fetch("https://raw.githubusercontent.com/1ukidev/OpenLibraryHub/main/VERSION");
-        const data = await response.text();
-      
-        console.log(`Versão atual: ${version}`);
-        console.log(`Retorno: ${data}`);
-      
-        if (data.trim() == version) {
-            alert("Você está usando a versão mais recente!");
-            console.log("Você está usando a versão mais recente!");
-        } else {
-            alert("Há uma atualização disponível! Acesse 'https://github.com/1ukidev/OpenLibraryHub' para baixar a nova versão.");
-            console.log("Há uma atualização disponível! Acesse 'https://github.com/1ukidev/OpenLibraryHub' para baixar a nova versão.");
-        }
+
+        fetch("https://raw.githubusercontent.com/1ukidev/OpenLibraryHub/main/VERSION")
+            .then((response) => {
+                return response.text();
+            })
+            .then((data) => {
+                console.log(`Versão atual: ${version}`);
+                console.log(`Retorno: ${data}`);
+
+                if (data.trim() == version) {
+                    alert("Você está usando a versão mais recente!");
+                    console.log("Você está usando a versão mais recente!");
+                } else {
+                    alert("Há uma atualização disponível! Acesse 'https://github.com/1ukidev/OpenLibraryHub' para baixar a nova versão.");
+                    console.log("Há uma atualização disponível! Acesse 'https://github.com/1ukidev/OpenLibraryHub' para baixar a nova versão.");
+                }
+            })
+            .catch((error) => {
+                alert("Não foi possível buscar por atualizações: " + error);
+                throw new Error("Não foi possível buscar por atualizações: " + error);
+            });
     },
 
     /**
@@ -62,6 +69,7 @@ export const Others = Object.freeze({
      * Recupera os dados do backup.
      * 
      * @returns {void}
+     * @returns {boolean} - Retorna false se houver algum erro ao recuperar o backup.
      */
     recoverBackupLocalStorage: () => {
         console.log("Recuperando backup...");
@@ -86,6 +94,7 @@ export const Others = Object.freeze({
                     } catch (error) {
                         alert("Erro ao recuperar o backup.");
                         console.error("Erro ao recuperar o backup:", error);
+                        return false;
                     }
                 };
             }

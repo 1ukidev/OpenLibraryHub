@@ -285,7 +285,7 @@ export const Pages = Object.freeze({
         document.getElementById("btnResetAll").onclick = () => Others.deleteLocalStorage();
         document.getElementById("btnMakeBackup").onclick = () => Others.makeBackupLocalStorage();
         document.getElementById("btnRecoverBackup").onclick = () => Others.recoverBackupLocalStorage();
-        document.getElementById("btnCheckUpdate").onclick = async () => await Others.checkUpdate();
+        document.getElementById("btnCheckUpdate").onclick = () => Others.checkUpdate();
 
         document.getElementById("bookId").onkeydown = (event) => Others.numberMask(event);
         document.getElementById("bookId2").onkeydown = (event) => Others.numberMask(event);
@@ -403,7 +403,7 @@ export const Pages = Object.freeze({
         document.getElementById("btnForm11").onclick = () => Forms.runForm11();
         document.getElementById("btnResetAll").onclick = () => Others.deleteLocalStorage();
         document.getElementById("btnMakeBackup").onclick = () => Others.makeBackupLocalStorage();
-        document.getElementById("btnCheckUpdate").onclick = async () => await Others.checkUpdate();
+        document.getElementById("btnCheckUpdate").onclick = () => Others.checkUpdate();
 
         document.getElementById("studentId").onkeydown = (event) => Others.numberMask(event);
         document.getElementById("studentId2").onkeydown = (event) => Others.numberMask(event);
@@ -496,7 +496,7 @@ export const Pages = Object.freeze({
         document.getElementById("btnForm12").onclick = () => Forms.runForm12();
         document.getElementById("btnResetAll").onclick = () => Others.deleteLocalStorage();
         document.getElementById("btnMakeBackup").onclick = () => Others.makeBackupLocalStorage();
-        document.getElementById("btnCheckUpdate").onclick = async () => await Others.checkUpdate();
+        document.getElementById("btnCheckUpdate").onclick = () => Others.checkUpdate();
 
         document.getElementById("classId").onkeydown = (event) => Others.numberMask(event);
         document.getElementById("classId2").onkeydown = (event) => Others.numberMask(event);
