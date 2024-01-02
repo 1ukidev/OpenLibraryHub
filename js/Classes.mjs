@@ -58,7 +58,8 @@ export const Classes = Object.freeze({
      * Remove uma turma pelo o seu id.
      * 
      * @param {number} id - Id da turma.
-     * @returns {boolean} - Retorna true se a turma foi removida com sucesso. 
+     * @returns {boolean} - Retorna true se a turma foi removida com sucesso.
+     * @returns {boolean} - Retorna false se a turma não foi encontrada.
      */
     removeClassById: (id) => {
         console.log(`localStorage: removendo turma com id "${id}"...`);

@@ -64,6 +64,7 @@ export const Books = Object.freeze({
      * 
      * @param {number} id - Id do livro.
      * @returns {boolean} - Retorna true se o livro foi removido com sucesso.
+     * @returns {boolean} - Retorna false se o livro não foi encontrado.
      */
     removeBookById: (id) => {
         console.log(`localStorage: removendo livro com id "${id}"...`);

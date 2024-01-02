@@ -62,6 +62,7 @@ export const Students = Object.freeze({
      * 
      * @param {number} id - Id do estudante.
      * @returns {boolean} - Retorna true se o estudante foi removido com sucesso.
+     * @returns {boolean} - Retorna false se o estudante não foi encontrado.
      */
     removeStudentById: (id) => {
         console.log(`localStorage: removendo estudante com id "${id}"...`);

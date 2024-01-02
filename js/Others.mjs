@@ -28,7 +28,8 @@ export const Others = Object.freeze({
     /**
      * Faz backup dos dados do localStorage.
      * 
-     * @returns {boolean} - Retorna true se o backup foi feito com sucesso.
+     * @returns {void}
+     * @returns {boolean} - Retorna false se não houver dados no localStorage.
      */
     makeBackupLocalStorage: () => {
         console.log("Fazendo backup...");
@@ -108,6 +109,7 @@ export const Others = Object.freeze({
      * 
      * @param {*} event - Evento do input.
      * @returns {boolean} - Retorna true se o input for um número.
+     * @returns {boolean} - Retorna false se o input não for um número.
      */
     numberMask: (event) => {
         const validKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight'];

@@ -8,6 +8,7 @@ export const Forms = Object.freeze({
      * Executa o formulário (form1) para adicionar um livro.
      * 
      * @returns {boolean} - Retorna true se o livro foi adicionado com sucesso.
+     * @returns {boolean} - Retorna false se o livro não foi adicionado.
      */
     runForm1: () => {
         const bookName = document.getElementById("bookName");
@@ -33,6 +34,7 @@ export const Forms = Object.freeze({
      * Executa o formulário (form2) para verificar se um livro está cadastrado pelo o seu id.
      * 
      * @returns {boolean} - Retorna true se o livro está cadastrado.
+     * @returns {boolean} - Retorna false se o livro não está cadastrado.
      */
     runForm2: () => {
         const bookName = document.getElementById("bookId");
@@ -55,6 +57,7 @@ export const Forms = Object.freeze({
      * Executa o formulário (form3) para adicionar um estudante.
      * 
      * @returns {boolean} - Retorna true se o estudante foi adicionado com sucesso.
+     * @returns {boolean} - Retorna false se o estudante não foi adicionado.
      */
     runForm3: () => {
         const studentName = document.getElementById("studentName");
@@ -79,6 +82,7 @@ export const Forms = Object.freeze({
      * Executa o formulário (form4) para verificar se um estudante está cadastrado pelo o seu id.
      * 
      * @returns {boolean} - Retorna true se o estudante está cadastrado.
+     * @returns {boolean} - Retorna false se o estudante não está cadastrado.
      */
     runForm4: () => {
         const studentId = document.getElementById("studentId");
@@ -101,6 +105,7 @@ export const Forms = Object.freeze({
      * Executa o formulário (form5) para adicionar uma turma.
      * 
      * @returns {boolean} - Retorna true se a turma foi adicionada com sucesso.
+     * @returns {boolean} - Retorna false se a turma não foi adicionada.
      */
     runForm5: () => {
         const className = document.getElementById("className");
@@ -120,6 +125,7 @@ export const Forms = Object.freeze({
      * Executa o formulário (form6) para verificar se uma turma está cadastrada pelo o seu id.
      * 
      * @returns {boolean} - Retorna true se a turma está cadastrada.
+     * @returns {boolean} - Retorna false se a turma não está cadastrada.
      */
     runForm6: () => {
         const classId = document.getElementById("classId");
@@ -142,6 +148,7 @@ export const Forms = Object.freeze({
      * Executa o formulário (form7) para emprestar um livro pelo o seu id.
      * 
      * @returns {boolean} - Retorna true se o livro foi emprestado com sucesso.
+     * @returns {boolean} - Retorna false se o livro não foi emprestado.
      */
     runForm7: () => {
         const bookId = document.getElementById("bookId2");
@@ -171,6 +178,7 @@ export const Forms = Object.freeze({
      * Executa o formulário (form8) para verificar se um livro está emprestado pelo o seu id.
      * 
      * @returns {boolean} - Retorna true se o livro está emprestado.
+     * @returns {boolean} - Retorna false se o livro não está emprestado.
      */
     runForm8: () => {
         const bookId = document.getElementById("bookId3");
@@ -199,6 +207,7 @@ export const Forms = Object.freeze({
      * Executa o formulário (form9) para devolver um livro pelo o seu id.
      * 
      * @returns {boolean} - Retorna true se o livro foi devolvido com sucesso.
+     * @returns {boolean} - Retorna false se o livro não foi devolvido.
      */
     runForm9: () => {
         const bookId = document.getElementById("bookId4");
@@ -236,6 +245,7 @@ export const Forms = Object.freeze({
      * Executa o formulário (form10) para remover um livro pelo o seu id.
      * 
      * @returns {boolean} - Retorna true se o livro foi removido com sucesso.
+     * @returns {boolean} - Retorna false se o livro não foi removido.
      */
     runForm10: () => {
         const bookId = document.getElementById("bookId5");
@@ -253,6 +263,7 @@ export const Forms = Object.freeze({
      * Executa o formulário (form11) para remover um estudante pelo o seu id.
      * 
      * @returns {boolean} - Retorna true se o estudante foi removido com sucesso.
+     * @returns {boolean} - Retorna false se o estudante não foi removido.
      */
     runForm11: () => {
         const studentId = document.getElementById("studentId2");
@@ -270,6 +281,7 @@ export const Forms = Object.freeze({
      * Executa o formulário (form12) para remover uma turma pelo o seu id.
      * 
      * @returns {boolean} - Retorna true se a turma foi removida com sucesso.
+     * @returns {boolean} - Retorna false se a turma não foi removida.
      */
     runForm12: () => {
         const classId = document.getElementById("classId2");
