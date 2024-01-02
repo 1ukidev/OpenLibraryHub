@@ -99,12 +99,12 @@ export const Pages = Object.freeze({
             <h2>Insira a senha cadastrada para continuar:</h2>
             <input type="password" id="password" placeholder="Senha">
             <button id="submit">🚪 Entrar</button>
-            <h2>É aluno e deseja ver os livros disponíveis? <a id="btn1" class="btn1">Clique aqui!</a></h2>
+            <h2>É aluno e deseja ver os livros disponíveis? <a id="linkOpenAllBooks" class="linkOpenAllBooks">Clique aqui!</a></h2>
         `;
 
         const password = document.getElementById("password");
         const submit = document.getElementById("submit");
-        const btn1 = document.getElementById("btn1");
+        const linkOpenAllBooks = document.getElementById("linkOpenAllBooks");
 
         password.focus();
         password.addEventListener("keypress", (event) => {
@@ -114,7 +114,7 @@ export const Pages = Object.freeze({
             }
         });
 
-        btn1.onclick = () => {
+        linkOpenAllBooks.onclick = () => {
             DOM.divs.lock.innerHTML = "";
             Pages.openAllBooksPage();
         }
