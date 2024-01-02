@@ -174,8 +174,8 @@ export const Pages = Object.freeze({
             mainText1.innerHTML = "Boa noite! ";
         }
 
-        const opcoes = { year: 'numeric', month: 'long', day: 'numeric' };
-        mainText1.innerHTML += new Date().toLocaleString('pt-BR', opcoes);
+        const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+        mainText1.innerHTML += new Date().toLocaleString('pt-BR', dateOptions);
 
         const mainText2 = document.getElementById("main-text-2");
         mainText2.innerHTML = "Alunos que estão com livros emprestados: ";
@@ -267,9 +267,12 @@ export const Pages = Object.freeze({
 
             <button id="btnResetAll">Resetar tudo</button>
             <button id="btnMakeBackup">Fazer backup dos dados</button>
+            <button id="btnRecoverBackup">Recuperar o backup</button>
             <button id="btnCheckUpdate">Verificar se há atualizações</button>
 
             <h2>Lista de livros:</h2>
+            <label for="search">Pesquise pelo nome:</label>
+            <input type="text" id="search">
             <ul id="bookList"></ul>
         `;
 
@@ -281,6 +284,7 @@ export const Pages = Object.freeze({
         document.getElementById("btnForm10").onclick = () => Forms.runForm10();
         document.getElementById("btnResetAll").onclick = () => Others.deleteLocalStorage();
         document.getElementById("btnMakeBackup").onclick = () => Others.makeBackupLocalStorage();
+        document.getElementById("btnRecoverBackup").onclick = () => Others.recoverBackupLocalStorage();
         document.getElementById("btnCheckUpdate").onclick = async () => await Others.checkUpdate();
 
         document.getElementById("bookId").onkeydown = (event) => Others.numberMask(event);
@@ -328,6 +332,25 @@ export const Pages = Object.freeze({
         });
 
         Lists.showBookList();
+
+        const search = document.getElementById("search");
+        const bookList = document.getElementById("bookList");
+
+        search.onkeyup = () => {
+            const searchValue = search.value.toUpperCase();
+            const lis = bookList.getElementsByTagName("li");
+
+            for (let i = 0; i < lis.length; i++) {
+                const li = lis[i];
+                const txtValue = li.textContent || li.innerText;
+
+                if (txtValue.toUpperCase().indexOf(searchValue) > -1) {
+                    li.style.display = "";
+                } else {
+                    li.style.display = "none";
+                }
+            }
+        }
     },
 
     /**
@@ -366,9 +389,12 @@ export const Pages = Object.freeze({
 
             <button id="btnResetAll">Resetar tudo</button>
             <button id="btnMakeBackup">Fazer backup dos dados</button>
+            <button id="btnRecoverBackup">Recuperar o backup</button>
             <button id="btnCheckUpdate">Verificar se há atualizações</button>
 
             <h2>Lista de estudantes:</h2>
+            <label for="search">Pesquise pelo nome:</label>
+            <input type="text" id="search">
             <ul id="studentList"></ul>
         `;
 
@@ -401,6 +427,25 @@ export const Pages = Object.freeze({
         });
 
         Lists.showStudentList();
+
+        const search = document.getElementById("search");
+        const studentList = document.getElementById("studentList");
+
+        search.onkeyup = () => {
+            const searchValue = search.value.toUpperCase();
+            const lis = studentList.getElementsByTagName("li");
+
+            for (let i = 0; i < lis.length; i++) {
+                const li = lis[i];
+                const txtValue = li.textContent || li.innerText;
+
+                if (txtValue.toUpperCase().indexOf(searchValue) > -1) {
+                    li.style.display = "";
+                } else {
+                    li.style.display = "none";
+                }
+            }
+        }
     },
 
     /**
@@ -436,9 +481,12 @@ export const Pages = Object.freeze({
 
             <button id="btnResetAll">Resetar tudo</button>
             <button id="btnMakeBackup">Fazer backup dos dados</button>
+            <button id="btnRecoverBackup">Recuperar o backup</button>
             <button id="btnCheckUpdate">Verificar se há atualizações</button>
 
             <h2>Lista de turmas:</h2>
+            <label for="search">Pesquise pelo nome:</label>
+            <input type="text" id="search">
             <ul id="classList"></ul>
             <br>
         `;
@@ -466,6 +514,25 @@ export const Pages = Object.freeze({
         });
 
         Lists.showClassList();
+
+        const search = document.getElementById("search");
+        const classList = document.getElementById("classList");
+
+        search.onkeyup = () => {
+            const searchValue = search.value.toUpperCase();
+            const lis = classList.getElementsByTagName("li");
+
+            for (let i = 0; i < lis.length; i++) {
+                const li = lis[i];
+                const txtValue = li.textContent || li.innerText;
+
+                if (txtValue.toUpperCase().indexOf(searchValue) > -1) {
+                    li.style.display = "";
+                } else {
+                    li.style.display = "none";
+                }
+            }
+        }
     },
 
     /**

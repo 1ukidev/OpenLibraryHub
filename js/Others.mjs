@@ -32,25 +32,63 @@ export const Others = Object.freeze({
      */
     makeBackupLocalStorage: () => {
         console.log("Fazendo backup...");
-        let values;
-
-        for (let i = 0; i < localStorage.length; i++) {
-            const key = localStorage.key(i);
-            values += localStorage.getItem(key);
-        }
-        if (values == undefined || values == null) {
+    
+        const keys = Object.keys(localStorage);
+        if (keys.length === 0) {
             alert("Erro ao fazer backup: nenhum dado encontrado.");
             console.error("Erro ao fazer backup: nenhum dado encontrado.");
             return false;
         }
-        const valuesBase64 = btoa(values.replace("undefined", ""));
     
+        const data = {};
+        keys.forEach(key => {
+            data[key] = localStorage.getItem(key);
+        });
+    
+        const jsonBackupData = JSON.stringify(data);
+    
+        const blob = new Blob([jsonBackupData], { type: "application/json" });
         const link = document.createElement("a");
-        link.href = `data:text/plain;base64,${valuesBase64}`;
-        link.download = "OpenLibraryHubBackup.txt";
+        const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+        link.href = URL.createObjectURL(blob);
+        link.download = `OpenLibraryHubBackup (${new Date().toLocaleString('pt-BR', dateOptions)}).json`;
         link.click();
     
         console.log("Backup feito com sucesso!");
+    },
+
+    /**
+     * Recupera os dados do backup.
+     * 
+     * @returns {void}
+     */
+    recoverBackupLocalStorage: () => {
+        console.log("Recuperando backup...");
+        const input = document.createElement("input");
+        input.type = "file";
+        input.accept = ".json";
+        input.click();
+
+        input.onchange = () => {
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.readAsText(file, "UTF-8");
+                reader.onload = (event) => {
+                    try {
+                        const jsonData = JSON.parse(event.target.result);
+                        localStorage.clear();
+                        Object.keys(jsonData).forEach(key => {
+                            localStorage.setItem(key, jsonData[key]);
+                        });
+                        location.href = "";
+                    } catch (error) {
+                        alert("Erro ao recuperar o backup.");
+                        console.error("Erro ao recuperar o backup:", error);
+                    }
+                };
+            }
+        };
     },
 
     /**
