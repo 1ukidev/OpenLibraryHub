@@ -1,4 +1,5 @@
 import { Locks } from "./Locks.mjs";
+import { DOM } from "./DOM.mjs";
 import { version } from "./Constants.mjs";
 
 const Others = Object.freeze({
