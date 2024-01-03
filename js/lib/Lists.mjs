@@ -1,6 +1,7 @@
 import { Books } from "./Books.mjs";
 import { Students } from "./Students.mjs";
 import { Classes } from "./Classes.mjs";
+import { DOM } from "./DOM.mjs";
 
 const Lists = Object.freeze({
     /**
@@ -9,12 +10,12 @@ const Lists = Object.freeze({
      * @returns {void}
      */
     showBookList: () => {
-        const bookList = document.getElementById("bookList");
+        const bookList = DOM.id("bookList");
         const books = Books.getAllBooks();
 
         bookList.innerHTML = "";
         books.forEach((book) => {
-            const li = document.createElement("li");
+            const li = DOM.element("li");
             const bookObject = JSON.parse(book);
             li.textContent = "Nome: " + bookObject.name;
             li.textContent += " / Autor: " + bookObject.author;
@@ -34,12 +35,12 @@ const Lists = Object.freeze({
      * @returns {void}
      */
     showStudentList: () => {
-        const studentList = document.getElementById("studentList");
+        const studentList = DOM.id("studentList");
         const students = Students.getAllStudents();
 
         studentList.innerHTML = "";
         students.forEach((student) => {
-            const li = document.createElement("li");
+            const li = DOM.element("li");
             const studentObject = JSON.parse(student);
             li.textContent = "Nome: " + studentObject.name;
             li.textContent += " / Turma: " + studentObject.schoolClass;
@@ -55,17 +56,66 @@ const Lists = Object.freeze({
      * @returns {void}
      */
     showClassList: () => {
-        const classList = document.getElementById("classList");
+        const classList = DOM.id("classList");
         const classes = Classes.getAllClasses();
 
         classList.innerHTML = "";
         classes.forEach((schoolClass) => {
-            const li = document.createElement("li");
+            const li = DOM.element("li");
             const schoolClassObject = JSON.parse(schoolClass);
             li.textContent = "Nome: " + schoolClassObject.name;
             li.textContent += " / Id: " + schoolClassObject.id;
             classList.appendChild(li);
         });
+    },
+
+    /**
+     * Mostra todos os livros no elemento bookList.
+     * Método para estudantes.
+     * 
+     * @returns {void}
+     */
+    showBookListForStudents: () => {
+        const bookList = DOM.id("bookList");
+        const books = Books.getAllBooks();
+
+        bookList.innerHTML = "";
+        books.forEach((book) => {
+            const li = DOM.element("li");
+            const bookObject = JSON.parse(book);
+            li.style = "font-size: 16px;";
+            li.textContent = `Nome: ${bookObject.name}`;
+            li.textContent += ` / Autor: ${bookObject.author}`;
+            li.textContent += ` / Páginas: ${bookObject.pages}`;
+            li.textContent += ` / Ano: ${bookObject.year}`;
+            bookList.appendChild(li);
+        });
+    },
+
+    /**
+     * Adiciona a funcionalidade de busca no elemento search.
+     * 
+     * @param {HTMLElement} list - Elemento HTML que contém a lista.
+     * @returns {void}
+     */
+    addSearch: (list) => {
+        const search = DOM.id("search");
+
+        search.onkeyup = () => {
+            const searchValue = search.value.toUpperCase();
+            const lis = list.getElementsByTagName("li");
+
+            for (let i = 0; i < lis.length; i++) {
+                const li = lis[i];
+                const txtValue = li.textContent || li.innerText;
+
+                if (txtValue.toUpperCase().indexOf(searchValue) > -1) {
+                    li.style.display = "";
+                } else {
+                    li.style.display = "none";
+                }
+            }
+        }
     }
 });
 

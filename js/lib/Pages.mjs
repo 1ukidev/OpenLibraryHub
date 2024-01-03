@@ -41,6 +41,9 @@ const Pages = Object.freeze({
             case "#turmas":
                 Pages.openClassPage();
                 break;
+            case "#outros":
+                Pages.openOthersPage();
+                break;
             default:
                 Pages.openMainContent();
                 break;
@@ -55,8 +58,7 @@ const Pages = Object.freeze({
      */
     openCreateLock: () => {
         if (localStorage.getItem("lock") != null) {
-            console.error("localStorage: já existe um bloqueio criado!");
-            return false;
+            throw new Error("localStorage: já existe um bloqueio criado!");
         }
 
         DOM.divs.lock.innerHTML = `
@@ -66,14 +68,14 @@ const Pages = Object.freeze({
             <button id="submit">🚪 Cadastrar</button>
         `;
 
-        const password = document.getElementById("password");
-        const submit = document.getElementById("submit");
+        const password = DOM.id("password");
+        const submit = DOM.id("submit");
 
         password.focus();
         password.addEventListener("keypress", (event) => {
             if (event.key === "Enter") {
                 event.preventDefault();
-                document.getElementById("submit").click();
+                submit.click();
             }
         });
 
@@ -87,11 +89,9 @@ const Pages = Object.freeze({
      */
     openLockScreen: () => {
         if (JSON.parse(localStorage.getItem("lock")).status == "unlocked") {
-            console.error("localStorage: o bloqueio já foi desbloqueado!");
-            return false;
+            throw new Error("localStorage: o bloqueio já foi desbloqueado!");
         } else if (localStorage.getItem("lock") == null) {
-            console.error("localStorage: não existe um bloqueio criado!");
-            return false;
+            throw new Error("localStorage: não existe um bloqueio criado!");
         }
 
         DOM.divs.lock.innerHTML = `
@@ -102,9 +102,9 @@ const Pages = Object.freeze({
             <button id="submit">🚪 Entrar</button>
         `;
 
-        const password = document.getElementById("password");
-        const submit = document.getElementById("submit");
-        const linkOpenAllBooks = document.getElementById("linkOpenAllBooks");
+        const password = DOM.id("password");
+        const submit = DOM.id("submit");
+        const linkOpenAllBooks = DOM.id("linkOpenAllBooks");
 
         password.focus();
         password.addEventListener("keypress", (event) => {
@@ -136,16 +136,18 @@ const Pages = Object.freeze({
                 <li><a id="a-2" class="a-2">&nbsp;📚 Livros&nbsp;</a></li>
                 <li><a id="a-3" class="a-3">&nbsp;🏫 Turmas&nbsp;</a></li>
                 <li><a id="a-4" class="a-4">&nbsp;🧑 Estudantes&nbsp;</a></li>
-                <li><a id="a-5" class="a-5">&nbsp;🔒 Sair&nbsp;</a></li>
+                <li><a id="a-5" class="a-5">&nbsp;🔧 Outros&nbsp;</a></li>
+                <li><a id="a-6" class="a-6">&nbsp;🔒 Sair&nbsp;</a></li>
             </ul>
             <br>
         `;
 
-        document.getElementById("a-1").onclick = () => Pages.changePage("");
-        document.getElementById("a-2").onclick = () => Pages.changePage("#livros");
-        document.getElementById("a-3").onclick = () => Pages.changePage("#turmas");
-        document.getElementById("a-4").onclick = () => Pages.changePage("#estudantes");
-        document.getElementById("a-5").onclick = () => Locks.lock();
+        DOM.id("a-1").onclick = () => Pages.changePage("");
+        DOM.id("a-2").onclick = () => Pages.changePage("#livros");
+        DOM.id("a-3").onclick = () => Pages.changePage("#turmas");
+        DOM.id("a-4").onclick = () => Pages.changePage("#estudantes");
+        DOM.id("a-5").onclick = () => Pages.changePage("#outros");
+        DOM.id("a-6").onclick = () => Locks.lock();
     },
 
     /**
@@ -163,7 +165,7 @@ const Pages = Object.freeze({
             <b><span class="generic-text" id="main-text-2" style="font-size: 24px;"></span></b>
         `;
 
-        const mainText1 = document.getElementById("main-text-1");
+        const mainText1 = DOM.id("main-text-1");
         const hours = new Date().getHours();
 
         if (hours >= 8 && hours < 12) {
@@ -177,7 +179,7 @@ const Pages = Object.freeze({
         const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
         mainText1.innerHTML += new Date().toLocaleString('pt-BR', dateOptions);
 
-        const mainText2 = document.getElementById("main-text-2");
+        const mainText2 = DOM.id("main-text-2");
         mainText2.innerHTML = "Alunos que estão com livros emprestados: ";
         const lentBooks = [];
         const students = Students.getAllStudents();
@@ -192,10 +194,10 @@ const Pages = Object.freeze({
         }
 
         if (lentBooks.length > 0) {
-            const ul = document.createElement("ul");
+            const ul = DOM.element("ul");
 
             lentBooks.forEach(book => {
-                const li = document.createElement("li");
+                const li = DOM.element("li");
                 li.textContent = book;
                 ul.appendChild(li);
             });
@@ -216,141 +218,234 @@ const Pages = Object.freeze({
         Locks.checkLock();
 
         DOM.divs.content.innerHTML = `
-            <div id="form1">
-                <label for="bookName">Adicionar livro:</label>
-                <input type="text" id="bookName" placeholder="Nome">
-                <input type="text" id="bookAuthor" placeholder="Autor">
-                <input type="number" id="bookPages" placeholder="Quantidade de páginas">
-                <input type="number" id="bookYear" placeholder="Ano">
-                <button id="btnForm1">Adicionar</button>
-            </div>
+            <button id="btnOpenSaveBookForm">Adicionar livro</button>&nbsp;&nbsp;
+            <button id="btnOpenLendBookForm">Emprestar um livro</button>&nbsp;&nbsp;
+            <button id="btnOpenCheckLentBookForm">Verificar se um livro está emprestado</button>&nbsp;&nbsp;
+            <button id="btnOpenReturnBookForm">Devolver livro</button>&nbsp;&nbsp;
+            <button id="btnOpenRemoveBookForm">Remover livro</button>
             <br>
-
-            <div id="form2">
-                <label for="bookId">Verificar se o livro está cadastro pelo id:</label>
-                <input type="number" id="bookId">
-                <button id="btnForm2">Buscar</button>
-            </div>
-            <br>
-
-            <div id="form7">
-                <label for="bookId2">Emprestar livro de id:</label>
-                <input type="number" id="bookId2">
-                <label for="studentId">para o estudante de id:</label>
-                <input type="number" id="studentId">
-                <label for="lentDate">Data de entrega:</label>
-                <input type="date" id="lentDate">
-                <button id="btnForm7">Emprestar</button>
-            </div>
-            <br>
-
-            <div id="form8">
-                <label for="bookId3">Verificar se está emprestado o livro de id:</label>
-                <input type="number" id="bookId3">
-                <button id="btnForm8">Buscar</button>
-            </div>
-            <br>
-
-            <div id="form9">
-                <label for="bookId4">Devolver livro de id:</label>
-                <input type="number" id="bookId4">
-                <button id="btnForm9">Devolver</button>
-            </div>
-            <br>
-
-            <div id="form10">
-                <label for="bookId5">Remover livro de id:</label>
-                <input type="number" id="bookId5">
-                <button id="btnForm10">Remover</button>
-            </div>
-            <br>
-
-            <button id="btnResetAll">Resetar tudo</button>
-            <button id="btnMakeBackup">Fazer backup dos dados</button>
-            <button id="btnRecoverBackup">Recuperar o backup</button>
-            <button id="btnCheckUpdate">Verificar se há atualizações</button>
-
-            <h2>Lista de livros:</h2>
-            <label for="search">Pesquise pelo nome:</label>
-            <input type="text" id="search">
-            <ul id="bookList"></ul>
         `;
 
-        document.getElementById("btnForm1").onclick = () => Forms.runForm1();
-        document.getElementById("btnForm2").onclick = () => Forms.runForm2();
-        document.getElementById("btnForm7").onclick = () => Forms.runForm7();
-        document.getElementById("btnForm8").onclick = () => Forms.runForm8();
-        document.getElementById("btnForm9").onclick = () => Forms.runForm9();
-        document.getElementById("btnForm10").onclick = () => Forms.runForm10();
-        document.getElementById("btnResetAll").onclick = () => Others.deleteLocalStorage();
-        document.getElementById("btnMakeBackup").onclick = () => Others.makeBackupLocalStorage();
-        document.getElementById("btnRecoverBackup").onclick = () => Others.recoverBackupLocalStorage();
-        document.getElementById("btnCheckUpdate").onclick = () => Others.checkUpdate();
+        const addSearchInput = () => {
+            DOM.divs.content.innerHTML += `
+                <h2>Lista de estudantes:</h2>
+                <label for="search">Pesquise pelo nome:</label>
+                <input type="text" id="search">
+                <ul id="bookList"></ul>
+            `;
 
-        document.getElementById("bookId").onkeydown = (event) => Others.numberMask(event);
-        document.getElementById("bookId2").onkeydown = (event) => Others.numberMask(event);
-        document.getElementById("studentId").onkeydown = (event) => Others.numberMask(event);
-        document.getElementById("bookId3").onkeydown = (event) => Others.numberMask(event);
-        document.getElementById("bookId4").onkeydown = (event) => Others.numberMask(event);
-        document.getElementById("bookId5").onkeydown = (event) => Others.numberMask(event);
-
-        const bookName = document.getElementById("bookName");
-        const bookAuthor = document.getElementById("bookAuthor");
-        const bookPages = document.getElementById("bookPages");
-        const bookYear = document.getElementById("bookYear");
-        const btnForm1 = document.getElementById("btnForm1");
-
-        bookName.focus();
-        bookName.addEventListener("keypress", (event) => {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                bookAuthor.focus();
-            }
-        });
-        bookAuthor.addEventListener("keypress", (event) => {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                bookPages.focus();
-            }
-        });
-        bookPages.addEventListener("keypress", (event) => {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                bookYear.focus();
-            } else if (!Others.numberMask(event)) {
-                event.preventDefault();
-            }
-        });
-        bookYear.addEventListener("keypress", (event) => {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                btnForm1.click();
-                bookName.focus();
-            } else if (!Others.numberMask(event)) {
-                event.preventDefault();
-            }
-        });
-
-        Lists.showBookList();
-
-        const search = document.getElementById("search");
-        const bookList = document.getElementById("bookList");
-
-        search.onkeyup = () => {
-            const searchValue = search.value.toUpperCase();
-            const lis = bookList.getElementsByTagName("li");
-
-            for (let i = 0; i < lis.length; i++) {
-                const li = lis[i];
-                const txtValue = li.textContent || li.innerText;
-
-                if (txtValue.toUpperCase().indexOf(searchValue) > -1) {
-                    li.style.display = "";
-                } else {
-                    li.style.display = "none";
-                }
-            }
+            const bookList = DOM.id("bookList");
+            Lists.addSearch(bookList);
+            Lists.showBookList();
         }
+
+        const openSaveBookForm = () => {
+            DOM.divs.content.innerHTML = `
+                <button id="btnBack">◀️ Voltar</button>
+                <br><br>
+
+                <div id="formAddBook">
+                    <input type="text" id="bookName" placeholder="Nome">
+                    <input type="text" id="bookAuthor" placeholder="Autor">
+                    <input type="number" id="bookPages" placeholder="Quantidade de páginas">
+                    <input type="number" id="bookYear" placeholder="Ano">
+                    <button id="btnSubmitAddBook">Adicionar</button>
+                </div>
+            `;
+
+            addSearchInput();
+
+            DOM.id("btnBack").onclick = () => Pages.openBookPage();
+            DOM.id("btnSubmitAddBook").onclick = () => Forms.runFormAddBook();
+
+            const bookName = DOM.id("bookName");
+            const bookAuthor = DOM.id("bookAuthor");
+            const bookPages = DOM.id("bookPages");
+            const bookYear = DOM.id("bookYear");
+            bookName.focus();
+
+            bookName.addEventListener("keypress", (event) => {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    bookAuthor.focus();
+                }
+            });
+            bookAuthor.addEventListener("keypress", (event) => {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    bookPages.focus();
+                }
+            });
+            bookPages.addEventListener("keypress", (event) => {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    bookYear.focus();
+                } else if (!Others.numberMask(event)) {
+                    event.preventDefault();
+                }
+            });
+            bookYear.addEventListener("keypress", (event) => {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    btnSubmitAddBook.click();
+                    bookName.focus();
+                } else if (!Others.numberMask(event)) {
+                    event.preventDefault();
+                }
+            });
+        }
+
+        const openLendBookForm = () => {
+            DOM.divs.content.innerHTML = `
+                <button id="btnBack">◀️ Voltar</button>
+                <br><br>
+
+                <div id="formLendBook">
+                    <label for="bookId2">Emprestar livro de id:</label>
+                    <input type="number" id="bookId2">
+                    <label for="studentId">para o estudante de id:</label>
+                    <input type="number" id="studentId">
+                    <label for="lentDate">Data de entrega:</label>
+                    <input type="date" id="lentDate">
+                    <button id="btnSubmitLendBook">Emprestar</button>
+                </div>
+            `;
+
+            addSearchInput();
+
+            DOM.id("btnBack").onclick = () => Pages.openBookPage();
+            DOM.id("btnSubmitLendBook").onclick = () => Forms.runFormLendBook();
+
+            const bookId2 = DOM.id("bookId2");
+            const studentId = DOM.id("studentId");
+            const lentDate = DOM.id("lentDate");
+            bookId2.focus();
+
+            bookId2.addEventListener("keypress", (event) => {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    studentId.focus();
+                } else if (!Others.numberMask(event)) {
+                    event.preventDefault();
+                }
+            });
+            studentId.addEventListener("keypress", (event) => {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    lentDate.focus();
+                } else if (!Others.numberMask(event)) {
+                    event.preventDefault();
+                }
+            });
+            lentDate.addEventListener("keypress", (event) => {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    btnSubmitLendBook.click();
+                    bookId2.focus();
+                }
+            });
+        }
+
+        const openCheckLentBookForm = () => {
+            DOM.divs.content.innerHTML = `
+                <button id="btnBack">◀️ Voltar</button>
+                <br><br>
+
+                <div id="formCheckLentBook">
+                    <label for="bookId3">Verificar se o livro está emprestado pelo id:</label>
+                    <input type="number" id="bookId3">
+                    <button id="btnSubmitCheckLentBook">Buscar</button>
+                </div>
+            `;
+
+            addSearchInput();
+
+            DOM.id("btnBack").onclick = () => Pages.openBookPage();
+            DOM.id("btnSubmitCheckLentBook").onclick = () => Forms.runFormCheckLentBook();
+
+            const bookId3 = DOM.id("bookId3");
+            bookId3.focus();
+
+            bookId3.addEventListener("keypress", (event) => {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    btnSubmitCheckLentBook.click();
+                    bookId3.focus();
+                } else if (!Others.numberMask(event)) {
+                    event.preventDefault();
+                }
+            });
+        }
+
+        const openReturnBookForm = () => {
+            DOM.divs.content.innerHTML = `
+                <button id="btnBack">◀️ Voltar</button>
+                <br><br>
+
+                <div id="formReturnBook">
+                    <label for="bookId4">Devolver livro de id:</label>
+                    <input type="number" id="bookId4">
+                    <button id="btnSubmitReturnBook">Devolver</button>
+                </div>
+            `;
+
+            addSearchInput();
+
+            DOM.id("btnBack").onclick = () => Pages.openBookPage();
+            DOM.id("btnSubmitReturnBook").onclick = () => Forms.runFormReturnBook();
+
+            const bookId4 = DOM.id("bookId4");
+            bookId4.focus();
+
+            bookId4.addEventListener("keypress", (event) => {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    btnSubmitReturnBook.click();
+                    bookId4.focus();
+                } else if (!Others.numberMask(event)) {
+                    event.preventDefault();
+                }
+            });
+        }
+
+        const openRemoveBookForm = () => {
+            DOM.divs.content.innerHTML = `
+                <button id="btnBack">◀️ Voltar</button>
+                <br><br>
+
+                <div id="formRemoveBook">
+                    <label for="bookId5">Remover livro de id:</label>
+                    <input type="number" id="bookId5">
+                    <button id="btnSubmitRemoveBook">Remover</button>
+                </div>
+            `;
+
+            addSearchInput();
+
+            DOM.id("btnBack").onclick = () => Pages.openBookPage();
+            DOM.id("btnSubmitRemoveBook").onclick = () => Forms.runFormRemoveBook();
+
+            const bookId5 = DOM.id("bookId5");
+            bookId5.focus();
+
+            bookId5.addEventListener("keypress", (event) => {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    btnSubmitRemoveBook.click();
+                    bookId5.focus();
+                } else if (!Others.numberMask(event)) {
+                    event.preventDefault();
+                }
+            });
+        }
+
+        addSearchInput();
+
+        DOM.id("btnOpenSaveBookForm").onclick = () => openSaveBookForm();
+        DOM.id("btnOpenLendBookForm").onclick = () => openLendBookForm();
+        DOM.id("btnOpenCheckLentBookForm").onclick = () => openCheckLentBookForm();
+        DOM.id("btnOpenReturnBookForm").onclick = () => openReturnBookForm();
+        DOM.id("btnOpenRemoveBookForm").onclick = () => openRemoveBookForm();
     },
 
     /**
@@ -363,89 +458,104 @@ const Pages = Object.freeze({
         Locks.checkLock();
 
         DOM.divs.content.innerHTML = `
-            <div id="form3">
-                <label for="studentName">Adicionar estudante:</label>
-                <input type="text" id="studentName" placeholder="Nome">
-                <select id="studentClass">
-                    <option value="" disabled selected>Selecione a turma</option>
-                </select>
-                <button id="btnForm3">Adicionar</button>
-            </div>
+            <button id="btnOpenSaveStudentForm">Adicionar estudante</button>&nbsp;&nbsp;
+            <button id="btnOpenRemoveStudentForm">Remover estudante</button>&nbsp;&nbsp;
             <br>
-
-            <div id="form4">
-                <label for="studentId">Verificar se o estudante está cadastrado pelo id:</label>
-                <input type="number" id="studentId">
-                <button id="btnForm4">Buscar</button>
-            </div>
-            <br>
-
-            <div id="form11">
-                <label for="studentId2">Remover estudante de id:</label>
-                <input type="number" id="studentId2">
-                <button id="btnForm11">Remover</button>
-            </div>
-            <br>
-
-            <button id="btnResetAll">Resetar tudo</button>
-            <button id="btnMakeBackup">Fazer backup dos dados</button>
-            <button id="btnRecoverBackup">Recuperar o backup</button>
-            <button id="btnCheckUpdate">Verificar se há atualizações</button>
-
-            <h2>Lista de estudantes:</h2>
-            <label for="search">Pesquise pelo nome:</label>
-            <input type="text" id="search">
-            <ul id="studentList"></ul>
         `;
 
-        document.getElementById("btnForm3").onclick = () => Forms.runForm3();
-        document.getElementById("btnForm4").onclick = () => Forms.runForm4();
-        document.getElementById("btnForm11").onclick = () => Forms.runForm11();
-        document.getElementById("btnResetAll").onclick = () => Others.deleteLocalStorage();
-        document.getElementById("btnMakeBackup").onclick = () => Others.makeBackupLocalStorage();
-        document.getElementById("btnCheckUpdate").onclick = () => Others.checkUpdate();
+        const addSearchInput = () => {
+            DOM.divs.content.innerHTML += `
+                <h2>Lista de estudantes:</h2>
+                <label for="search">Pesquise pelo nome:</label>
+                <input type="text" id="search">
+                <ul id="studentList"></ul>
+            `;
 
-        document.getElementById("studentId").onkeydown = (event) => Others.numberMask(event);
-        document.getElementById("studentId2").onkeydown = (event) => Others.numberMask(event);
-
-        Classes.getAllClasses().forEach((schoolClass) => {
-            const option = document.createElement("option");
-            const schoolClassObject = JSON.parse(schoolClass);
-            option.textContent = schoolClassObject.name;
-            document.getElementById("studentClass").appendChild(option);
-        });
-
-        const studentName = document.getElementById("studentName");
-        const studentClass = document.getElementById("studentClass");
-
-        studentName.focus();
-        studentName.addEventListener("keypress", (event) => {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                studentClass.focus();
-            }
-        });
-
-        Lists.showStudentList();
-
-        const search = document.getElementById("search");
-        const studentList = document.getElementById("studentList");
-
-        search.onkeyup = () => {
-            const searchValue = search.value.toUpperCase();
-            const lis = studentList.getElementsByTagName("li");
-
-            for (let i = 0; i < lis.length; i++) {
-                const li = lis[i];
-                const txtValue = li.textContent || li.innerText;
-
-                if (txtValue.toUpperCase().indexOf(searchValue) > -1) {
-                    li.style.display = "";
-                } else {
-                    li.style.display = "none";
-                }
-            }
+            const studentList = DOM.id("studentList");
+            Lists.addSearch(studentList);
+            Lists.showStudentList();
         }
+
+        const openSaveStudentForm = () => {
+            DOM.divs.content.innerHTML = `
+                <button id="btnBack">◀️ Voltar</button>
+                <br><br>
+
+                <div id="formAddStudent">
+                    <input type="text" id="studentName" placeholder="Nome">
+                    <select id="studentClass">
+                        <option value="" disabled selected>Selecione a turma</option>
+                    </select>
+                    <button id="btnSubmitAddStudent">Adicionar</button>
+                </div>
+            `;
+
+            addSearchInput();
+
+            DOM.id("btnBack").onclick = () => Pages.openStudentPage();
+            DOM.id("btnSubmitAddStudent").onclick = () => Forms.runFormAddStudent();
+
+            const studentName = DOM.id("studentName");
+            const studentClass = DOM.id("studentClass");
+            studentName.focus();
+
+            studentName.addEventListener("keypress", (event) => {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    studentClass.focus();
+                }
+            });
+            studentClass.addEventListener("keypress", (event) => {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    btnSubmitAddStudent.click();
+                    studentName.focus();
+                }
+            });
+
+            Classes.getAllClasses().forEach((schoolClass) => {
+                const option = DOM.element("option");
+                const schoolClassObject = JSON.parse(schoolClass);
+                option.textContent = schoolClassObject.name;
+                DOM.id("studentClass").appendChild(option);
+            });
+        }
+
+        const openRemoveStudentForm = () => {
+            DOM.divs.content.innerHTML = `
+                <button id="btnBack">◀️ Voltar</button>
+                <br><br>
+
+                <div id="formRemoveStudent">
+                    <label for="studentId3">Remover estudante de id:</label>
+                    <input type="number" id="studentId3">
+                    <button id="btnSubmitRemoveStudent">Remover</button>
+                </div>
+            `;
+
+            addSearchInput();
+
+            DOM.id("btnBack").onclick = () => Pages.openStudentPage();
+            DOM.id("btnSubmitRemoveStudent").onclick = () => Forms.runFormRemoveStudent();
+
+            const studentId3 = DOM.id("studentId3");
+            studentId3.focus();
+
+            studentId3.addEventListener("keypress", (event) => {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    btnSubmitRemoveStudent.click();
+                    studentId3.focus();
+                } else if (!Others.numberMask(event)) {
+                    event.preventDefault();
+                }
+            });
+        }
+
+        addSearchInput();
+
+        DOM.id("btnOpenSaveStudentForm").onclick = () => openSaveStudentForm();
+        DOM.id("btnOpenRemoveStudentForm").onclick = () => openRemoveStudentForm();
     },
 
     /**
@@ -458,81 +568,103 @@ const Pages = Object.freeze({
         Locks.checkLock();
 
         DOM.divs.content.innerHTML = `
-            <div id="form5">
-                <label for="className">Adicionar turma:</label>
-                <input type="text" id="className" placeholder="Ex.: 3º Info">
-                <button id="btnForm5">Adicionar</button>
-            </div>
-            <br>
-
-            <div id="form6">
-                <label for="classId">Verificar se a turma está cadastrada pelo id:</label>
-                <input type="number" id="classId">
-                <button id="btnForm6">Buscar</button>
-            </div>
-            <br>
-
-            <div id="form12">
-                <label for="classId2">Remover turma de id:</label>
-                <input type="number" id="classId2">
-                <button id="btnForm12">Remover</button>
-            </div>
-            <br>
-
-            <button id="btnResetAll">Resetar tudo</button>
-            <button id="btnMakeBackup">Fazer backup dos dados</button>
-            <button id="btnRecoverBackup">Recuperar o backup</button>
-            <button id="btnCheckUpdate">Verificar se há atualizações</button>
-
-            <h2>Lista de turmas:</h2>
-            <label for="search">Pesquise pelo nome:</label>
-            <input type="text" id="search">
-            <ul id="classList"></ul>
+            <button id="btnOpenSaveClassForm">Adicionar turma</button>&nbsp;&nbsp;
+            <button id="btnOpenRemoveClassForm">Remover turma</button>&nbsp;&nbsp;
             <br>
         `;
 
-        document.getElementById("btnForm5").onclick = () => Forms.runForm5();
-        document.getElementById("btnForm6").onclick = () => Forms.runForm6();
-        document.getElementById("btnForm12").onclick = () => Forms.runForm12();
-        document.getElementById("btnResetAll").onclick = () => Others.deleteLocalStorage();
-        document.getElementById("btnMakeBackup").onclick = () => Others.makeBackupLocalStorage();
-        document.getElementById("btnCheckUpdate").onclick = () => Others.checkUpdate();
+        const addSearchInput = () => {
+            DOM.divs.content.innerHTML += `
+                <h2>Lista de turmas:</h2>
+                <label for="search">Pesquise pelo nome:</label>
+                <input type="text" id="search">
+                <ul id="classList"></ul>
+            `;
 
-        document.getElementById("classId").onkeydown = (event) => Others.numberMask(event);
-        document.getElementById("classId2").onkeydown = (event) => Others.numberMask(event);
-
-        const className = document.getElementById("className");
-        const btnForm5 = document.getElementById("btnForm5");
-
-        className.focus();
-        className.addEventListener("keypress", (event) => {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                btnForm5.click();
-                className.focus();
-            }
-        });
-
-        Lists.showClassList();
-
-        const search = document.getElementById("search");
-        const classList = document.getElementById("classList");
-
-        search.onkeyup = () => {
-            const searchValue = search.value.toUpperCase();
-            const lis = classList.getElementsByTagName("li");
-
-            for (let i = 0; i < lis.length; i++) {
-                const li = lis[i];
-                const txtValue = li.textContent || li.innerText;
-
-                if (txtValue.toUpperCase().indexOf(searchValue) > -1) {
-                    li.style.display = "";
-                } else {
-                    li.style.display = "none";
-                }
-            }
+            const classList = DOM.id("classList");
+            Lists.addSearch(classList);
+            Lists.showClassList();
         }
+
+        const openSaveClassForm = () => {
+            DOM.divs.content.innerHTML = `
+                <button id="btnBack">◀️ Voltar</button>
+                <br><br>
+
+                <div id="formAddClass">
+                    <input type="text" id="className" placeholder="Nome">
+                    <button id="btnSubmitAddClass">Adicionar</button>
+                </div>
+            `;
+
+            addSearchInput();
+
+            DOM.id("btnBack").onclick = () => Pages.openClassPage();
+            DOM.id("btnSubmitAddClass").onclick = () => Forms.runFormAddClass();
+
+            const className = DOM.id("className");
+            className.focus();
+
+            className.addEventListener("keypress", (event) => {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    btnSubmitAddClass.click();
+                    className.focus();
+                }
+            });
+        }
+
+        const openRemoveClassForm = () => {
+            DOM.divs.content.innerHTML = `
+                <button id="btnBack">◀️ Voltar</button>
+                <br><br>
+
+                <div id="formRemoveClass">
+                    <label for="classId3">Remover turma de id:</label>
+                    <input type="number" id="classId3">
+                    <button id="btnSubmitRemoveClass">Remover</button>
+                </div>
+            `;
+
+            addSearchInput();
+
+            DOM.id("btnBack").onclick = () => Pages.openClassPage();
+            DOM.id("btnSubmitRemoveClass").onclick = () => Forms.runFormRemoveClass();
+
+            const classId3 = DOM.id("classId3");
+            classId3.focus();
+
+            classId3.addEventListener("keypress", (event) => {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    btnSubmitRemoveClass.click();
+                    classId3.focus();
+                } else if (!Others.numberMask(event)) {
+                    event.preventDefault();
+                }
+            });
+        }
+
+        addSearchInput();
+
+        DOM.id("btnOpenSaveClassForm").onclick = () => openSaveClassForm();
+        DOM.id("btnOpenRemoveClassForm").onclick = () => openRemoveClassForm();
+    },
+
+    openOthersPage: () => {
+        Locks.checkLock();        
+
+        DOM.divs.content.innerHTML = `
+            <button id="btnResetAll">Resetar tudo</button>&nbsp;&nbsp;
+            <button id="btnMakeBackup">Fazer backup dos dados</button>&nbsp;&nbsp;
+            <button id="btnRecoverBackup">Recuperar o backup</button>&nbsp;&nbsp;
+            <button id="btnCheckUpdate">Verificar se há atualizações</button>
+        `;
+
+        DOM.id("btnResetAll").onclick = () => Others.deleteLocalStorage();
+        DOM.id("btnMakeBackup").onclick = () => Others.makeBackupLocalStorage();
+        DOM.id("btnRecoverBackup").onclick = () => Others.recoverBackupLocalStorage();
+        DOM.id("btnCheckUpdate").onclick = () => Others.checkUpdate();
     },
 
     /**
@@ -550,45 +682,14 @@ const Pages = Object.freeze({
             <ul id="bookList"></ul>
         `;
 
-        const books = Books.getAllBooks();
-        const bookList = document.getElementById("bookList");
-        const search = document.getElementById("search");
-        const back = document.getElementById("back");
-
-        books.forEach((book) => {
-            const bookObject = JSON.parse(book);
-
-            if (bookObject.type === "Book") {
-                const li = document.createElement("li");
-                li.style = "font-size: 18px;";
-                li.textContent = `Nome: ${bookObject.name}`;
-                li.textContent += ` / Autor: ${bookObject.author}`;
-                li.textContent += ` / Páginas: ${bookObject.pages}`;
-                li.textContent += ` / Ano: ${bookObject.year}`;
-                bookList.appendChild(li);
-            }
-        });
-
-        search.onkeyup = () => {
-            const searchValue = search.value.toUpperCase();
-            const lis = bookList.getElementsByTagName("li");
-
-            for (let i = 0; i < lis.length; i++) {
-                const li = lis[i];
-                const txtValue = li.textContent || li.innerText;
-
-                if (txtValue.toUpperCase().indexOf(searchValue) > -1) {
-                    li.style.display = "";
-                } else {
-                    li.style.display = "none";
-                }
-            }
-        }
-
+        const back = DOM.id("back");
         back.onclick = () => {
             DOM.divs.others.innerHTML = "";
             Pages.openLockScreen();
         }
+
+        Lists.showBookListForStudents();
+        Lists.addSearch();
     }
 });
 

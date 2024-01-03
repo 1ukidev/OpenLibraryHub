@@ -36,7 +36,7 @@ const Others = Object.freeze({
      * Faz backup dos dados do localStorage.
      * 
      * @returns {void}
-     * @returns {boolean} - Retorna false se não houver dados no localStorage.
+     * @returns {boolean} Retorna false se não houver dados no localStorage.
      */
     makeBackupLocalStorage: () => {
         console.log("Fazendo backup...");
@@ -56,7 +56,7 @@ const Others = Object.freeze({
         const jsonBackupData = JSON.stringify(data);
     
         const blob = new Blob([jsonBackupData], { type: "application/json" });
-        const link = document.createElement("a");
+        const link = DOM.element("a");
         const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
         link.href = URL.createObjectURL(blob);
         link.download = `OpenLibraryHubBackup (${new Date().toLocaleString('pt-BR', dateOptions)}).json`;
@@ -69,11 +69,11 @@ const Others = Object.freeze({
      * Recupera os dados do backup.
      * 
      * @returns {void}
-     * @returns {boolean} - Retorna false se houver algum erro ao recuperar o backup.
+     * @returns {boolean} Retorna false se houver algum erro ao recuperar o backup.
      */
     recoverBackupLocalStorage: () => {
         console.log("Recuperando backup...");
-        const input = document.createElement("input");
+        const input = DOM.element("input");
         input.type = "file";
         input.accept = ".json";
         input.click();
@@ -117,8 +117,8 @@ const Others = Object.freeze({
      * Máscara para inputs de números.
      * 
      * @param {*} event - Evento do input.
-     * @returns {boolean} - Retorna true se o input for um número.
-     * @returns {boolean} - Retorna false se o input não for um número.
+     * @returns {boolean} Retorna true se o input for um número.
+     * @returns {boolean} Retorna false se o input não for um número.
      */
     numberMask: (event) => {
         const validKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight'];

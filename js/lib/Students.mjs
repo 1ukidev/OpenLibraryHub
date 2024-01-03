@@ -22,7 +22,7 @@ const Students = Object.freeze({
     /**
      * Busca todos os estudantes.
      * 
-     * @returns {Array} - Array com todos os estudantes.
+     * @returns {Array} Array com todos os estudantes.
      */
     getAllStudents: () => {
         const students = [];
@@ -41,8 +41,8 @@ const Students = Object.freeze({
      * Busca um estudante pelo o seu id.
      * 
      * @param {number} id - Id do estudante.
-     * @returns {Object} - Objeto do estudante.
-     * @returns {boolean} - Retorna false se o estudante não foi encontrado.
+     * @returns {Object} Objeto do estudante.
+     * @returns {boolean} Retorna false se o estudante não foi encontrado.
      */
     getStudentById: (id) => {
         console.log(`localStorage: procurando estudante com id "${id}"...`);
@@ -61,8 +61,8 @@ const Students = Object.freeze({
      * Remove um estudante pelo o seu id.
      * 
      * @param {number} id - Id do estudante.
-     * @returns {boolean} - Retorna true se o estudante foi removido com sucesso.
-     * @returns {boolean} - Retorna false se o estudante não foi encontrado.
+     * @returns {boolean} Retorna true se o estudante foi removido com sucesso.
+     * @returns {boolean} Retorna false se o estudante não foi encontrado.
      */
     removeStudentById: (id) => {
         console.log(`localStorage: removendo estudante com id "${id}"...`);

@@ -19,7 +19,7 @@ const Classes = Object.freeze({
     /**
      * Busca todas as turmas.
      * 
-     * @returns {Array} - Array com todas as turmas.
+     * @returns {Array} Array com todas as turmas.
      */
     getAllClasses: () => {
         const classes = [];
@@ -38,8 +38,8 @@ const Classes = Object.freeze({
      * Busca uma turma pelo o seu id.
      * 
      * @param {number} id - Id da turma.
-     * @returns {Object} - Objeto da turma.
-     * @returns {boolean} - Retorna false se a turma não foi encontrada.
+     * @returns {Object} Objeto da turma.
+     * @returns {boolean} Retorna false se a turma não foi encontrada.
      */
     getClassById: (id) => {
         console.log(`localStorage: procurando turma com id "${id}"...`);
@@ -58,8 +58,8 @@ const Classes = Object.freeze({
      * Remove uma turma pelo o seu id.
      * 
      * @param {number} id - Id da turma.
-     * @returns {boolean} - Retorna true se a turma foi removida com sucesso.
-     * @returns {boolean} - Retorna false se a turma não foi encontrada.
+     * @returns {boolean} Retorna true se a turma foi removida com sucesso.
+     * @returns {boolean} Retorna false se a turma não foi encontrada.
      */
     removeClassById: (id) => {
         console.log(`localStorage: removendo turma com id "${id}"...`);

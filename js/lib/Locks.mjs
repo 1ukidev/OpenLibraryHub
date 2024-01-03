@@ -11,7 +11,7 @@ const Locks = Object.freeze({
      */
     createLock: async () => {
         console.log("Criando bloqueio...");
-        const password = document.getElementById("password").value;
+        const password = DOM.id("password").value;
 
         if (password) {
             const passwordHash = await Locks.SHA256(password);
@@ -33,7 +33,7 @@ const Locks = Object.freeze({
      */
     unlock: async () => {
         console.log("Desbloqueando...");
-        const password = document.getElementById("password").value;
+        const password = DOM.id("password").value;
 
         if (password) {
             const lock = JSON.parse(localStorage.getItem("lock"));
@@ -88,7 +88,7 @@ const Locks = Object.freeze({
      * 
      * @async
      * @param {string} password - Senha a ser criptografada.
-     * @returns {string} - Retorna a senha criptografada.
+     * @returns {string} Retorna a senha criptografada.
      */
     SHA256: async (password) => {
         const msgBuffer = new TextEncoder().encode(password);                    

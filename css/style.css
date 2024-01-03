@@ -21,6 +21,16 @@ input {
     color-scheme: dark;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
 select {
     background-color: #111111;
     color: #ffffff;
@@ -91,6 +101,11 @@ select {
 
 .a-5 {
     background-color: #1a1a1a;
+}
+
+.a-6 {
+    background-color: #141414;
+
 }
 
 .linkOpenAllBooks {
