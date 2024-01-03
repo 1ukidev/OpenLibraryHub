@@ -96,10 +96,10 @@ const Pages = Object.freeze({
 
         DOM.divs.lock.innerHTML = `
             <h1>Bem-vindo ao OpenLibraryHub (${version})!</h1>
+            <h2>É aluno e deseja ver os livros disponíveis? <a id="linkOpenAllBooks" class="linkOpenAllBooks">Clique aqui!</a></h2>
             <h2>Insira a senha cadastrada para continuar:</h2>
             <input type="password" id="password" placeholder="Senha">
             <button id="submit">🚪 Entrar</button>
-            <h2>É aluno e deseja ver os livros disponíveis? <a id="linkOpenAllBooks" class="linkOpenAllBooks">Clique aqui!</a></h2>
         `;
 
         const password = document.getElementById("password");

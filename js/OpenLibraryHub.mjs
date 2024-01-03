@@ -1,14 +1,14 @@
 /**
  * OpenLibraryHub
  * 
- * @version 0.4.8
+ * @version 0.4.9
  * @license GPL-3.0-or-later
  * @author 1ukidev <me@1uki.cloud>
  * @author Leonardo Monteiro <leo.monteiro06@live.com>
  */
 
-import { Pages } from './Pages.mjs';
-import { version } from './Constants.mjs';
+import { Pages } from './lib/Pages.mjs';
+import { version } from './lib/Constants.mjs';
 
 // Inicialização do site
 document.body.onload = () => {
