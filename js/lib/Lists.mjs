@@ -93,7 +93,7 @@ const Lists = Object.freeze({
     },
 
     /**
-     * Adiciona a funcionalidade de busca no elemento search.
+     * Adiciona a funcionalidade de busca no input selecionado.
      * 
      * @param {HTMLElement} ul - Elemento HTML que contém a lista.
      * @param {HTMLElement} input - Elemento HTML que contém o input de busca.
