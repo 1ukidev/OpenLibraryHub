@@ -8,7 +8,7 @@ import { Others } from "./Others.mjs";
 import { Forms } from "./Forms.mjs";
 import { version } from "./Constants.mjs";
 
-export const Pages = Object.freeze({
+const Pages = Object.freeze({
     /**
      * Altera o hash do site.
      * O método Pages.route() será executado para alterar a página.
@@ -591,3 +591,5 @@ export const Pages = Object.freeze({
         }
     }
 });
+
+export { Pages };

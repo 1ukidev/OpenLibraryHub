@@ -5,7 +5,7 @@
  * @param {string} password - Senha do bloqueio.
  * @param {string} status - Status do bloqueio.
  */
-export const Lock = class {
+const Lock = class {
     constructor(password, status) {
         this.password = password;
         this.status = status;
@@ -25,7 +25,7 @@ export const Lock = class {
  * @param {number} lentTo - Id do estudante que pegou o livro emprestado. Padrão: null.
  * @param {string} lentDate - Data de entrega do livro. Padrão: null.
  */
-export const Book = class {
+const Book = class {
     constructor(id, name, author, pages, year) {
         this.id = id;
         this.name = name;
@@ -47,7 +47,7 @@ export const Book = class {
  * @param {string} schoolClass - Turma do estudante.
  * @param {number} lentBook - Id do livro que o estudante pegou emprestado. Padrão: null.
  */ 
-export const Student = class {
+const Student = class {
     constructor(id, name, schoolClass) {
         this.id = id;
         this.name = name;
@@ -63,9 +63,11 @@ export const Student = class {
  * @param {number} id - Id da turma.
  * @param {string} name - Nome da turma.
  */
-export const Class = class {
+const Class = class {
     constructor(id, name) {
         this.id = id;
         this.name = name;
     }
 }
+
+export { Lock, Book, Student, Class };

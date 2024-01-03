@@ -3,7 +3,7 @@ import { Students } from "./Students.mjs";
 import { Classes } from "./Classes.mjs";
 import { Lists } from "./Lists.mjs";
 
-export const Forms = Object.freeze({
+const Forms = Object.freeze({
     /**
      * Executa o formulário (form1) para adicionar um livro.
      * 
@@ -295,3 +295,5 @@ export const Forms = Object.freeze({
         }
     }
 });
+
+export { Forms };

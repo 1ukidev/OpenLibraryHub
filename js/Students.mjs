@@ -2,7 +2,7 @@ import { Student } from "./Abstract.mjs";
 import { Books } from "./Books.mjs";
 import { Lists } from "./Lists.mjs";
 
-export const Students = Object.freeze({
+const Students = Object.freeze({
     /**
      * Adiciona um estudante ao localStorage.
      * 
@@ -88,3 +88,5 @@ export const Students = Object.freeze({
         }
     }
 });
+
+export { Students };

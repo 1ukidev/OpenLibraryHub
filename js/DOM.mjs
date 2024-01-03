@@ -1,4 +1,4 @@
-export const DOM = Object.freeze({
+const DOM = Object.freeze({
     /**
      * Divs do DOM.
      * 
@@ -12,3 +12,5 @@ export const DOM = Object.freeze({
         others: document.getElementById("others")
     })
 });
+
+export { DOM };

@@ -2,7 +2,7 @@ import { DOM } from "./DOM.mjs";
 import { Pages } from "./Pages.mjs";
 import { Lock } from "./Abstract.mjs";
 
-export const Locks = Object.freeze({
+const Locks = Object.freeze({
     /**
      * Salva a senha do input no localStorage e desbloqueia a página.
      * 
@@ -98,3 +98,5 @@ export const Locks = Object.freeze({
         return hashHex;
     }
 });
+
+export { Locks };

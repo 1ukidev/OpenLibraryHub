@@ -1,7 +1,7 @@
 import { Locks } from "./Locks.mjs";
 import { version } from "./Constants.mjs";
 
-export const Others = Object.freeze({
+const Others = Object.freeze({
     /**
      * Verifica se há atualizações.
      * 
@@ -132,3 +132,5 @@ export const Others = Object.freeze({
         }
     }
 });
+
+export { Others };

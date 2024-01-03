@@ -1,7 +1,7 @@
 import { Class } from "./Abstract.mjs";
 import { Lists } from "./Lists.mjs";
 
-export const Classes = Object.freeze({
+const Classes = Object.freeze({
     /**
      * Adiciona uma turma ao localStorage.
      * 
@@ -77,3 +77,5 @@ export const Classes = Object.freeze({
         }
     }
 });
+
+export { Classes };

@@ -2,7 +2,7 @@ import { Books } from "./Books.mjs";
 import { Students } from "./Students.mjs";
 import { Classes } from "./Classes.mjs";
 
-export const Lists = Object.freeze({
+const Lists = Object.freeze({
     /**
      * Mostra todos os livros no elemento bookList.
      * 
@@ -68,3 +68,5 @@ export const Lists = Object.freeze({
         });
     }
 });
+
+export { Lists };
