@@ -8,8 +8,7 @@ const Forms = Object.freeze({
     /**
      * Executa o formulário para adicionar um livro.
      * 
-     * @returns {boolean} Retorna true se o livro foi adicionado com sucesso.
-     * @returns {boolean} Retorna false se o livro não foi adicionado.
+     * @returns {void}
      */
     runFormAddBook: () => {
         const bookName = DOM.id("bookName");
@@ -24,18 +23,15 @@ const Forms = Object.freeze({
             bookPages.value = "";
             bookYear.value = "";
             Lists.showBookList();
-            return true;
         } else {
             alert("Por favor, insira todos os dados do livro.");
-            return false;
         }
     },
 
     /**
      * Executa o formulário para adicionar um estudante.
      * 
-     * @returns {boolean} Retorna true se o estudante foi adicionado com sucesso.
-     * @returns {boolean} Retorna false se o estudante não foi adicionado.
+     * @returns {void}
      */
     runFormAddStudent: () => {
         const studentName = DOM.id("studentName");
@@ -49,18 +45,15 @@ const Forms = Object.freeze({
             Students.addStudent(localStorage.length, studentName.value, studentClass.value);
             studentName.value = "";
             Lists.showStudentList();
-            return true;
         } else {
             alert("Por favor, insira o nome do estudante.");
-            return false;
         }
     },
 
     /**
      * Executa o formulário para adicionar uma turma.
      * 
-     * @returns {boolean} Retorna true se a turma foi adicionada com sucesso.
-     * @returns {boolean} Retorna false se a turma não foi adicionada.
+     * @returns {void}
      */
     runFormAddClass: () => {
         const className = DOM.id("className");
@@ -69,18 +62,15 @@ const Forms = Object.freeze({
             Classes.addClass(localStorage.length, className.value);
             className.value = "";
             Lists.showClassList();
-            return true;
         } else {
             alert("Por favor, insira o nome da turma.");
-            return false;
         }
     },
 
     /**
      * Executa o formulário para emprestar um livro pelo o seu id.
      * 
-     * @returns {boolean} Retorna true se o livro foi emprestado com sucesso.
-     * @returns {boolean} Retorna false se o livro não foi emprestado.
+     * @returns {void}
      */
     runFormLendBook: () => {
         const bookId = DOM.id("bookId");
@@ -96,22 +86,18 @@ const Forms = Object.freeze({
                 Lists.showBookList();
                 Lists.showStudentList();
                 alert("Livro emprestado com sucesso!");
-                return true;
             } else {
                 alert("O livro ou o estudante não está cadastrado.");
-                return false;
             }
         } else {
             alert("Por favor, insira todos os dados.");
-            return false;
         }
     },
 
     /**
      * Executa o formulário para devolver um livro pelo o seu id.
      * 
-     * @returns {boolean} Retorna true se o livro foi devolvido com sucesso.
-     * @returns {boolean} Retorna false se o livro não foi devolvido.
+     * @returns {void}
      */
     runFormReturnBook: () => {
         const bookId = DOM.id("bookId");
@@ -131,72 +117,59 @@ const Forms = Object.freeze({
                     Lists.showBookList();
                     Lists.showStudentList();
                     alert(`O livro com id "${bookId.value}" foi devolvido com sucesso!`);
-                    return true;
                 } else {
                     alert(`O livro com id "${bookId.value}" não está emprestado.`);
-                    return false;
                 }
             } else {
                 alert(`O livro com id "${bookId.value}" não está cadastrado.`);
-                return false;
             }
         } else {
             alert("Por favor, insira o id do livro.");
-            return false;
         }
     },
 
     /**
      * Executa o formulário para remover um livro pelo o seu id.
      * 
-     * @returns {boolean} Retorna true se o livro foi removido com sucesso.
-     * @returns {boolean} Retorna false se o livro não foi removido.
+     * @returns {void}
      */
     runFormRemoveBook: () => {
         const bookId = DOM.id("bookId");
 
         if (bookId.value) {
             Books.removeBookById(bookId.value);
-            return true;
         } else {
             alert("Por favor, insira o id do livro.");
-            return false;
         }
     },
 
     /**
      * Executa o formulário para remover um estudante pelo o seu id.
      * 
-     * @returns {boolean} Retorna true se o estudante foi removido com sucesso.
-     * @returns {boolean} Retorna false se o estudante não foi removido.
+     * @returns {void}
      */
     runFormRemoveStudent: () => {
         const studentId = DOM.id("studentId");
 
         if (studentId.value) {
             Students.removeStudentById(studentId.value);
-            return true;
         } else {
             alert("Por favor, insira o id do estudante.");
-            return false;
         }
     },
 
     /**
      * Executa o formulário para remover uma turma pelo o seu id.
      * 
-     * @returns {boolean} Retorna true se a turma foi removida com sucesso.
-     * @returns {boolean} Retorna false se a turma não foi removida.
+     * @returns {void}
      */
     runFormRemoveClass: () => {
         const classId = DOM.id("classId");
 
         if (classId.value) {
             Classes.removeClassById(classId.value);
-            return true;
         } else {
             alert("Por favor, insira o id da turma.");
-            return false;
         }
     }
 });

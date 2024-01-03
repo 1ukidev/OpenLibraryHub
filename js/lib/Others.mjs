@@ -110,8 +110,14 @@ const Others = Object.freeze({
     deleteLocalStorage: () => {
         console.log("localStorage: apagando todos os dados...");
         Locks.checkLock();
-        localStorage.clear();
-        location.href = "";
+
+        let msg = "Tem certeza que deseja apagar todos os dados?\n";
+        msg += "Todos os dados serão perdidos!\n";
+
+        if (confirm(msg)) {
+            localStorage.clear();
+            location.href = "";
+        }
     },
 
     /**

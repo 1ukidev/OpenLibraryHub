@@ -1,7 +1,7 @@
 /**
  * OpenLibraryHub
  * 
- * @version 0.5.5
+ * @version 0.5.6
  * @license GPL-3.0-or-later
  * @author 1ukidev <me@1uki.cloud>
  * @author Leonardo Monteiro <leo.monteiro06@live.com>

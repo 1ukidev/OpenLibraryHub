@@ -79,7 +79,7 @@ const Pages = Object.freeze({
             }
         });
 
-        submit.onclick = async () => await Locks.createLock();
+        submit.onclick = () => Locks.createLock();
     },
 
     /**
@@ -119,7 +119,7 @@ const Pages = Object.freeze({
             Pages.openAllBooksPage();
         }
 
-        submit.onclick = async () => await Locks.unlock();
+        submit.onclick = () => Locks.unlock();
     },
 
     /**
@@ -665,8 +665,8 @@ const Pages = Object.freeze({
                 <br><br>
 
                 <div id="formRemoveClass">
-                    <label for="classId">Remover turma de id:</label>
-                    <input type="number" id="classId">
+                    <label for="classId">Remover turma de id:</label>&nbsp;
+                    <input type="number" id="classId">&nbsp;
                     <button id="btnSubmitRemoveClass">Remover</button>
                 </div>
             `;
@@ -706,16 +706,16 @@ const Pages = Object.freeze({
         Locks.checkLock();        
 
         DOM.divs.content.innerHTML = `
-            <button id="btnResetAll">Resetar tudo</button>&nbsp;&nbsp;
+            <button id="btnCheckUpdate">Verificar se há atualizações</button>&nbsp;&nbsp;
             <button id="btnMakeBackup">Fazer backup dos dados</button>&nbsp;&nbsp;
             <button id="btnRecoverBackup">Recuperar o backup</button>&nbsp;&nbsp;
-            <button id="btnCheckUpdate">Verificar se há atualizações</button>
+            <button id="btnResetAll">Resetar tudo</button>
         `;
 
-        DOM.id("btnResetAll").onclick = () => Others.deleteLocalStorage();
+        DOM.id("btnCheckUpdate").onclick = () => Others.checkUpdate();
         DOM.id("btnMakeBackup").onclick = () => Others.makeBackupLocalStorage();
         DOM.id("btnRecoverBackup").onclick = () => Others.recoverBackupLocalStorage();
-        DOM.id("btnCheckUpdate").onclick = () => Others.checkUpdate();
+        DOM.id("btnResetAll").onclick = () => Others.deleteLocalStorage();
     },
 
     /**
