@@ -24,7 +24,7 @@ const Books = Object.freeze({
     /**
      * Busca todos os livros.
      * 
-     * @returns {Array} - Array com todos os livros.
+     * @returns {Array} Array com todos os livros.
      */
     getAllBooks: () => {
         const books = [];
