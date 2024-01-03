@@ -226,9 +226,9 @@ const Pages = Object.freeze({
             <br>
         `;
 
-        const addSearchInput = () => {
+        const addBookList = () => {
             DOM.divs.content.innerHTML += `
-                <h2>Lista de estudantes:</h2>
+                <h2>Lista de livros:</h2>
                 <label for="search">Pesquise pelo nome:</label>
                 <input type="text" id="search">
                 <ul id="bookList"></ul>
@@ -237,6 +237,19 @@ const Pages = Object.freeze({
             const bookList = DOM.id("bookList");
             Lists.addSearch(bookList);
             Lists.showBookList();
+        }
+
+        const addStudentList = () => {
+            DOM.divs.content.innerHTML += `
+                <h2>Lista de estudantes:</h2>
+                <label for="search">Pesquise pelo nome:</label>
+                <input type="text" id="search">
+                <ul id="studentList"></ul>
+            `;
+
+            const studentList = DOM.id("studentList");
+            Lists.addSearch(studentList);
+            Lists.showStudentList();
         }
 
         const openSaveBookForm = () => {
@@ -253,7 +266,7 @@ const Pages = Object.freeze({
                 </div>
             `;
 
-            addSearchInput();
+            addBookList();
 
             DOM.id("btnBack").onclick = () => Pages.openBookPage();
             DOM.id("btnSubmitAddBook").onclick = () => Forms.runFormAddBook();
@@ -311,7 +324,8 @@ const Pages = Object.freeze({
                 </div>
             `;
 
-            addSearchInput();
+            addBookList();
+            addStudentList();
 
             DOM.id("btnBack").onclick = () => Pages.openBookPage();
             DOM.id("btnSubmitLendBook").onclick = () => Forms.runFormLendBook();
@@ -358,7 +372,8 @@ const Pages = Object.freeze({
                 </div>
             `;
 
-            addSearchInput();
+            addBookList();
+            addStudentList();
 
             DOM.id("btnBack").onclick = () => Pages.openBookPage();
             DOM.id("btnSubmitCheckLentBook").onclick = () => Forms.runFormCheckLentBook();
@@ -389,7 +404,8 @@ const Pages = Object.freeze({
                 </div>
             `;
 
-            addSearchInput();
+            addBookList();
+            addStudentList();
 
             DOM.id("btnBack").onclick = () => Pages.openBookPage();
             DOM.id("btnSubmitReturnBook").onclick = () => Forms.runFormReturnBook();
@@ -420,7 +436,7 @@ const Pages = Object.freeze({
                 </div>
             `;
 
-            addSearchInput();
+            addBookList();
 
             DOM.id("btnBack").onclick = () => Pages.openBookPage();
             DOM.id("btnSubmitRemoveBook").onclick = () => Forms.runFormRemoveBook();
@@ -439,7 +455,7 @@ const Pages = Object.freeze({
             });
         }
 
-        addSearchInput();
+        addBookList();
 
         DOM.id("btnOpenSaveBookForm").onclick = () => openSaveBookForm();
         DOM.id("btnOpenLendBookForm").onclick = () => openLendBookForm();
@@ -463,7 +479,7 @@ const Pages = Object.freeze({
             <br>
         `;
 
-        const addSearchInput = () => {
+        const addStudentList = () => {
             DOM.divs.content.innerHTML += `
                 <h2>Lista de estudantes:</h2>
                 <label for="search">Pesquise pelo nome:</label>
@@ -490,7 +506,7 @@ const Pages = Object.freeze({
                 </div>
             `;
 
-            addSearchInput();
+            addStudentList();
 
             DOM.id("btnBack").onclick = () => Pages.openStudentPage();
             DOM.id("btnSubmitAddStudent").onclick = () => Forms.runFormAddStudent();
@@ -533,7 +549,7 @@ const Pages = Object.freeze({
                 </div>
             `;
 
-            addSearchInput();
+            addStudentList();
 
             DOM.id("btnBack").onclick = () => Pages.openStudentPage();
             DOM.id("btnSubmitRemoveStudent").onclick = () => Forms.runFormRemoveStudent();
@@ -552,7 +568,7 @@ const Pages = Object.freeze({
             });
         }
 
-        addSearchInput();
+        addStudentList();
 
         DOM.id("btnOpenSaveStudentForm").onclick = () => openSaveStudentForm();
         DOM.id("btnOpenRemoveStudentForm").onclick = () => openRemoveStudentForm();
@@ -573,7 +589,7 @@ const Pages = Object.freeze({
             <br>
         `;
 
-        const addSearchInput = () => {
+        const addClassList = () => {
             DOM.divs.content.innerHTML += `
                 <h2>Lista de turmas:</h2>
                 <label for="search">Pesquise pelo nome:</label>
@@ -597,7 +613,7 @@ const Pages = Object.freeze({
                 </div>
             `;
 
-            addSearchInput();
+            addClassList();
 
             DOM.id("btnBack").onclick = () => Pages.openClassPage();
             DOM.id("btnSubmitAddClass").onclick = () => Forms.runFormAddClass();
@@ -626,7 +642,7 @@ const Pages = Object.freeze({
                 </div>
             `;
 
-            addSearchInput();
+            addClassList();
 
             DOM.id("btnBack").onclick = () => Pages.openClassPage();
             DOM.id("btnSubmitRemoveClass").onclick = () => Forms.runFormRemoveClass();
@@ -645,7 +661,7 @@ const Pages = Object.freeze({
             });
         }
 
-        addSearchInput();
+        addClassList();
 
         DOM.id("btnOpenSaveClassForm").onclick = () => openSaveClassForm();
         DOM.id("btnOpenRemoveClassForm").onclick = () => openRemoveClassForm();
