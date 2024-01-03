@@ -95,15 +95,14 @@ const Lists = Object.freeze({
     /**
      * Adiciona a funcionalidade de busca no elemento search.
      * 
-     * @param {HTMLElement} list - Elemento HTML que contém a lista.
+     * @param {HTMLElement} ul - Elemento HTML que contém a lista.
+     * @param {HTMLElement} input - Elemento HTML que contém o input de busca.
      * @returns {void}
      */
-    addSearch: (list) => {
-        const search = DOM.id("search");
-
-        search.onkeyup = () => {
+    addSearch: (input, ul) => {
+        input.onkeyup = () => {
             const searchValue = search.value.toUpperCase();
-            const lis = list.getElementsByTagName("li");
+            const lis = ul.getElementsByTagName("li");
 
             for (let i = 0; i < lis.length; i++) {
                 const li = lis[i];

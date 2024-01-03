@@ -64,7 +64,7 @@ const Pages = Object.freeze({
         DOM.divs.lock.innerHTML = `
             <h1>Bem-vindo ao OpenLibraryHub (${version})!</h1>
             <h2>Crie uma senha antes de começar:</h2>
-            <input type="password" id="password" placeholder="Senha">
+            <input type="password" id="password" placeholder="Senha">&nbsp;
             <button id="submit">🚪 Cadastrar</button>
         `;
 
@@ -98,7 +98,7 @@ const Pages = Object.freeze({
             <h1>Bem-vindo ao OpenLibraryHub (${version})!</h1>
             <h2>É aluno e deseja ver os livros disponíveis? <a id="linkOpenAllBooks" class="linkOpenAllBooks">Clique aqui!</a></h2>
             <h2>Insira a senha cadastrada para continuar:</h2>
-            <input type="password" id="password" placeholder="Senha">
+            <input type="password" id="password" placeholder="Senha">&nbsp;
             <button id="submit">🚪 Entrar</button>
         `;
 
@@ -220,48 +220,63 @@ const Pages = Object.freeze({
         DOM.divs.content.innerHTML = `
             <button id="btnOpenSaveBookForm">Adicionar livro</button>&nbsp;&nbsp;
             <button id="btnOpenLendBookForm">Emprestar um livro</button>&nbsp;&nbsp;
-            <button id="btnOpenCheckLentBookForm">Verificar se um livro está emprestado</button>&nbsp;&nbsp;
             <button id="btnOpenReturnBookForm">Devolver livro</button>&nbsp;&nbsp;
             <button id="btnOpenRemoveBookForm">Remover livro</button>
             <br>
         `;
 
+        /**
+         * Adiciona a lista de livros.
+         * 
+         * @returns {void}
+         */
         const addBookList = () => {
             DOM.divs.content.innerHTML += `
                 <h2>Lista de livros:</h2>
-                <label for="search">Pesquise pelo nome:</label>
+                <label for="search">Pesquise pelo nome:</label>&nbsp;
                 <input type="text" id="search">
                 <ul id="bookList"></ul>
             `;
 
+            const search = DOM.id("search");
             const bookList = DOM.id("bookList");
-            Lists.addSearch(bookList);
+            Lists.addSearch(search, bookList);
             Lists.showBookList();
         }
 
+        /**
+         * Adiciona a lista de estudantes.
+         * 
+         * @returns {void}
+         */
         const addStudentList = () => {
             DOM.divs.content.innerHTML += `
                 <h2>Lista de estudantes:</h2>
-                <label for="search">Pesquise pelo nome:</label>
-                <input type="text" id="search">
+                <label for="search">Pesquise pelo nome:</label>&nbsp;
+                <input type="text" id="search2">
                 <ul id="studentList"></ul>
             `;
-
             const studentList = DOM.id("studentList");
-            Lists.addSearch(studentList);
+            const search2 = DOM.id("search2");
+            Lists.addSearch(search2, studentList);
             Lists.showStudentList();
         }
 
+        /**
+         * Abre o formulário para adicionar um livro.
+         * 
+         * @returns {void}
+         */
         const openSaveBookForm = () => {
             DOM.divs.content.innerHTML = `
                 <button id="btnBack">◀️ Voltar</button>
                 <br><br>
 
                 <div id="formAddBook">
-                    <input type="text" id="bookName" placeholder="Nome">
-                    <input type="text" id="bookAuthor" placeholder="Autor">
-                    <input type="number" id="bookPages" placeholder="Quantidade de páginas">
-                    <input type="number" id="bookYear" placeholder="Ano">
+                    <input type="text" id="bookName" placeholder="Nome">&nbsp;
+                    <input type="text" id="bookAuthor" placeholder="Autor">&nbsp;
+                    <input type="number" id="bookPages" placeholder="Quantidade de páginas">&nbsp;
+                    <input type="number" id="bookYear" placeholder="Ano">&nbsp;
                     <button id="btnSubmitAddBook">Adicionar</button>
                 </div>
             `;
@@ -308,18 +323,23 @@ const Pages = Object.freeze({
             });
         }
 
+        /**
+         * Abre o formulário para emprestar um livro.
+         * 
+         * @returns {void}
+         */
         const openLendBookForm = () => {
             DOM.divs.content.innerHTML = `
                 <button id="btnBack">◀️ Voltar</button>
                 <br><br>
 
                 <div id="formLendBook">
-                    <label for="bookId2">Emprestar livro de id:</label>
-                    <input type="number" id="bookId2">
-                    <label for="studentId">para o estudante de id:</label>
-                    <input type="number" id="studentId">
-                    <label for="lentDate">Data de entrega:</label>
-                    <input type="date" id="lentDate">
+                    <label for="bookId">Emprestar livro de id:</label>&nbsp;
+                    <input type="number" id="bookId">&nbsp;
+                    <label for="studentId">para o estudante de id:</label>&nbsp;
+                    <input type="number" id="studentId">&nbsp;
+                    <label for="lentDate">Data de entrega:</label>&nbsp;
+                    <input type="date" id="lentDate">&nbsp;
                     <button id="btnSubmitLendBook">Emprestar</button>
                 </div>
             `;
@@ -330,12 +350,12 @@ const Pages = Object.freeze({
             DOM.id("btnBack").onclick = () => Pages.openBookPage();
             DOM.id("btnSubmitLendBook").onclick = () => Forms.runFormLendBook();
 
-            const bookId2 = DOM.id("bookId2");
+            const bookId = DOM.id("bookId");
             const studentId = DOM.id("studentId");
             const lentDate = DOM.id("lentDate");
-            bookId2.focus();
+            bookId.focus();
 
-            bookId2.addEventListener("keypress", (event) => {
+            bookId.addEventListener("keypress", (event) => {
                 if (event.key === "Enter") {
                     event.preventDefault();
                     studentId.focus();
@@ -355,51 +375,24 @@ const Pages = Object.freeze({
                 if (event.key === "Enter") {
                     event.preventDefault();
                     btnSubmitLendBook.click();
-                    bookId2.focus();
+                    bookId.focus();
                 }
             });
         }
 
-        const openCheckLentBookForm = () => {
-            DOM.divs.content.innerHTML = `
-                <button id="btnBack">◀️ Voltar</button>
-                <br><br>
-
-                <div id="formCheckLentBook">
-                    <label for="bookId3">Verificar se o livro está emprestado pelo id:</label>
-                    <input type="number" id="bookId3">
-                    <button id="btnSubmitCheckLentBook">Buscar</button>
-                </div>
-            `;
-
-            addBookList();
-            addStudentList();
-
-            DOM.id("btnBack").onclick = () => Pages.openBookPage();
-            DOM.id("btnSubmitCheckLentBook").onclick = () => Forms.runFormCheckLentBook();
-
-            const bookId3 = DOM.id("bookId3");
-            bookId3.focus();
-
-            bookId3.addEventListener("keypress", (event) => {
-                if (event.key === "Enter") {
-                    event.preventDefault();
-                    btnSubmitCheckLentBook.click();
-                    bookId3.focus();
-                } else if (!Others.numberMask(event)) {
-                    event.preventDefault();
-                }
-            });
-        }
-
+        /**
+         * Abre o formulário para devolver um livro.
+         * 
+         * @returns {void}
+         */
         const openReturnBookForm = () => {
             DOM.divs.content.innerHTML = `
                 <button id="btnBack">◀️ Voltar</button>
                 <br><br>
 
                 <div id="formReturnBook">
-                    <label for="bookId4">Devolver livro de id:</label>
-                    <input type="number" id="bookId4">
+                    <label for="bookId">Devolver livro de id:</label>&nbsp;
+                    <input type="number" id="bookId">&nbsp;
                     <button id="btnSubmitReturnBook">Devolver</button>
                 </div>
             `;
@@ -410,28 +403,33 @@ const Pages = Object.freeze({
             DOM.id("btnBack").onclick = () => Pages.openBookPage();
             DOM.id("btnSubmitReturnBook").onclick = () => Forms.runFormReturnBook();
 
-            const bookId4 = DOM.id("bookId4");
-            bookId4.focus();
+            const bookId = DOM.id("bookId");
+            bookId.focus();
 
-            bookId4.addEventListener("keypress", (event) => {
+            bookId.addEventListener("keypress", (event) => {
                 if (event.key === "Enter") {
                     event.preventDefault();
                     btnSubmitReturnBook.click();
-                    bookId4.focus();
+                    bookId.focus();
                 } else if (!Others.numberMask(event)) {
                     event.preventDefault();
                 }
             });
         }
 
+        /**
+         * Abre o formulário para remover um livro.
+         * 
+         * @returns {void}
+         */
         const openRemoveBookForm = () => {
             DOM.divs.content.innerHTML = `
                 <button id="btnBack">◀️ Voltar</button>
                 <br><br>
 
                 <div id="formRemoveBook">
-                    <label for="bookId5">Remover livro de id:</label>
-                    <input type="number" id="bookId5">
+                    <label for="bookId">Remover livro de id:</label>&nbsp;
+                    <input type="number" id="bookId">&nbsp;
                     <button id="btnSubmitRemoveBook">Remover</button>
                 </div>
             `;
@@ -441,14 +439,14 @@ const Pages = Object.freeze({
             DOM.id("btnBack").onclick = () => Pages.openBookPage();
             DOM.id("btnSubmitRemoveBook").onclick = () => Forms.runFormRemoveBook();
 
-            const bookId5 = DOM.id("bookId5");
-            bookId5.focus();
+            const bookId = DOM.id("bookId");
+            bookId.focus();
 
-            bookId5.addEventListener("keypress", (event) => {
+            bookId.addEventListener("keypress", (event) => {
                 if (event.key === "Enter") {
                     event.preventDefault();
                     btnSubmitRemoveBook.click();
-                    bookId5.focus();
+                    bookId.focus();
                 } else if (!Others.numberMask(event)) {
                     event.preventDefault();
                 }
@@ -459,7 +457,6 @@ const Pages = Object.freeze({
 
         DOM.id("btnOpenSaveBookForm").onclick = () => openSaveBookForm();
         DOM.id("btnOpenLendBookForm").onclick = () => openLendBookForm();
-        DOM.id("btnOpenCheckLentBookForm").onclick = () => openCheckLentBookForm();
         DOM.id("btnOpenReturnBookForm").onclick = () => openReturnBookForm();
         DOM.id("btnOpenRemoveBookForm").onclick = () => openRemoveBookForm();
     },
@@ -479,29 +476,40 @@ const Pages = Object.freeze({
             <br>
         `;
 
+        /**
+         * Adiciona a lista de estudantes.
+         * 
+         * @returns {void}
+         */
         const addStudentList = () => {
             DOM.divs.content.innerHTML += `
                 <h2>Lista de estudantes:</h2>
-                <label for="search">Pesquise pelo nome:</label>
+                <label for="search">Pesquise pelo nome:</label>&nbsp;
                 <input type="text" id="search">
                 <ul id="studentList"></ul>
             `;
 
+            const search = DOM.id("search");
             const studentList = DOM.id("studentList");
-            Lists.addSearch(studentList);
+            Lists.addSearch(search, studentList);
             Lists.showStudentList();
         }
 
+        /**
+         * Abre o formulário para adicionar um estudante.
+         * 
+         * @returns {void}
+         */
         const openSaveStudentForm = () => {
             DOM.divs.content.innerHTML = `
                 <button id="btnBack">◀️ Voltar</button>
                 <br><br>
 
                 <div id="formAddStudent">
-                    <input type="text" id="studentName" placeholder="Nome">
+                    <input type="text" id="studentName" placeholder="Nome">&nbsp;
                     <select id="studentClass">
                         <option value="" disabled selected>Selecione a turma</option>
-                    </select>
+                    </select>&nbsp;
                     <button id="btnSubmitAddStudent">Adicionar</button>
                 </div>
             `;
@@ -537,14 +545,19 @@ const Pages = Object.freeze({
             });
         }
 
+        /**
+         * Abre o formulário para remover um estudante.
+         * 
+         * @returns {void}
+         */
         const openRemoveStudentForm = () => {
             DOM.divs.content.innerHTML = `
                 <button id="btnBack">◀️ Voltar</button>
                 <br><br>
 
                 <div id="formRemoveStudent">
-                    <label for="studentId3">Remover estudante de id:</label>
-                    <input type="number" id="studentId3">
+                    <label for="studentId">Remover estudante de id:</label>&nbsp;
+                    <input type="number" id="studentId">&nbsp;
                     <button id="btnSubmitRemoveStudent">Remover</button>
                 </div>
             `;
@@ -554,14 +567,14 @@ const Pages = Object.freeze({
             DOM.id("btnBack").onclick = () => Pages.openStudentPage();
             DOM.id("btnSubmitRemoveStudent").onclick = () => Forms.runFormRemoveStudent();
 
-            const studentId3 = DOM.id("studentId3");
-            studentId3.focus();
+            const studentId = DOM.id("studentId");
+            studentId.focus();
 
-            studentId3.addEventListener("keypress", (event) => {
+            studentId.addEventListener("keypress", (event) => {
                 if (event.key === "Enter") {
                     event.preventDefault();
                     btnSubmitRemoveStudent.click();
-                    studentId3.focus();
+                    studentId.focus();
                 } else if (!Others.numberMask(event)) {
                     event.preventDefault();
                 }
@@ -589,26 +602,37 @@ const Pages = Object.freeze({
             <br>
         `;
 
+        /**
+         * Adiciona a lista de turmas.
+         * 
+         * @returns {void}
+         */
         const addClassList = () => {
             DOM.divs.content.innerHTML += `
                 <h2>Lista de turmas:</h2>
-                <label for="search">Pesquise pelo nome:</label>
+                <label for="search">Pesquise pelo nome:</label>&nbsp;
                 <input type="text" id="search">
                 <ul id="classList"></ul>
             `;
 
+            const search = DOM.id("search");
             const classList = DOM.id("classList");
-            Lists.addSearch(classList);
+            Lists.addSearch(search, classList);
             Lists.showClassList();
         }
 
+        /**
+         * Abre o formulário para adicionar uma turma.
+         * 
+         * @returns {void}
+         */
         const openSaveClassForm = () => {
             DOM.divs.content.innerHTML = `
                 <button id="btnBack">◀️ Voltar</button>
                 <br><br>
 
                 <div id="formAddClass">
-                    <input type="text" id="className" placeholder="Nome">
+                    <input type="text" id="className" placeholder="Nome">&nbsp;
                     <button id="btnSubmitAddClass">Adicionar</button>
                 </div>
             `;
@@ -630,14 +654,19 @@ const Pages = Object.freeze({
             });
         }
 
+        /**
+         * Abre o formulário para remover uma turma.
+         * 
+         * @returns {void}
+         */
         const openRemoveClassForm = () => {
             DOM.divs.content.innerHTML = `
                 <button id="btnBack">◀️ Voltar</button>
                 <br><br>
 
                 <div id="formRemoveClass">
-                    <label for="classId3">Remover turma de id:</label>
-                    <input type="number" id="classId3">
+                    <label for="classId">Remover turma de id:</label>
+                    <input type="number" id="classId">
                     <button id="btnSubmitRemoveClass">Remover</button>
                 </div>
             `;
@@ -647,14 +676,14 @@ const Pages = Object.freeze({
             DOM.id("btnBack").onclick = () => Pages.openClassPage();
             DOM.id("btnSubmitRemoveClass").onclick = () => Forms.runFormRemoveClass();
 
-            const classId3 = DOM.id("classId3");
-            classId3.focus();
+            const classId = DOM.id("classId");
+            classId.focus();
 
-            classId3.addEventListener("keypress", (event) => {
+            classId.addEventListener("keypress", (event) => {
                 if (event.key === "Enter") {
                     event.preventDefault();
                     btnSubmitRemoveClass.click();
-                    classId3.focus();
+                    classId.focus();
                 } else if (!Others.numberMask(event)) {
                     event.preventDefault();
                 }
@@ -667,6 +696,12 @@ const Pages = Object.freeze({
         DOM.id("btnOpenRemoveClassForm").onclick = () => openRemoveClassForm();
     },
 
+    /**
+     * Abre a página de outros.
+     * Hash padrão: #outros
+     * 
+     * @returns {void}
+     */
     openOthersPage: () => {
         Locks.checkLock();        
 
@@ -693,7 +728,7 @@ const Pages = Object.freeze({
             <br>
             <button id="back">◀️ Voltar</button>
             <h1>Lista de livros:</h1>
-            <label for="search">Pesquise pelo nome:</label>
+            <label for="search">Pesquise pelo nome:</label>&nbsp;
             <input type="text" id="search">
             <ul id="bookList"></ul>
         `;
@@ -704,8 +739,10 @@ const Pages = Object.freeze({
             Pages.openLockScreen();
         }
 
+        const search = DOM.id("search");
+        const bookList = DOM.id("bookList");
         Lists.showBookListForStudents();
-        Lists.addSearch();
+        Lists.addSearch(search, bookList);
     }
 });
 

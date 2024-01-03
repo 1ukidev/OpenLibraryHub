@@ -83,7 +83,7 @@ const Forms = Object.freeze({
      * @returns {boolean} Retorna false se o livro não foi emprestado.
      */
     runFormLendBook: () => {
-        const bookId = DOM.id("bookId2");
+        const bookId = DOM.id("bookId");
         const studentId = DOM.id("studentId");
         const lentDate = DOM.id("lentDate");
 
@@ -94,6 +94,7 @@ const Forms = Object.freeze({
                 studentId.value = "";
                 lentDate.value = "";
                 Lists.showBookList();
+                Lists.showStudentList();
                 alert("Livro emprestado com sucesso!");
                 return true;
             } else {
@@ -107,42 +108,13 @@ const Forms = Object.freeze({
     },
 
     /**
-     * Executa o formulário para verificar se um livro está emprestado pelo o seu id.
-     * 
-     * @returns {boolean} Retorna true se o livro está emprestado.
-     * @returns {boolean} Retorna false se o livro não está emprestado.
-     */
-    runFormCheckLentBook: () => {
-        const bookId = DOM.id("bookId3");
-
-        if (bookId.value) {
-            const book = Books.getBookById(bookId.value);
-            if (book) {
-                if (book.lent) {
-                    alert(`O livro com id "${bookId.value}" está emprestado para o estudante com id "${book.lentTo}".`);
-                    return true;
-                } else {
-                    alert(`O livro com id "${bookId.value}" não está emprestado.`);
-                    return false;
-                }
-            } else {
-                alert(`O livro com id "${bookId.value}" não está cadastrado.`);
-                return false;
-            }
-        } else {
-            alert("Por favor, insira o id do livro.");
-            return false;
-        }
-    },
-
-    /**
      * Executa o formulário para devolver um livro pelo o seu id.
      * 
      * @returns {boolean} Retorna true se o livro foi devolvido com sucesso.
      * @returns {boolean} Retorna false se o livro não foi devolvido.
      */
     runFormReturnBook: () => {
-        const bookId = DOM.id("bookId4");
+        const bookId = DOM.id("bookId");
 
         if (bookId.value) {
             const book = Books.getBookById(bookId.value);
@@ -157,6 +129,7 @@ const Forms = Object.freeze({
                     localStorage.setItem(bookId.value, JSON.stringify(book));
                     localStorage.setItem(student.id, JSON.stringify(student));
                     Lists.showBookList();
+                    Lists.showStudentList();
                     alert(`O livro com id "${bookId.value}" foi devolvido com sucesso!`);
                     return true;
                 } else {
@@ -180,7 +153,7 @@ const Forms = Object.freeze({
      * @returns {boolean} Retorna false se o livro não foi removido.
      */
     runFormRemoveBook: () => {
-        const bookId = DOM.id("bookId5");
+        const bookId = DOM.id("bookId");
 
         if (bookId.value) {
             Books.removeBookById(bookId.value);
@@ -198,7 +171,7 @@ const Forms = Object.freeze({
      * @returns {boolean} Retorna false se o estudante não foi removido.
      */
     runFormRemoveStudent: () => {
-        const studentId = DOM.id("studentId2");
+        const studentId = DOM.id("studentId");
 
         if (studentId.value) {
             Students.removeStudentById(studentId.value);
@@ -216,7 +189,7 @@ const Forms = Object.freeze({
      * @returns {boolean} Retorna false se a turma não foi removida.
      */
     runFormRemoveClass: () => {
-        const classId = DOM.id("classId2");
+        const classId = DOM.id("classId");
 
         if (classId.value) {
             Classes.removeClassById(classId.value);
