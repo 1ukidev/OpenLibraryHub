@@ -40,7 +40,7 @@ const Forms = Object.freeze({
         if (studentName.value) {
             if (studentClass.value == null || studentClass.value == "" || studentClass.value == "Selecione a turma") {
                 alert("Por favor, selecione a turma do estudante.");
-                return false;
+                return;
             }
             Students.addStudent(localStorage.length, studentName.value, studentClass.value);
             studentName.value = "";
@@ -125,6 +125,96 @@ const Forms = Object.freeze({
             }
         } else {
             alert("Por favor, insira o id do livro.");
+        }
+    },
+
+    /**
+     * Executa o formulário para editar um livro pelo o seu id.
+     * 
+     * @returns {void}
+     */
+    runFormEditBook: () => {
+        const booksSelect = DOM.id("books");
+        const booksSelectId = booksSelect.value.split(" - Id: ")[1];
+        const bookName = DOM.id("bookName");
+        const bookAuthor = DOM.id("bookAuthor");
+        const bookPages = DOM.id("bookPages");
+        const bookYear = DOM.id("bookYear");
+
+        if (!booksSelectId) {
+            alert("Por favor, selecione um livro.");
+            return;
+        }
+
+        if (bookName.value && bookAuthor.value && bookPages.value && bookYear.value) {
+            Books.addBook(booksSelectId, bookName.value, bookAuthor.value, bookPages.value, bookYear.value);
+            booksSelect.value = "";
+            bookName.value = "";
+            bookAuthor.value = "";
+            bookPages.value = "";
+            bookYear.value = "";
+            Lists.showBookList();
+            alert("Livro editado com sucesso!");
+        } else {
+            alert("Por favor, insira todos os dados do livro.");
+        }
+    },
+
+    /**
+     * Executa o formulário para editar um estudante pelo o seu id.
+     * 
+     * @returns {void}
+     */
+    runFormEditStudent: () => {
+        const studentsSelect = DOM.id("students");
+        const studentsSelectId = studentsSelect.value.split(" - Id: ")[1];
+        const studentName = DOM.id("studentName");
+        const studentClass = DOM.id("studentClass");
+
+        if (!studentsSelectId) {
+            alert("Por favor, selecione um estudante.");
+            return;
+        }
+
+        if (studentName.value) {
+            if (studentClass.value == null || studentClass.value == "" || studentClass.value == "Selecione a turma") {
+                alert("Por favor, selecione a turma do estudante.");
+                return;
+            }
+            Students.addStudent(studentsSelectId, studentName.value, studentClass.value);
+            studentsSelect.value = "";
+            studentName.value = "";
+            studentClass.value = "";
+            Lists.showStudentList();
+            alert("Estudante editado com sucesso!");
+        } else {
+            alert("Por favor, insira o nome do estudante.");
+        }
+    },
+
+    /**
+     * Executa o formulário para editar um estudante pelo o seu id.
+     * 
+     * @returns {void}
+     */
+    runFormEditClass: () => {
+        const classesSelect = DOM.id("classes");
+        const classesSelectId = classesSelect.value.split(" - Id: ")[1];
+        const className = DOM.id("className");
+
+        if (!classesSelectId) {
+            alert("Por favor, selecione uma turma.");
+            return;
+        }
+
+        if (className.value) {
+            Classes.addClass(classesSelectId, className.value);
+            classesSelect.value = "";
+            className.value = "";
+            Lists.showClassList();
+            alert("Turma editada com sucesso!");
+        } else {
+            alert("Por favor, insira o nome da turma.");
         }
     },
 

@@ -221,6 +221,7 @@ const Pages = Object.freeze({
             <button id="btnOpenSaveBookForm">Adicionar livro</button>&nbsp;&nbsp;
             <button id="btnOpenLendBookForm">Emprestar um livro</button>&nbsp;&nbsp;
             <button id="btnOpenReturnBookForm">Devolver livro</button>&nbsp;&nbsp;
+            <button id="btnOpenEditBookForm">Editar livro</button>&nbsp;&nbsp;
             <button id="btnOpenRemoveBookForm">Remover livro</button>
             <br>
         `;
@@ -256,6 +257,7 @@ const Pages = Object.freeze({
                 <input type="text" id="search2">
                 <ul id="studentList"></ul>
             `;
+
             const studentList = DOM.id("studentList");
             const search2 = DOM.id("search2");
             Lists.addSearch(search2, studentList);
@@ -418,6 +420,54 @@ const Pages = Object.freeze({
         }
 
         /**
+         * Abre o formulário para editar um livro.
+         * 
+         * @returns {void}
+         */
+        const openEditBookForm = () => {
+            DOM.divs.content.innerHTML = `
+                <button id="btnBack">◀️ Voltar</button>
+                <br><br>
+
+                <div id="formEditBook">
+                    <label for="books">Livro:</label>&nbsp;
+                    <select id="books">
+                        <option value="" disabled selected>Selecione o livro</option>
+                    </select>
+                    <br><br>
+                    <input type="text" id="bookName" placeholder="Nome">&nbsp;
+                    <input type="text" id="bookAuthor" placeholder="Autor">&nbsp;
+                    <input type="number" id="bookPages" placeholder="Quantidade de páginas">&nbsp;
+                    <input type="number" id="bookYear" placeholder="Ano">&nbsp;
+                    <br><br>
+                    <button id="btnSubmitEditBook">Editar</button>
+                </div>
+            `;
+
+            addBookList();
+
+            const books = Books.getAllBooks();
+            const booksSelect = DOM.id("books");
+            books.forEach((book) => {
+                const bookObject = JSON.parse(book);
+                const option = DOM.element("option");
+                option.textContent = `${bookObject.name} - Id: ${bookObject.id}`;
+                booksSelect.appendChild(option);
+            });
+
+            DOM.id("books").onchange = () => {
+                const bookObject = Books.getBookById(DOM.id("books").value.split(" - Id: ")[1]);
+                DOM.id("bookName").value = bookObject.name;
+                DOM.id("bookAuthor").value = bookObject.author;
+                DOM.id("bookPages").value = bookObject.pages;
+                DOM.id("bookYear").value = bookObject.year;
+            }
+
+            DOM.id("btnBack").onclick = () => Pages.openBookPage();
+            DOM.id("btnSubmitEditBook").onclick = () => Forms.runFormEditBook();
+        }
+
+        /**
          * Abre o formulário para remover um livro.
          * 
          * @returns {void}
@@ -458,6 +508,7 @@ const Pages = Object.freeze({
         DOM.id("btnOpenSaveBookForm").onclick = () => openSaveBookForm();
         DOM.id("btnOpenLendBookForm").onclick = () => openLendBookForm();
         DOM.id("btnOpenReturnBookForm").onclick = () => openReturnBookForm();
+        DOM.id("btnOpenEditBookForm").onclick = () => openEditBookForm();
         DOM.id("btnOpenRemoveBookForm").onclick = () => openRemoveBookForm();
     },
 
@@ -472,7 +523,8 @@ const Pages = Object.freeze({
 
         DOM.divs.content.innerHTML = `
             <button id="btnOpenSaveStudentForm">Adicionar estudante</button>&nbsp;&nbsp;
-            <button id="btnOpenRemoveStudentForm">Remover estudante</button>&nbsp;&nbsp;
+            <button id="btnOpenEditStudentForm">Editar estudante</button>&nbsp;&nbsp;
+            <button id="btnOpenRemoveStudentForm">Remover estudante</button>
             <br>
         `;
 
@@ -546,6 +598,58 @@ const Pages = Object.freeze({
         }
 
         /**
+         * Abre o formulário para editar um estudante.
+         * 
+         * @returns {void}
+         */
+        const openEditStudentForm = () => {
+            DOM.divs.content.innerHTML = `
+                <button id="btnBack">◀️ Voltar</button>
+                <br><br>
+
+                <div id="formEditStudent">
+                    <label for="students">Estudante:</label>&nbsp;
+                    <select id="students">
+                        <option value="" disabled selected>Selecione o estudante</option>
+                    </select>
+                    <br><br>
+                    <input type="text" id="studentName" placeholder="Nome"><br><br>
+                    <select id="studentClass">
+                        <option value="" disabled selected>Selecione a turma</option>
+                    </select><br><br>
+                    <button id="btnSubmitEditStudent">Editar</button>
+                </div>
+            `;
+
+            addStudentList();
+
+            const students = Students.getAllStudents();
+            const studentsSelect = DOM.id("students");
+            students.forEach((student) => {
+                const studentObject = JSON.parse(student);
+                const option = DOM.element("option");
+                option.textContent = `${studentObject.name} - Id: ${studentObject.id}`;
+                studentsSelect.appendChild(option);
+            });
+
+            DOM.id("students").onchange = () => {
+                const studentObject = Students.getStudentById(DOM.id("students").value.split(" - Id: ")[1]);
+                DOM.id("studentName").value = studentObject.name;
+                DOM.id("studentClass").value = studentObject.schoolClass;
+            }
+
+            DOM.id("btnBack").onclick = () => Pages.openStudentPage();
+            DOM.id("btnSubmitEditStudent").onclick = () => Forms.runFormEditStudent();
+
+            Classes.getAllClasses().forEach((schoolClass) => {
+                const option = DOM.element("option");
+                const schoolClassObject = JSON.parse(schoolClass);
+                option.textContent = schoolClassObject.name;
+                DOM.id("studentClass").appendChild(option);
+            });
+        }
+
+        /**
          * Abre o formulário para remover um estudante.
          * 
          * @returns {void}
@@ -584,6 +688,7 @@ const Pages = Object.freeze({
         addStudentList();
 
         DOM.id("btnOpenSaveStudentForm").onclick = () => openSaveStudentForm();
+        DOM.id("btnOpenEditStudentForm").onclick = () => openEditStudentForm();
         DOM.id("btnOpenRemoveStudentForm").onclick = () => openRemoveStudentForm();
     },
 
@@ -598,7 +703,8 @@ const Pages = Object.freeze({
 
         DOM.divs.content.innerHTML = `
             <button id="btnOpenSaveClassForm">Adicionar turma</button>&nbsp;&nbsp;
-            <button id="btnOpenRemoveClassForm">Remover turma</button>&nbsp;&nbsp;
+            <button id="btnOpenEditClassForm">Editar turma</button>&nbsp;&nbsp;
+            <button id="btnOpenRemoveClassForm">Remover turma</button>
             <br>
         `;
 
@@ -654,6 +760,42 @@ const Pages = Object.freeze({
             });
         }
 
+        const openEditClassForm = () => {
+            DOM.divs.content.innerHTML = `
+                <button id="btnBack">◀️ Voltar</button>
+                <br><br>
+
+                <div id="formEditClass">
+                    <label for="classes">Turma:</label>&nbsp;
+                    <select id="classes">
+                        <option value="" disabled selected>Selecione a turma</option>
+                    </select>
+                    <br><br>
+                    <input type="text" id="className" placeholder="Nome"><br><br>
+                    <button id="btnSubmitEditClass">Editar</button>
+                </div>
+            `;
+
+            addClassList();
+
+            const classes = Classes.getAllClasses();
+            const classesSelect = DOM.id("classes");
+            classes.forEach((schoolClass) => {
+                const schoolClassObject = JSON.parse(schoolClass);
+                const option = DOM.element("option");
+                option.textContent = `${schoolClassObject.name} - Id: ${schoolClassObject.id}`;
+                classesSelect.appendChild(option);
+            });
+
+            DOM.id("classes").onchange = () => {
+                const schoolClassObject = Classes.getClassById(DOM.id("classes").value.split(" - Id: ")[1]);
+                DOM.id("className").value = schoolClassObject.name;
+            }
+
+            DOM.id("btnBack").onclick = () => Pages.openClassPage();
+            DOM.id("btnSubmitEditClass").onclick = () => Forms.runFormEditClass();
+        }
+
         /**
          * Abre o formulário para remover uma turma.
          * 
@@ -693,6 +835,7 @@ const Pages = Object.freeze({
         addClassList();
 
         DOM.id("btnOpenSaveClassForm").onclick = () => openSaveClassForm();
+        DOM.id("btnOpenEditClassForm").onclick = () => openEditClassForm();
         DOM.id("btnOpenRemoveClassForm").onclick = () => openRemoveClassForm();
     },
 
@@ -709,13 +852,13 @@ const Pages = Object.freeze({
             <button id="btnCheckUpdate">Verificar se há atualizações</button>&nbsp;&nbsp;
             <button id="btnMakeBackup">Fazer backup dos dados</button>&nbsp;&nbsp;
             <button id="btnRecoverBackup">Recuperar o backup</button>&nbsp;&nbsp;
-            <button id="btnResetAll">Resetar tudo</button>
+            <button id="btnReset">Resetar</button>
         `;
 
         DOM.id("btnCheckUpdate").onclick = () => Others.checkUpdate();
         DOM.id("btnMakeBackup").onclick = () => Others.makeBackupLocalStorage();
         DOM.id("btnRecoverBackup").onclick = () => Others.recoverBackupLocalStorage();
-        DOM.id("btnResetAll").onclick = () => Others.deleteLocalStorage();
+        DOM.id("btnReset").onclick = () => Others.deleteLocalStorage();
     },
 
     /**

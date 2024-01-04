@@ -17,14 +17,23 @@ const Lists = Object.freeze({
         books.forEach((book) => {
             const li = DOM.element("li");
             const bookObject = JSON.parse(book);
-            li.textContent = "Nome: " + bookObject.name;
-            li.textContent += " / Autor: " + bookObject.author;
-            li.textContent += " / Páginas: " + bookObject.pages;
-            li.textContent += " / Ano: " + bookObject.year;
-            li.textContent += " / Id: " + bookObject.id;
-            li.textContent += " / Emprestado: " + bookObject.lent;
-            li.textContent += " / Emprestado para: " + bookObject.lentTo;
-            li.textContent += " / Data de entrega: " + bookObject.lentDate;
+            li.textContent = `Nome: ${bookObject.name}`;
+            li.textContent += ` / Autor: ${bookObject.author}`;
+            li.textContent += ` / Ano: ${bookObject.year}`;
+            li.textContent += ` / Páginas: ${bookObject.pages}`;
+            li.textContent += ` / Id: ${bookObject.id}`;
+            if (bookObject.lent) {
+                li.textContent += " / Emprestado? Sim";
+            } else {
+                li.textContent += " / Emprestado? Não";
+            }
+            if (bookObject.lentTo != null) {
+                const student = Students.getStudentById(bookObject.lentTo);
+                li.textContent += ` / Emprestado para: ${student.name} (${student.schoolClass})`;
+            }
+            if (bookObject.lentDate != null) {
+                li.textContent += ` / Data de entrega: ${bookObject.lentDate}`;
+            }
             bookList.appendChild(li);
         });
     },
@@ -42,10 +51,13 @@ const Lists = Object.freeze({
         students.forEach((student) => {
             const li = DOM.element("li");
             const studentObject = JSON.parse(student);
-            li.textContent = "Nome: " + studentObject.name;
-            li.textContent += " / Turma: " + studentObject.schoolClass;
-            li.textContent += " / Livro emprestado: " + studentObject.lentBook;
-            li.textContent += " / Id: " + studentObject.id;
+            li.textContent = `Nome: ${studentObject.name}`;
+            li.textContent += ` / Turma: ${studentObject.schoolClass}`;
+            if (studentObject.lentBook != null) {
+                const book = Books.getBookById(studentObject.lentBook);
+                li.textContent += ` / Livro emprestado: ${book.name}`;
+            }
+            li.textContent += ` / Id: ${studentObject.id}`;
             studentList.appendChild(li);
         });
     },
@@ -63,8 +75,8 @@ const Lists = Object.freeze({
         classes.forEach((schoolClass) => {
             const li = DOM.element("li");
             const schoolClassObject = JSON.parse(schoolClass);
-            li.textContent = "Nome: " + schoolClassObject.name;
-            li.textContent += " / Id: " + schoolClassObject.id;
+            li.textContent = `Nome: ${schoolClassObject.name}`;
+            li.textContent += ` / Id: ${schoolClassObject.id}`;
             classList.appendChild(li);
         });
     },
@@ -86,8 +98,8 @@ const Lists = Object.freeze({
             li.style = "font-size: 16px;";
             li.textContent = `Nome: ${bookObject.name}`;
             li.textContent += ` / Autor: ${bookObject.author}`;
-            li.textContent += ` / Páginas: ${bookObject.pages}`;
             li.textContent += ` / Ano: ${bookObject.year}`;
+            li.textContent += ` / Páginas: ${bookObject.pages}`;
             bookList.appendChild(li);
         });
     },

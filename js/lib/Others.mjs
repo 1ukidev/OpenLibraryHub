@@ -37,7 +37,6 @@ const Others = Object.freeze({
      * Faz backup dos dados do localStorage.
      * 
      * @returns {void}
-     * @returns {boolean} Retorna false se não houver dados no localStorage.
      */
     makeBackupLocalStorage: () => {
         console.log("Fazendo backup...");
@@ -45,8 +44,7 @@ const Others = Object.freeze({
         const keys = Object.keys(localStorage);
         if (keys.length === 0) {
             alert("Erro ao fazer backup: nenhum dado encontrado.");
-            console.error("Erro ao fazer backup: nenhum dado encontrado.");
-            return false;
+            throw new Error("Erro ao fazer backup: nenhum dado encontrado.");
         }
     
         const data = {};
@@ -70,7 +68,6 @@ const Others = Object.freeze({
      * Recupera os dados do backup.
      * 
      * @returns {void}
-     * @returns {boolean} Retorna false se houver algum erro ao recuperar o backup.
      */
     recoverBackupLocalStorage: () => {
         console.log("Recuperando backup...");
@@ -94,8 +91,7 @@ const Others = Object.freeze({
                         location.href = "";
                     } catch (error) {
                         alert("Erro ao recuperar o backup.");
-                        console.error("Erro ao recuperar o backup:", error);
-                        return false;
+                        throw new Error("Erro ao recuperar o backup.");
                     }
                 };
             }
