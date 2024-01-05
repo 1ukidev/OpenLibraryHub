@@ -302,10 +302,12 @@ const Pages = Object.freeze({
         const addBookList = () => {
             
             DOM.divs.content.innerHTML += `
-                <h2>Lista de livros:</h2>
-                <label for="search">Pesquise pelo nome:</label>&nbsp;
-                <input type="text" id="search">
-                <div class="table-container"></div>
+                <section>
+                    <h2>Lista de livros:</h2>
+                    <label for="search">Pesquise pelo nome:</label>&nbsp;
+                    <input type="text" id="search">
+                    <div class="table-container"></div>
+                </section>
             `;
 
             Lists.showBookList();
@@ -318,10 +320,12 @@ const Pages = Object.freeze({
          */
         const addStudentList = () => {
             DOM.divs.content.innerHTML += `
-                <h2>Lista de estudantes:</h2>
-                <label for="search">Pesquise pelo nome:</label>&nbsp;
-                <input type="text" id="search2">
-                <div class="table-container"></div>
+                <section>
+                    <h2>Lista de estudantes:</h2>
+                    <label for="search">Pesquise pelo nome:</label>&nbsp;
+                    <input type="text" id="search2">
+                    <div class="table-container"></div>
+                </section>
             `;
 
             Lists.showStudentList();
@@ -789,10 +793,12 @@ const Pages = Object.freeze({
          */
         const addClassList = () => {
             DOM.divs.content.innerHTML += `
-                <h2>Lista de turmas:</h2>
-                <label for="search">Pesquise pelo nome:</label>&nbsp;
-                <input type="text" id="search">
-                <div class="table-container"></div>
+                <section>
+                    <h2>Lista de turmas:</h2>
+                    <label for="search">Pesquise pelo nome:</label>&nbsp;
+                    <input type="text" id="search">
+                    <div class="table-container"></div>
+                </section>
             `;
  
             Lists.showClassList();
@@ -946,12 +952,13 @@ const Pages = Object.freeze({
      */
     openAllBooksPage: () => {
         DOM.divs.others.innerHTML = `
-            <br>
-            <button id="back">◀️ Voltar</button>
-            <h1>Lista de livros:</h1>
-            <label for="search">Pesquise pelo nome:</label>&nbsp;
-            <input type="text" id="search">
-            <div class="table-container"></div>
+            <section>
+                <button id="back">◀️ Voltar</button>
+                <h1>Lista de livros:</h1>
+                <label for="search">Pesquise pelo nome:</label>&nbsp;
+                <input type="text" id="search">
+                <div class="table-container"></div>
+            </section>
         `;
 
         const back = DOM.id("back");
@@ -959,7 +966,7 @@ const Pages = Object.freeze({
             DOM.divs.others.innerHTML = "";
             Pages.openLockScreen();
         }
-        
+
         Lists.showBookListForStudents();
     }
 });

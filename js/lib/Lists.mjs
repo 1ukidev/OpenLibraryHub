@@ -71,8 +71,12 @@ const Lists = Object.freeze({
         table.appendChild(tbody);
 
         let containers = document.querySelectorAll(".table-container");
-        let lastContainer = containers[containers.length - 1];
-        lastContainer.appendChild(table);
+        if(containers.length>0){
+            containers[0].appendChild(table);
+        } else {
+            let lastContainer = containers[containers.length - 1];
+            lastContainer.appendChild(table);
+        }
     },
 
     /**
