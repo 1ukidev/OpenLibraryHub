@@ -2,8 +2,8 @@
  * Representa um bloqueio.
  * 
  * @constructor
- * @param {string} password - Senha do bloqueio.
- * @param {string} status - Status do bloqueio.
+ * @param {String} password - Senha do bloqueio.
+ * @param {String} status - Status do bloqueio.
  */
 const Lock = class {
     constructor(password, status) {
@@ -16,25 +16,25 @@ const Lock = class {
  * Representa um livro.
  * 
  * @constructor
- * @param {number} id - Id do livro.
- * @param {string} name - Nome do livro.
- * @param {string} author - Autor do livro.
- * @param {number} pages - Quantidade de páginas do livro.
- * @param {number} year - Ano do livro.
- * @param {boolean} lent - Se o livro está emprestado. Padrão: false.
- * @param {number} lentTo - Id do estudante que pegou o livro emprestado. Padrão: null.
- * @param {string} lentDate - Data de entrega do livro. Padrão: null.
+ * @param {Number} id - Id do livro.
+ * @param {String} name - Nome do livro.
+ * @param {String} author - Autor do livro.
+ * @param {Number} pages - Quantidade de páginas do livro.
+ * @param {Number} year - Ano do livro.
+ * @param {Number} stock - Quantidade de livros em estoque.
+ * @param {Boolean} lent - Se o livro está emprestado. Padrão: false
+ * @param {Array} lentTo - Estudantes que estão com o livro emprestado. Padrão: []
  */
 const Book = class {
-    constructor(id, name, author, pages, year) {
+    constructor(id, name, author, pages, year, stock) {
         this.id = id;
         this.name = name;
         this.author = author;
         this.pages = pages;
         this.year = year;
+        this.stock = stock;
         this.lent = false;
-        this.lentTo = null;
-        this.lentDate = null;
+        this.lentTo = [];
     }
 }
 
@@ -42,17 +42,17 @@ const Book = class {
  * Representa um estudante.
  * 
  * @constructor
- * @param {number} id - Id do estudante.
- * @param {string} name - Nome do estudante.
- * @param {string} schoolClass - Turma do estudante.
- * @param {number} lentBook - Id do livro que o estudante pegou emprestado. Padrão: null.
+ * @param {Number} id - Id do estudante.
+ * @param {String} name - Nome do estudante.
+ * @param {String} schoolClass - Turma do estudante.
+ * @param {Object} lentBook - Id do livro que o estudante pegou emprestado. Padrão: {}
  */ 
 const Student = class {
     constructor(id, name, schoolClass) {
         this.id = id;
         this.name = name;
         this.schoolClass = schoolClass;
-        this.lentBook = null;
+        this.lentBook = {};
     }
 }
 
@@ -60,8 +60,8 @@ const Student = class {
  * Representa uma turma.
  * 
  * @constructor
- * @param {number} id - Id da turma.
- * @param {string} name - Nome da turma.
+ * @param {Number} id - Id da turma.
+ * @param {String} name - Nome da turma.
  */
 const Class = class {
     constructor(id, name) {
