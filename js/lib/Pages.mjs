@@ -62,10 +62,17 @@ const Pages = Object.freeze({
         }
 
         DOM.divs.lock.innerHTML = `
-            <h1>Bem-vindo ao OpenLibraryHub (${version})!</h1>
-            <h2>Crie uma senha antes de começar:</h2>
-            <input type="password" id="password" placeholder="Senha">&nbsp;
-            <button id="submit">🚪 Cadastrar</button>
+            <div class="lock-container">
+                <img class="lock-icon" src="../src/Library-rafiki.svg">
+                <h1>Bem-vindo ao OpenLibraryHub!</h1>
+                <h2>(${version})</h2>
+
+                <div class="lock-form">
+                    <h2>Crie uma senha antes de começar:</h2>
+                    <input type="password" id="password" placeholder="Senha">&nbsp;
+                    <button class="button" id="submit"><span class="material-symbols-outlined">meeting_room</span> Cadastrar</button>
+                </div>
+            </div>
         `;
 
         const password = DOM.id("password");
@@ -95,12 +102,29 @@ const Pages = Object.freeze({
         }
 
         DOM.divs.lock.innerHTML = `
-            <h1>Bem-vindo ao OpenLibraryHub (${version})!</h1>
-            <h2>É aluno e deseja ver os livros disponíveis? <a id="linkOpenAllBooks" class="linkOpenAllBooks">Clique aqui!</a></h2>
-            <h2>Insira a senha cadastrada para continuar:</h2>
-            <input type="password" id="password" placeholder="Senha">&nbsp;
-            <button id="submit">🚪 Entrar</button>
+            <div class="lock-container">
+                <img class="lock-icon" src="../src/Library-rafiki.svg">
+                <h1>Bem-vindo ao OpenLibraryHub!</h1>
+                <h2>(${version})</h2>
+                <div class="lock-buttons">
+                    <a id="linkOpenAllBooks" class="linkOpenAllBooks"><button class="button">Estudante</button></a>
+                    <button class="button" id="bibliotecario">Bibliotecario</button>
+                </div>
+
+                <div class="lock-form display-none">
+                    <h2>Insira a senha cadastrada para continuar:</h2>
+                    <input type="password" id="password" placeholder="Senha">&nbsp;
+                    <button id="submit" class="button"><span class="material-symbols-outlined">meeting_room</span>Entrar</button>
+                </div>
+            </div>
         `;
+
+        const btnBibliotecario = DOM.id("bibliotecario");
+        btnBibliotecario.addEventListener("click", () => {
+            //DOM.class(".lock-form").classList.toggle("display-none")
+            document.querySelector(".lock-form").classList.toggle("display-none")
+            document.querySelector(".lock-buttons").classList.toggle("display-none")
+        })
 
         const password = DOM.id("password");
         const submit = DOM.id("submit");
@@ -131,14 +155,16 @@ const Pages = Object.freeze({
         Locks.checkLock();
 
         DOM.divs.header.innerHTML = `
-            <ul>
-                <li><a id="a-1" class="a-1">&nbsp;📖 Status&nbsp;</a></li>
-                <li><a id="a-2" class="a-2">&nbsp;📚 Livros&nbsp;</a></li>
-                <li><a id="a-3" class="a-3">&nbsp;🏫 Turmas&nbsp;</a></li>
-                <li><a id="a-4" class="a-4">&nbsp;🧑 Estudantes&nbsp;</a></li>
-                <li><a id="a-5" class="a-5">&nbsp;🔧 Outros&nbsp;</a></li>
-                <li><a id="a-6" class="a-6">&nbsp;🔒 Sair&nbsp;</a></li>
-            </ul>
+            <div class="menu-container">
+                <ul class="menu">
+                    <li><a id="a-1" class="menu-item"><span class="material-symbols-outlined">library_books</span> Status</a></li>
+                    <li><a id="a-2" class="menu-item"><span class="material-symbols-outlined">menu_book</span> Livros</a></li>
+                    <li><a id="a-3" class="menu-item"><span class="material-symbols-outlined">school</span> Turmas</a></li>
+                    <li><a id="a-4" class="menu-item"><span class="material-symbols-outlined">group</span> Estudantes</a></li>
+                    <li><a id="a-5" class="menu-item"><span class="material-symbols-outlined">build</span> Outros</a></li>
+                    <li><a id="a-6" class="menu-item"><span class="material-symbols-outlined">exit_to_app</span> Sair</a></li>
+                </ul>
+            </div>
             <br>
         `;
 
@@ -158,6 +184,11 @@ const Pages = Object.freeze({
      */
     openMainContent: () => {
         Locks.checkLock();
+
+        document.querySelectorAll(".menu-item").forEach(e => {
+            e.classList.remove("menu_item-select")
+        })
+        DOM.id("a-1").classList.add("menu_item-select")
 
         DOM.divs.content.innerHTML = `
             <b><span class="generic-text" id="main-text-1" style="font-size: 24px;"></span></b>
@@ -180,7 +211,7 @@ const Pages = Object.freeze({
         mainText1.innerHTML += new Date().toLocaleString('pt-BR', dateOptions);
 
         const mainText2 = DOM.id("main-text-2");
-        mainText2.innerHTML = "Alunos que estão com livros emprestados: ";
+        mainText2.innerHTML = "Alunos que estão com livros emprestados: <br><br>";
         const lentBooks = [];
         const students = Students.getAllStudents();
 
@@ -189,20 +220,50 @@ const Pages = Object.freeze({
 
             if (studentObject.type === "Student" && studentObject.lentBook !== null) {
                 const bookObject = Books.getBookById(studentObject.lentBook);
-                lentBooks.push(`${studentObject.name} - ${studentObject.schoolClass} - ${bookObject.name} - Data de entrega: ${bookObject.lentDate}`);
+                //lentBooks.push(`${studentObject.name} - ${studentObject.schoolClass} - ${bookObject.name} - Data de entrega: ${bookObject.lentDate}`);
+                lentBooks.push({nome:studentObject.name, turma:studentObject.schoolClass, livro:bookObject.name, dataEntrega:bookObject.lentDate})
             }
         }
 
         if (lentBooks.length > 0) {
-            const ul = DOM.element("ul");
+            const table = DOM.element("table");
+            const thead = DOM.element("thead");
+            const tbody = DOM.element("tbody");
+
+            let tr = DOM.element("tr");
+
+            let nome = DOM.element("th");
+            nome.innerHTML = "Nome";
+            let turma = DOM.element("th");
+            turma.innerHTML = "Turma";
+            let livro = DOM.element("th");
+            livro.innerHTML = "Livro";
+            let dataEntrega = DOM.element("th");
+            dataEntrega.innerHTML = "Data de Entrega";
+
+            tr.appendChild(nome);
+            tr.appendChild(turma);
+            tr.appendChild(livro);
+            tr.appendChild(dataEntrega);
+
+            thead.appendChild(tr)
 
             lentBooks.forEach(book => {
-                const li = DOM.element("li");
-                li.textContent = book;
-                ul.appendChild(li);
-            });
+                let tr = DOM.element("tr");
 
-            mainText2.appendChild(ul);
+                tr.innerHTML = `
+                    <td>${book.nome}</td>
+                    <td>${book.turma}</td>
+                    <td>${book.livro}</td>
+                    <td>${book.dataEntrega}</td>
+                `
+                tbody.appendChild(tr)
+            })
+
+            table.appendChild(thead);
+            table.appendChild(tbody);
+
+            DOM.id("content").appendChild(table);
         } else {
             mainText2.innerHTML += "nenhum...";
         }
@@ -217,12 +278,19 @@ const Pages = Object.freeze({
     openBookPage: () => {
         Locks.checkLock();
 
+        document.querySelectorAll(".menu-item").forEach(e => {
+            e.classList.remove("menu_item-select")
+        })
+        DOM.id("a-2").classList.add("menu_item-select")
+
         DOM.divs.content.innerHTML = `
-            <button id="btnOpenSaveBookForm">Adicionar livro</button>&nbsp;&nbsp;
-            <button id="btnOpenLendBookForm">Emprestar um livro</button>&nbsp;&nbsp;
-            <button id="btnOpenReturnBookForm">Devolver livro</button>&nbsp;&nbsp;
-            <button id="btnOpenEditBookForm">Editar livro</button>&nbsp;&nbsp;
-            <button id="btnOpenRemoveBookForm">Remover livro</button>
+            <div class="buttons-container">
+                <button class="button" id="btnOpenSaveBookForm">Adicionar livro</button>&nbsp;&nbsp;
+                <button class="button" id="btnOpenLendBookForm">Emprestar um livro</button>&nbsp;&nbsp;
+                <button class="button" id="btnOpenReturnBookForm">Devolver livro</button>&nbsp;&nbsp;
+                <button class="button" id="btnOpenEditBookForm">Editar livro</button>&nbsp;&nbsp;
+                <button class="button" id="btnOpenRemoveBookForm">Remover livro</button>
+            </div>
             <br>
         `;
 
@@ -232,16 +300,14 @@ const Pages = Object.freeze({
          * @returns {void}
          */
         const addBookList = () => {
+            
             DOM.divs.content.innerHTML += `
                 <h2>Lista de livros:</h2>
                 <label for="search">Pesquise pelo nome:</label>&nbsp;
                 <input type="text" id="search">
-                <ul id="bookList"></ul>
+                <div class="table-container"></div>
             `;
 
-            const search = DOM.id("search");
-            const bookList = DOM.id("bookList");
-            Lists.addSearch(search, bookList);
             Lists.showBookList();
         }
 
@@ -255,12 +321,9 @@ const Pages = Object.freeze({
                 <h2>Lista de estudantes:</h2>
                 <label for="search">Pesquise pelo nome:</label>&nbsp;
                 <input type="text" id="search2">
-                <ul id="studentList"></ul>
+                <div class="table-container"></div>
             `;
 
-            const studentList = DOM.id("studentList");
-            const search2 = DOM.id("search2");
-            Lists.addSearch(search2, studentList);
             Lists.showStudentList();
         }
 
@@ -521,10 +584,17 @@ const Pages = Object.freeze({
     openStudentPage: () => {
         Locks.checkLock();
 
+        document.querySelectorAll(".menu-item").forEach(e => {
+            e.classList.remove("menu_item-select")
+        })
+        DOM.id("a-4").classList.add("menu_item-select")
+
         DOM.divs.content.innerHTML = `
-            <button id="btnOpenSaveStudentForm">Adicionar estudante</button>&nbsp;&nbsp;
-            <button id="btnOpenEditStudentForm">Editar estudante</button>&nbsp;&nbsp;
-            <button id="btnOpenRemoveStudentForm">Remover estudante</button>
+            <div class="buttons-container">
+                <button class="button" id="btnOpenSaveStudentForm">Adicionar estudante</button>&nbsp;&nbsp;
+                <button class="button" id="btnOpenEditStudentForm">Editar estudante</button>&nbsp;&nbsp;
+                <button class="button" id="btnOpenRemoveStudentForm">Remover estudante</button>
+            </div>
             <br>
         `;
 
@@ -538,12 +608,9 @@ const Pages = Object.freeze({
                 <h2>Lista de estudantes:</h2>
                 <label for="search">Pesquise pelo nome:</label>&nbsp;
                 <input type="text" id="search">
-                <ul id="studentList"></ul>
+                <div class="table-container"></div>
             `;
 
-            const search = DOM.id("search");
-            const studentList = DOM.id("studentList");
-            Lists.addSearch(search, studentList);
             Lists.showStudentList();
         }
 
@@ -701,10 +768,17 @@ const Pages = Object.freeze({
     openClassPage: () => {
         Locks.checkLock();
 
+        document.querySelectorAll(".menu-item").forEach(e => {
+            e.classList.remove("menu_item-select")
+        })
+        DOM.id("a-3").classList.add("menu_item-select")
+
         DOM.divs.content.innerHTML = `
-            <button id="btnOpenSaveClassForm">Adicionar turma</button>&nbsp;&nbsp;
-            <button id="btnOpenEditClassForm">Editar turma</button>&nbsp;&nbsp;
-            <button id="btnOpenRemoveClassForm">Remover turma</button>
+            <div class="buttons-container">
+                <button class="button" id="btnOpenSaveClassForm">Adicionar turma</button>&nbsp;&nbsp;
+                <button class="button" id="btnOpenEditClassForm">Editar turma</button>&nbsp;&nbsp;
+                <button class="button" id="btnOpenRemoveClassForm">Remover turma</button>
+            </div>
             <br>
         `;
 
@@ -718,12 +792,9 @@ const Pages = Object.freeze({
                 <h2>Lista de turmas:</h2>
                 <label for="search">Pesquise pelo nome:</label>&nbsp;
                 <input type="text" id="search">
-                <ul id="classList"></ul>
+                <div class="table-container"></div>
             `;
-
-            const search = DOM.id("search");
-            const classList = DOM.id("classList");
-            Lists.addSearch(search, classList);
+ 
             Lists.showClassList();
         }
 
@@ -846,13 +917,20 @@ const Pages = Object.freeze({
      * @returns {void}
      */
     openOthersPage: () => {
-        Locks.checkLock();        
+        Locks.checkLock();
+
+        document.querySelectorAll(".menu-item").forEach(e => {
+            e.classList.remove("menu_item-select")
+        })
+        DOM.id("a-5").classList.add("menu_item-select")
 
         DOM.divs.content.innerHTML = `
-            <button id="btnCheckUpdate">Verificar se há atualizações</button>&nbsp;&nbsp;
-            <button id="btnMakeBackup">Fazer backup dos dados</button>&nbsp;&nbsp;
-            <button id="btnRecoverBackup">Recuperar o backup</button>&nbsp;&nbsp;
-            <button id="btnReset">Resetar</button>
+            <div class="buttons-container">
+                <button class="button" id="btnCheckUpdate">Verificar se há atualizações</button>&nbsp;&nbsp;
+                <button class="button" id="btnMakeBackup">Fazer backup dos dados</button>&nbsp;&nbsp;
+                <button class="button" id="btnRecoverBackup">Recuperar o backup</button>&nbsp;&nbsp;
+                <button class="button" id="btnReset">Resetar</button>
+            </div>
         `;
 
         DOM.id("btnCheckUpdate").onclick = () => Others.checkUpdate();
@@ -873,7 +951,7 @@ const Pages = Object.freeze({
             <h1>Lista de livros:</h1>
             <label for="search">Pesquise pelo nome:</label>&nbsp;
             <input type="text" id="search">
-            <ul id="bookList"></ul>
+            <div class="table-container"></div>
         `;
 
         const back = DOM.id("back");
@@ -881,11 +959,8 @@ const Pages = Object.freeze({
             DOM.divs.others.innerHTML = "";
             Pages.openLockScreen();
         }
-
-        const search = DOM.id("search");
-        const bookList = DOM.id("bookList");
+        
         Lists.showBookListForStudents();
-        Lists.addSearch(search, bookList);
     }
 });
 

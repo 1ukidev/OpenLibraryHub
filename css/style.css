@@ -1,10 +1,64 @@
 * {
     font-family: 'Segoe UI Variable Display', 'Segoe UI', Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --cor-preto: #111111;
+    --cor-cinza: #303030;
+    --cor-branco: #EAEAEA;
+    --cor-verde: #52B788;
+    --cor-verde-claro: #B7E4C7;
+}
+
+.button {
+    background-color: var(--cor-verde);
+    color: var(--cor-branco);
+    padding: .5rem 2rem;
+    border: 1px solid var(--cor-verde);
+    border-radius: 10px;
+    transition: .2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.button:hover {
+    background-color: var(--cor-preto);
+    color: var(--cor-verde);
+}
+
+.button span {
+    margin-right: 1rem;
+}
+
+.buttons-container {
+    display: flex;
+}
+
+.table-container {
+    margin-top: 1.5rem;
+}
+
+table th {
+    background-color: var(--cor-cinza);
+    border: 1px solid var(--cor-preto);
+    text-align: left;
+    padding: .5rem;
+}
+
+table td {
+    background-color: var(--cor-preto);
+    border: 1px solid var(--cor-cinza);
+    text-align: left;
+    padding: .5rem;
+    padding-right: 1rem;
 }
 
 body {
-    background-color: #111111;
-    color: #ffffff;
+    background-color: var(--cor-preto);
+    color: var(--cor-branco);
 }
 
 button {
@@ -37,83 +91,103 @@ select {
     border: 1px solid #ffffff;
 }
 
-#header {
-    padding-top: 20px;
-    padding-left: 20px;
-    padding-right: 20px;
+/* Menu */
+
+.menu-container {
+    width: 100%;
+    background-color: var(--cor-cinza);
 }
 
-#header ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #0a0a0a;
-    border-radius: 14px;
+.menu {
+    display: flex;
+    list-style: none;
 }
 
-#header li {
-    float: left;
-}
-
-#header li a {
-    color: #ffffff;
-    display: block;
-    padding: 8px;
+.menu-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 1.5rem;
     cursor: pointer;
-    user-select: none;
+    transition: .2s;
 }
 
-#header li a:hover {
-    background-color: #111111;
+.menu-item span {
+    margin-right: .7rem;
 }
 
-#content {
-    padding-left: 25px;
-    padding-top: 15px;
+.menu-item:hover {
+    background-color: var(--cor-verde);
 }
+
+.menu_item-select {
+    background-color: var(--cor-verde);
+}
+
+/* lock */
 
 #lock {
-    padding-top: 8px;
-    padding-left: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-#others {
-    padding-top: 8px;
-    padding-left: 24px;
+.lock-container {
+    background-color: var(--cor-cinza);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10rem;
+    padding: 2rem;
+    border-radius: 10px;
 }
 
-.a-1 {
-    background-color: #353535;
+.lock-icon {
+    width: 10rem;
+    background-color: var(--cor-cinza);
+    margin-top: -5rem;
+    border-radius: 100%;
 }
 
-.a-2 {
-    background-color: #303030;
+.lock-container h1 {
+    font-size: 1.5rem;
 }
 
-.a-3 {
-    background-color: #252525;
+.lock-container h2 {
+    font-size: 1rem;
 }
 
-.a-4 {
-    background-color: #202020;
+.lock-buttons, .lock-form {
+    margin-top: 2rem;
+    display: flex;
 }
 
-.a-5 {
-    background-color: #1a1a1a;
+.lock-buttons button:nth-child(1) {
+    margin-right: 3rem;
 }
 
-.a-6 {
-    background-color: #141414;
-
+.lock-form {
+    flex-direction: column;
 }
 
-.linkOpenAllBooks {
-    color: #a8a8a8;
-    cursor: pointer;
-    text-decoration: none;
+.lock-form h2 {
+    margin-bottom: 1rem;
 }
 
-.linkOpenAllBooks:hover {
-    text-decoration: underline;
+.lock-form input {
+    padding: .5rem 0 .5rem .5rem;
+}
+
+.lock-form button {
+    width: 7rem;
+    margin: 0 auto;
+}
+
+/* Content */
+
+#content {
+    max-width: 75rem;
+    width: 100%;
+    margin: 0 auto;
+    padding: 1rem;
 }
