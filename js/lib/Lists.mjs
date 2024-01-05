@@ -32,8 +32,6 @@ const Lists = Object.freeze({
                 li.textContent += ` / Emprestado para: ${bookObject.lentTo.length}`;
                 if (bookObject.lentTo.length > 1) {
                     li.textContent += " estudantes";
-                } else {
-                    li.textContent += " estudante";
                 }
             }
             bookList.appendChild(li);

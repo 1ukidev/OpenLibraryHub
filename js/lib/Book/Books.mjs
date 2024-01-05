@@ -117,23 +117,25 @@ const Books = Object.freeze({
         console.log(`localStorage: emprestando livro "${bookId}" para o estudante "${studentId}"...`);
         const book = Books.getBookById(bookId);
         const student = Students.getStudentById(studentId);
-    
-        if (student.lentBook && student.lentBook.bookId === bookId) {
-            alert(`O estudante "${student.name}" já está com o livro "${book.name}" emprestado.`);
-            throw new Error(`O estudante "${student.name}" já está com o livro "${book.name}" emprestado.`);
+        const lentBookSize = Object.keys(student.lentBook).length;
+
+        for (let i = 0; i < lentBookSize; i++) {
+            if (student.lentBook[i].id == book.id) {
+                alert(`O estudante "${student.name}" já está com o livro "${book.name}" emprestado.`);
+                throw new Error(`O estudante "${student.name}" já está com o livro "${book.name}" emprestado.`);
+            }
         }
+
         if (book.stock <= 0) {
             alert(`O livro "${book.name}" não está em estoque.`);
             throw new Error(`O livro "${book.name}" não está em estoque.`);
         }
     
         book.stock--;
-        if (book.lent = false) book.lent = true;
+        book.lent = true;
         book.lentTo.push(studentId);
     
-        const lentBookSize = Object.keys(student.lentBook).length;
         const updatedLentBook = {...student.lentBook, [lentBookSize]: {id: bookId, lentDate: lentDate.replaceAll("-", "/")}};
-    
         student.lentBook = updatedLentBook;
 
         Books.updateBook(book);

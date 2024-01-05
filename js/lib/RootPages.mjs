@@ -181,7 +181,7 @@ const RootPages = Object.freeze({
         mainText1.innerHTML += new Date().toLocaleString('pt-BR', dateOptions);
 
         const mainText2 = DOM.id("main-text-2");
-        mainText2.innerHTML = "Livros emprestados: ";
+        mainText2.innerHTML = "Alunos que estão com livros emprestados: ";
         const lentBooks = [];
         const students = Students.getAllStudents();
 
@@ -193,7 +193,7 @@ const RootPages = Object.freeze({
                 const bookId = studentObject.lentBook[j].id;
                 const lentDate = studentObject.lentBook[j].lentDate;
                 const bookObject = Books.getBookById(bookId);
-                lentBooks.push(`${bookObject.name} (emprestado para ${studentObject.name} (${studentObject.schoolClass}) em ${lentDate})`);
+                lentBooks.push(`${studentObject.name} - ${studentObject.schoolClass} - ${bookObject.name} - Data de entrega: ${lentDate}`);
             }
         }
 
