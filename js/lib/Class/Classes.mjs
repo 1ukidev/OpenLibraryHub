@@ -1,5 +1,5 @@
-import { Class } from "./Abstract.mjs";
-import { Lists } from "./Lists.mjs";
+import { Class } from "../Abstract.mjs";
+import { Lists } from "../Lists.mjs";
 
 const Classes = Object.freeze({
     /**
@@ -75,7 +75,18 @@ const Classes = Object.freeze({
             console.error(`localStorage: turma com id "${id}" não encontrada...`);
             return false;
         }
-    }
+    },
+
+    /**
+     * Atualiza uma turma no localStorage.
+     *  
+     * @param {Object} _class - Objeto da turma.
+     */
+    updateClass: (_class) => {
+        console.log(`localStorage: atualizando turma "${_class.name}"...`);
+        localStorage.setItem(_class.id, JSON.stringify(_class));
+        console.log(`localStorage: turma "${_class.name}" atualizado com sucesso!`);
+    },
 });
 
 export { Classes };

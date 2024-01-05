@@ -1,6 +1,6 @@
-import { Books } from "./Books.mjs";
-import { Students } from "./Students.mjs";
-import { Classes } from "./Classes.mjs";
+import { Books } from "./Book/Books.mjs";
+import { Students } from "./Student/Students.mjs";
+import { Classes } from "./Class/Classes.mjs";
 import { Lists } from "./Lists.mjs";
 import { DOM } from "./DOM.mjs";
 
@@ -16,12 +16,13 @@ const Forms = Object.freeze({
         const bookPages = DOM.id("bookPages");
         const bookYear = DOM.id("bookYear");
 
-        if (bookName.value && bookAuthor.value && bookPages.value && bookYear.value) {
-            Books.addBook(localStorage.length, bookName.value, bookAuthor.value, bookPages.value, bookYear.value);
+        if (bookName.value && bookAuthor.value && bookPages.value && bookYear.value && bookStock.value) {
+            Books.addBook(localStorage.length, bookName.value, bookAuthor.value, bookPages.value, bookYear.value, bookStock.value);
             bookName.value = "";
             bookAuthor.value = "";
             bookPages.value = "";
             bookYear.value = "";
+            bookStock.value = "";
             Lists.showBookList();
         } else {
             alert("Por favor, insira todos os dados do livro.");
@@ -101,19 +102,15 @@ const Forms = Object.freeze({
      */
     runFormReturnBook: () => {
         const bookId = DOM.id("bookId");
+        const studentId = DOM.id("studentId");
 
-        if (bookId.value) {
+        if (bookId.value && studentId.value) {
             const book = Books.getBookById(bookId.value);
+            const student = Students.getStudentById(studentId.value);
 
             if (book) {
                 if (book.lent) {
-                    const student = Students.getStudentById(book.lentTo);
-                    book.lent = false;
-                    book.lentTo = null;
-                    book.lentDate = null;
-                    student.lentBook = null;
-                    localStorage.setItem(bookId.value, JSON.stringify(book));
-                    localStorage.setItem(student.id, JSON.stringify(student));
+                    Books.returnBook(book, student);
                     Lists.showBookList();
                     Lists.showStudentList();
                     alert(`O livro com id "${bookId.value}" foi devolvido com sucesso!`);
@@ -140,19 +137,21 @@ const Forms = Object.freeze({
         const bookAuthor = DOM.id("bookAuthor");
         const bookPages = DOM.id("bookPages");
         const bookYear = DOM.id("bookYear");
+        const bookStock = DOM.id("bookStock");
 
         if (!booksSelectId) {
             alert("Por favor, selecione um livro.");
             return;
         }
 
-        if (bookName.value && bookAuthor.value && bookPages.value && bookYear.value) {
-            Books.addBook(booksSelectId, bookName.value, bookAuthor.value, bookPages.value, bookYear.value);
+        if (bookName.value && bookAuthor.value && bookPages.value && bookYear.value && bookStock.value) {
+            Books.addBook(booksSelectId, bookName.value, bookAuthor.value, bookPages.value, bookYear.value, bookStock.value);
             booksSelect.value = "";
             bookName.value = "";
             bookAuthor.value = "";
             bookPages.value = "";
             bookYear.value = "";
+            bookStock.value = "";
             Lists.showBookList();
             alert("Livro editado com sucesso!");
         } else {

@@ -1,6 +1,6 @@
-import { DOM } from "./DOM.mjs";
-import { Pages } from "./Pages.mjs";
-import { Lock } from "./Abstract.mjs";
+import { DOM } from "../DOM.mjs";
+import { RootPages } from "../RootPages.mjs";
+import { Lock } from "../Abstract.mjs";
 
 const Locks = Object.freeze({
     /**
@@ -18,8 +18,8 @@ const Locks = Object.freeze({
             const lock = new Lock(passwordHash, "unlocked");
             localStorage.setItem("lock", JSON.stringify(lock));
             DOM.divs.lock.innerHTML = "";
-            Pages.openMainHeader();
-            Pages.route();
+            RootPages.openMainHeader();
+            RootPages.route();
         } else {
             alert('Insira uma senha válida!');
         }
@@ -43,8 +43,8 @@ const Locks = Object.freeze({
                 lock.status = "unlocked";
                 localStorage.setItem("lock", JSON.stringify(lock));
                 DOM.divs.lock.innerHTML = "";
-                Pages.openMainHeader();
-                Pages.route();
+                RootPages.openMainHeader();
+                RootPages.route();
                 console.log("Desbloqueado com sucesso!");
             } else {
                 alert("Senha incorreta!");
@@ -68,7 +68,7 @@ const Locks = Object.freeze({
         DOM.divs.header.innerHTML = "";
         DOM.divs.content.innerHTML = "";
         DOM.divs.footer.innerHTML = "";
-        Pages.openLockScreen();
+        RootPages.openLockScreen();
         console.log("Bloqueado com sucesso!");
     },
 
