@@ -10,32 +10,73 @@ const Lists = Object.freeze({
      * @returns {void}
      */
     showBookList: () => {
-        const bookList = DOM.id("bookList");
         const books = Books.getAllBooks();
 
-        bookList.innerHTML = "";
-        books.forEach((book) => {
-            const li = DOM.element("li");
+        const table = DOM.element("table");
+        const thead = DOM.element("thead");
+        const tbody = DOM.element("tbody");
+
+        let tr = DOM.element("tr");
+
+        let id = DOM.element("th");
+        id.innerHTML = "Id";
+        let nome = DOM.element("th");
+        nome.innerHTML = "Nome";
+        let autor = DOM.element("th");
+        autor.innerHTML = "Autor";
+        let ano = DOM.element("th");
+        ano.innerHTML = "Ano";
+        let paginas = DOM.element("th");
+        paginas.innerHTML = "Páginas";
+        let estado = DOM.element("th");
+        estado.innerHTML = "Estado";
+
+        tr.appendChild(id);
+        tr.appendChild(nome);
+        tr.appendChild(autor);
+        tr.appendChild(ano);
+        tr.appendChild(paginas);
+        tr.appendChild(estado);
+
+        thead.appendChild(tr)
+
+        books.forEach(book => {
             const bookObject = JSON.parse(book);
-            li.textContent = `Nome: ${bookObject.name}`;
-            li.textContent += ` / Autor: ${bookObject.author}`;
-            li.textContent += ` / Ano: ${bookObject.year}`;
-            li.textContent += ` / Páginas: ${bookObject.pages}`;
-            li.textContent += ` / Id: ${bookObject.id}`;
-            if (bookObject.lent) {
-                li.textContent += " / Emprestado? Sim";
-            } else {
-                li.textContent += " / Emprestado? Não";
-            }
-            if (bookObject.lentTo != null) {
+
+            let tr = DOM.element("tr");
+
+            tr.innerHTML = `
+                <td>${bookObject.id}</td>
+                <td>${bookObject.name}</td>
+                <td>${bookObject.author}</td>
+                <td>${bookObject.year}</td>
+                <td>${bookObject.pages}</td>
+            `;
+
+            if(bookObject.lent){
+                let td = DOM.element("td");
                 const student = Students.getStudentById(bookObject.lentTo);
-                li.textContent += ` / Emprestado para: ${student.name} (${student.schoolClass})`;
+                td.innerHTML = `Emprestado para: ${student.name} (${student.schoolClass})`;
+                tr.appendChild(td)
+            } else {
+                let td = DOM.element("td");
+                td.innerHTML = "Disponivel";
+                tr.appendChild(td)
             }
-            if (bookObject.lentDate != null) {
-                li.textContent += ` / Data de entrega: ${bookObject.lentDate}`;
-            }
-            bookList.appendChild(li);
-        });
+
+            tbody.appendChild(tr)
+        })
+
+        table.appendChild(thead);
+        table.appendChild(tbody);
+
+        let containers = document.querySelectorAll(".table-container");
+        if(containers.length>0){
+            containers[0].appendChild(table);
+        } else {
+            let lastContainer = containers[containers.length - 1];
+            lastContainer.appendChild(table);
+        }
     },
 
     /**
@@ -44,22 +85,61 @@ const Lists = Object.freeze({
      * @returns {void}
      */
     showStudentList: () => {
-        const studentList = DOM.id("studentList");
         const students = Students.getAllStudents();
 
-        studentList.innerHTML = "";
-        students.forEach((student) => {
-            const li = DOM.element("li");
+        const table = DOM.element("table");
+        const thead = DOM.element("thead");
+        const tbody = DOM.element("tbody");
+
+        let tr = DOM.element("tr");
+
+        let id = DOM.element("th");
+        id.innerHTML = "Id";
+        let nome = DOM.element("th");
+        nome.innerHTML = "Nome";
+        let turma = DOM.element("th");
+        turma.innerHTML = "Turma";
+        let emprestimo = DOM.element("th");
+        emprestimo.innerHTML = "Livro Emprestado";
+
+        tr.appendChild(id);
+        tr.appendChild(nome);
+        tr.appendChild(turma);
+        tr.appendChild(emprestimo);
+
+        thead.appendChild(tr)
+
+        students.forEach(student => {
+            let tr = DOM.element("tr");
+
             const studentObject = JSON.parse(student);
-            li.textContent = `Nome: ${studentObject.name}`;
-            li.textContent += ` / Turma: ${studentObject.schoolClass}`;
-            if (studentObject.lentBook != null) {
-                const book = Books.getBookById(studentObject.lentBook);
-                li.textContent += ` / Livro emprestado: ${book.name}`;
+            
+            tr.innerHTML = `
+                <td>${studentObject.id}</td>
+                <td>${studentObject.name}</td>
+                <td>${studentObject.schoolClass}</td>
+            `;
+
+            if(studentObject.lentBook != null){
+                let td = DOM.element("td");
+                const book = Books.getBookById(studentObject.lentBook)
+                td.innerHTML = `Sim / ${book.name}`;
+                tr.appendChild(td);
+            } else {
+                let td = DOM.element("td");
+                td.innerHTML = "nenhum";
+                tr.appendChild(td)
             }
-            li.textContent += ` / Id: ${studentObject.id}`;
-            studentList.appendChild(li);
+            
+            tbody.appendChild(tr);
         });
+
+        table.appendChild(thead);
+        table.appendChild(tbody);
+
+        let containers = document.querySelectorAll(".table-container");
+        let lastContainer = containers[containers.length - 1];
+        lastContainer.appendChild(table);
     },
 
     /**
@@ -68,17 +148,44 @@ const Lists = Object.freeze({
      * @returns {void}
      */
     showClassList: () => {
-        const classList = DOM.id("classList");
+        
         const classes = Classes.getAllClasses();
+        
+        const table = DOM.element("table");
+        const thead = DOM.element("thead");
+        const tbody = DOM.element("tbody");
 
-        classList.innerHTML = "";
+        let tr = DOM.element("tr");
+
+        let id = DOM.element("th");
+        id.innerHTML = "Id";
+        let nome = DOM.element("th");
+        nome.innerHTML = "Nome";
+
+        tr.appendChild(id);
+        tr.appendChild(nome);
+        
+        thead.appendChild(tr);
+
         classes.forEach((schoolClass) => {
-            const li = DOM.element("li");
+            let tr = DOM.element("tr");
+
             const schoolClassObject = JSON.parse(schoolClass);
-            li.textContent = `Nome: ${schoolClassObject.name}`;
-            li.textContent += ` / Id: ${schoolClassObject.id}`;
-            classList.appendChild(li);
+            
+            tr.innerHTML = `
+                <td>${schoolClassObject.id}</td>
+                <td>${schoolClassObject.name}</td>
+            `;
+            
+            tbody.appendChild(tr);
         });
+
+        table.appendChild(thead);
+        table.appendChild(tbody);
+        
+        let containers = document.querySelectorAll(".table-container");
+        let lastContainer = containers[containers.length - 1];
+        lastContainer.appendChild(table);
     },
 
     /**

@@ -1,3 +1,4 @@
+
 import { Books } from "./Books.mjs";
 import { Students } from "./Students.mjs";
 import { Classes } from "./Classes.mjs";
@@ -22,6 +23,7 @@ const Forms = Object.freeze({
             bookAuthor.value = "";
             bookPages.value = "";
             bookYear.value = "";
+            document.querySelector(".table-container").innerHTML = "";
             Lists.showBookList();
         } else {
             alert("Por favor, insira todos os dados do livro.");
@@ -44,6 +46,7 @@ const Forms = Object.freeze({
             }
             Students.addStudent(localStorage.length, studentName.value, studentClass.value);
             studentName.value = "";
+            document.querySelector(".table-container").innerHTML = "";
             Lists.showStudentList();
         } else {
             alert("Por favor, insira o nome do estudante.");
@@ -61,6 +64,7 @@ const Forms = Object.freeze({
         if (className.value) {
             Classes.addClass(localStorage.length, className.value);
             className.value = "";
+            document.querySelector(".table-container").innerHTML = "";
             Lists.showClassList();
         } else {
             alert("Por favor, insira o nome da turma.");
@@ -83,6 +87,9 @@ const Forms = Object.freeze({
                 bookId.value = "";
                 studentId.value = "";
                 lentDate.value = "";
+                document.querySelectorAll(".table-container").forEach(e => {
+                    e.innerHTML = ""
+                })
                 Lists.showBookList();
                 Lists.showStudentList();
                 alert("Livro emprestado com sucesso!");
@@ -114,6 +121,10 @@ const Forms = Object.freeze({
                     student.lentBook = null;
                     localStorage.setItem(bookId.value, JSON.stringify(book));
                     localStorage.setItem(student.id, JSON.stringify(student));
+                    document.querySelector(".table-container").innerHTML = "";
+                    document.querySelectorAll(".table-container").forEach(e => {
+                        e.innerHTML = ""
+                    })
                     Lists.showBookList();
                     Lists.showStudentList();
                     alert(`O livro com id "${bookId.value}" foi devolvido com sucesso!`);
@@ -153,6 +164,7 @@ const Forms = Object.freeze({
             bookAuthor.value = "";
             bookPages.value = "";
             bookYear.value = "";
+            document.querySelector(".table-container").innerHTML = "";
             Lists.showBookList();
             alert("Livro editado com sucesso!");
         } else {
@@ -185,6 +197,7 @@ const Forms = Object.freeze({
             studentsSelect.value = "";
             studentName.value = "";
             studentClass.value = "";
+            document.querySelector(".table-container").innerHTML = "";
             Lists.showStudentList();
             alert("Estudante editado com sucesso!");
         } else {
@@ -211,6 +224,7 @@ const Forms = Object.freeze({
             Classes.addClass(classesSelectId, className.value);
             classesSelect.value = "";
             className.value = "";
+            document.querySelector(".table-container").innerHTML = "";
             Lists.showClassList();
             alert("Turma editada com sucesso!");
         } else {
