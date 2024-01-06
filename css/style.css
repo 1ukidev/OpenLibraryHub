@@ -54,7 +54,6 @@ table td {
     border: 1px solid var(--cor-cinza);
     text-align: left;
     padding: .5rem;
-    padding-right: 1rem;
 }
 
 body {
@@ -63,34 +62,10 @@ body {
     height: 100vh;
 }
 
-button {
-    background-color: #111111;
-    color: #ffffff;
-    border: 1px solid #ffffff;
-    cursor: pointer;
-}
-
-input {
-    background-color: #111111;
-    color: #ffffff;
-    border: 1px solid #ffffff;
-    color-scheme: dark;
-}
-
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-input[type=number] {
-    -moz-appearance: textfield;
-}
-
 select {
-    background-color: #111111;
-    color: #ffffff;
-    border: 1px solid #ffffff;
+    background-color: var(--cor-preto);
+    color: var(--cor-branco);
+    border: 1px solid var(--cor-branco);
 }
 
 /* Menu */
@@ -187,7 +162,7 @@ select {
 /* Content */
 
 #content {
-    max-width: 75rem;
+    max-width: 79rem;
     width: 100%;
     margin: 0 auto;
     padding: 1rem;

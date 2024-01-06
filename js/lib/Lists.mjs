@@ -195,20 +195,68 @@ const Lists = Object.freeze({
      * @returns {void}
      */
     showBookListForStudents: () => {
-        const bookList = DOM.id("bookList");
+        DOM.id("lock").style.height = "0"
         const books = Books.getAllBooks();
 
-        bookList.innerHTML = "";
-        books.forEach((book) => {
-            const li = DOM.element("li");
+        const table = DOM.element("table");
+        const thead = DOM.element("thead");
+        const tbody = DOM.element("tbody");
+
+        let tr = DOM.element("tr");
+
+        let id = DOM.element("th");
+        id.innerHTML = "Id";
+        let nome = DOM.element("th");
+        nome.innerHTML = "Nome";
+        let autor = DOM.element("th");
+        autor.innerHTML = "Autor";
+        let ano = DOM.element("th");
+        ano.innerHTML = "Ano";
+        let paginas = DOM.element("th");
+        paginas.innerHTML = "Páginas";
+        let estado = DOM.element("th");
+        estado.innerHTML = "Estado";
+
+        tr.appendChild(id);
+        tr.appendChild(nome);
+        tr.appendChild(autor);
+        tr.appendChild(ano);
+        tr.appendChild(paginas);
+        tr.appendChild(estado);
+
+        thead.appendChild(tr)
+
+        books.forEach(book => {
             const bookObject = JSON.parse(book);
-            li.style = "font-size: 16px;";
-            li.textContent = `Nome: ${bookObject.name}`;
-            li.textContent += ` / Autor: ${bookObject.author}`;
-            li.textContent += ` / Ano: ${bookObject.year}`;
-            li.textContent += ` / Páginas: ${bookObject.pages}`;
-            bookList.appendChild(li);
-        });
+
+            let tr = DOM.element("tr");
+
+            tr.innerHTML = `
+                <td>${bookObject.id}</td>
+                <td>${bookObject.name}</td>
+                <td>${bookObject.author}</td>
+                <td>${bookObject.year}</td>
+                <td>${bookObject.pages}</td>
+            `;
+
+            if(bookObject.lent){
+                let td = DOM.element("td");
+                const student = Students.getStudentById(bookObject.lentTo);
+                td.innerHTML = `Emprestado para: ${student.name} (${student.schoolClass})`;
+                tr.appendChild(td)
+            } else {
+                let td = DOM.element("td");
+                td.innerHTML = "Disponivel";
+                tr.appendChild(td)
+            }
+
+            tbody.appendChild(tr)
+        })
+
+        table.appendChild(thead);
+        table.appendChild(tbody);
+        console.log(document.querySelector(".table-container"))
+        document.querySelector(".table-container").appendChild(table);
     },
 
     /**

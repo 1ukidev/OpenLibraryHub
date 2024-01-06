@@ -979,7 +979,7 @@ const Pages = Object.freeze({
     openAllBooksPage: () => {
         DOM.divs.others.innerHTML = `
             <section>
-                <button id="back">◀️ Voltar</button>
+                <button id="btnBack"><span class="material-symbols-outlined">arrow_back</span> Voltar</button>
                 <h1>Lista de livros:</h1>
                 <label for="search">Pesquise pelo nome:</label>&nbsp;
                 <input type="text" id="search">
@@ -987,7 +987,7 @@ const Pages = Object.freeze({
             </section>
         `;
 
-        const back = DOM.id("back");
+        const back = DOM.id("btnBack");
         back.onclick = () => {
             DOM.divs.others.innerHTML = "";
             Pages.openLockScreen(); 
