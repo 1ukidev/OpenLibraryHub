@@ -60,7 +60,7 @@ const Pages = Object.freeze({
         if (localStorage.getItem("lock") != null) {
             throw new Error("localStorage: já existe um bloqueio criado!");
         }
-        
+
         DOM.id("lock").style.height = "100vh"
 
         DOM.divs.lock.innerHTML = `
@@ -295,7 +295,6 @@ const Pages = Object.freeze({
                 <button class="button" id="btnOpenEditBookForm">Editar livro</button>&nbsp;&nbsp;
                 <button class="button" id="btnOpenRemoveBookForm">Remover livro</button>
             </div>
-            <br>
         `;
 
         /**
@@ -342,16 +341,18 @@ const Pages = Object.freeze({
          */
         const openSaveBookForm = () => {
             DOM.divs.content.innerHTML = `
-                <button id="btnBack">◀️ Voltar</button>
-                <br><br>
+                <aside>
+                    <img src="../src/Reading glasses-bro.svg" class="form-icon">
+                    <button id="btnBack"><span class="material-symbols-outlined">arrow_back</span> Voltar</button>
 
-                <div id="formAddBook">
-                    <input type="text" id="bookName" placeholder="Nome">&nbsp;
-                    <input type="text" id="bookAuthor" placeholder="Autor">&nbsp;
-                    <input type="number" id="bookPages" placeholder="Quantidade de páginas">&nbsp;
-                    <input type="number" id="bookYear" placeholder="Ano">&nbsp;
-                    <button id="btnSubmitAddBook">Adicionar</button>
-                </div>
+                    <div class="form" id="formAddBook">
+                        <input type="text" id="bookName" placeholder="Nome">&nbsp;
+                        <input type="text" id="bookAuthor" placeholder="Autor">&nbsp;
+                        <input type="number" id="bookPages" placeholder="Quantidade de páginas">&nbsp;
+                        <input type="number" id="bookYear" placeholder="Ano">&nbsp;
+                        <button id="btnSubmitAddBook">Adicionar</button>
+                    </div>
+                </aside>
             `;
 
             addBookList();
@@ -403,18 +404,20 @@ const Pages = Object.freeze({
          */
         const openLendBookForm = () => {
             DOM.divs.content.innerHTML = `
-                <button id="btnBack">◀️ Voltar</button>
-                <br><br>
+                <aside>
+                    <img src="../src/Notebook-bro.svg" class="form-icon">
+                    <button id="btnBack"><span class="material-symbols-outlined">arrow_back</span> Voltar</button>
 
-                <div id="formLendBook">
-                    <label for="bookId">Emprestar livro de id:</label>&nbsp;
-                    <input type="number" id="bookId">&nbsp;
-                    <label for="studentId">para o estudante de id:</label>&nbsp;
-                    <input type="number" id="studentId">&nbsp;
-                    <label for="lentDate">Data de entrega:</label>&nbsp;
-                    <input type="date" id="lentDate">&nbsp;
-                    <button id="btnSubmitLendBook">Emprestar</button>
-                </div>
+                    <div class="form" id="formLendBook">
+                        <label for="bookId">Emprestar livro de id:</label>&nbsp;
+                        <input type="number" id="bookId">&nbsp;
+                        <label for="studentId">para o estudante de id:</label>&nbsp;
+                        <input type="number" id="studentId">&nbsp;
+                        <label for="lentDate">Data de entrega:</label>&nbsp;
+                        <input type="date" id="lentDate">&nbsp;
+                        <button id="btnSubmitLendBook">Emprestar</button>
+                    </div>
+                </aside>
             `;
 
             addBookList();
@@ -460,14 +463,16 @@ const Pages = Object.freeze({
          */
         const openReturnBookForm = () => {
             DOM.divs.content.innerHTML = `
-                <button id="btnBack">◀️ Voltar</button>
-                <br><br>
+                <aside>
+                    <img src="../src/To do list-rafiki.svg" class="form-icon">
+                    <button id="btnBack"><span class="material-symbols-outlined">arrow_back</span> Voltar</button>
 
-                <div id="formReturnBook">
-                    <label for="bookId">Devolver livro de id:</label>&nbsp;
-                    <input type="number" id="bookId">&nbsp;
-                    <button id="btnSubmitReturnBook">Devolver</button>
-                </div>
+                    <div class="form" id="formReturnBook">
+                        <label for="bookId">Devolver livro de id:</label>&nbsp;
+                        <input type="number" id="bookId">&nbsp;
+                        <button id="btnSubmitReturnBook">Devolver</button>
+                    </div>
+                </aside>
             `;
 
             addBookList();
@@ -497,10 +502,11 @@ const Pages = Object.freeze({
          */
         const openEditBookForm = () => {
             DOM.divs.content.innerHTML = `
-                <button id="btnBack">◀️ Voltar</button>
-                <br><br>
+            <aside>
+                <img src="../src/Hand holding pen-amico.svg" class="form-icon">
+                <button id="btnBack"><span class="material-symbols-outlined">arrow_back</span> Voltar</button>
 
-                <div id="formEditBook">
+                <div class="form" id="formEditBook">
                     <label for="books">Livro:</label>&nbsp;
                     <select id="books">
                         <option value="" disabled selected>Selecione o livro</option>
@@ -513,6 +519,7 @@ const Pages = Object.freeze({
                     <br><br>
                     <button id="btnSubmitEditBook">Editar</button>
                 </div>
+            </aside>
             `;
 
             addBookList();
@@ -545,14 +552,17 @@ const Pages = Object.freeze({
          */
         const openRemoveBookForm = () => {
             DOM.divs.content.innerHTML = `
-                <button id="btnBack">◀️ Voltar</button>
-                <br><br>
+                <aside>
+                    <img src="../src/Team work-bro.svg" class="form-icon">
+                    <button id="btnBack"><span class="material-symbols-outlined">arrow_back</span> Voltar</button>
+                    <br><br>
 
-                <div id="formRemoveBook">
-                    <label for="bookId">Remover livro de id:</label>&nbsp;
-                    <input type="number" id="bookId">&nbsp;
-                    <button id="btnSubmitRemoveBook">Remover</button>
-                </div>
+                    <div class="form" id="formRemoveBook">
+                        <label for="bookId">Remover livro de id:</label>&nbsp;
+                        <input type="number" id="bookId">&nbsp;
+                        <button id="btnSubmitRemoveBook">Remover</button>
+                    </div>
+                </aside>
             `;
 
             addBookList();
@@ -629,16 +639,18 @@ const Pages = Object.freeze({
          */
         const openSaveStudentForm = () => {
             DOM.divs.content.innerHTML = `
-                <button id="btnBack">◀️ Voltar</button>
-                <br><br>
+                <aside>
+                    <img src="../src/Team work-bro.svg" class="form-icon">
+                    <button id="btnBack"><span class="material-symbols-outlined">arrow_back</span> Voltar</button>
 
-                <div id="formAddStudent">
-                    <input type="text" id="studentName" placeholder="Nome">&nbsp;
-                    <select id="studentClass">
-                        <option value="" disabled selected>Selecione a turma</option>
-                    </select>&nbsp;
-                    <button id="btnSubmitAddStudent">Adicionar</button>
-                </div>
+                    <div class="form" id="formAddStudent">
+                        <input type="text" id="studentName" placeholder="Nome">&nbsp;
+                        <select id="studentClass">
+                            <option value="" disabled selected>Selecione a turma</option>
+                        </select>&nbsp;
+                        <button id="btnSubmitAddStudent">Adicionar</button>
+                    </div>
+                </aside>
             `;
 
             addStudentList();
@@ -679,21 +691,23 @@ const Pages = Object.freeze({
          */
         const openEditStudentForm = () => {
             DOM.divs.content.innerHTML = `
-                <button id="btnBack">◀️ Voltar</button>
-                <br><br>
+                <aside>
+                    <img src="../src/Team work-bro.svg" class="form-icon">
+                    <button id="btnBack"><span class="material-symbols-outlined">arrow_back</span> Voltar</button>
 
-                <div id="formEditStudent">
-                    <label for="students">Estudante:</label>&nbsp;
-                    <select id="students">
-                        <option value="" disabled selected>Selecione o estudante</option>
-                    </select>
-                    <br><br>
-                    <input type="text" id="studentName" placeholder="Nome"><br><br>
-                    <select id="studentClass">
-                        <option value="" disabled selected>Selecione a turma</option>
-                    </select><br><br>
-                    <button id="btnSubmitEditStudent">Editar</button>
-                </div>
+                    <div class="form" id="formEditStudent">
+                        <label for="students">Estudante:</label>&nbsp;
+                        <select id="students">
+                            <option value="" disabled selected>Selecione o estudante</option>
+                        </select>
+                        <br><br>
+                        <input type="text" id="studentName" placeholder="Nome"><br><br>
+                        <select id="studentClass">
+                            <option value="" disabled selected>Selecione a turma</option>
+                        </select><br><br>
+                        <button id="btnSubmitEditStudent">Editar</button>
+                    </div>
+                </aside>
             `;
 
             addStudentList();
@@ -731,14 +745,16 @@ const Pages = Object.freeze({
          */
         const openRemoveStudentForm = () => {
             DOM.divs.content.innerHTML = `
-                <button id="btnBack">◀️ Voltar</button>
-                <br><br>
+                <aside>
+                    <img src="../src/Team work-bro.svg" class="form-icon">
+                    <button id="btnBack"><span class="material-symbols-outlined">arrow_back</span> Voltar</button>
 
-                <div id="formRemoveStudent">
-                    <label for="studentId">Remover estudante de id:</label>&nbsp;
-                    <input type="number" id="studentId">&nbsp;
-                    <button id="btnSubmitRemoveStudent">Remover</button>
-                </div>
+                    <div class="form" id="formRemoveStudent">
+                        <label for="studentId">Remover estudante de id:</label>&nbsp;
+                        <input type="number" id="studentId">&nbsp;
+                        <button id="btnSubmitRemoveStudent">Remover</button>
+                    </div>
+                </aside>
             `;
 
             addStudentList();
@@ -815,13 +831,15 @@ const Pages = Object.freeze({
          */
         const openSaveClassForm = () => {
             DOM.divs.content.innerHTML = `
-                <button id="btnBack">◀️ Voltar</button>
-                <br><br>
+            <aside>
+                <img src="../src/college class-pana.svg" class="form-icon">
+                <button id="btnBack"><span class="material-symbols-outlined">arrow_back</span> Voltar</button>
 
-                <div id="formAddClass">
+                <div class="form" id="formAddClass">
                     <input type="text" id="className" placeholder="Nome">&nbsp;
                     <button id="btnSubmitAddClass">Adicionar</button>
                 </div>
+            </aside>
             `;
 
             addClassList();
@@ -843,18 +861,20 @@ const Pages = Object.freeze({
 
         const openEditClassForm = () => {
             DOM.divs.content.innerHTML = `
-                <button id="btnBack">◀️ Voltar</button>
-                <br><br>
+                <aside>
+                    <img src="../src/Lesson-amico.svg" class="form-icon">
+                    <button id="btnBack"><span class="material-symbols-outlined">arrow_back</span> Voltar</button>
 
-                <div id="formEditClass">
-                    <label for="classes">Turma:</label>&nbsp;
-                    <select id="classes">
-                        <option value="" disabled selected>Selecione a turma</option>
-                    </select>
-                    <br><br>
-                    <input type="text" id="className" placeholder="Nome"><br><br>
-                    <button id="btnSubmitEditClass">Editar</button>
-                </div>
+                    <div class="form" id="formEditClass">
+                        <label for="classes">Turma:</label>&nbsp;
+                        <select id="classes">
+                            <option value="" disabled selected>Selecione a turma</option>
+                        </select>
+                        <br><br>
+                        <input type="text" id="className" placeholder="Nome"><br><br>
+                        <button id="btnSubmitEditClass">Editar</button>
+                    </div>
+                </aside>
             `;
 
             addClassList();
@@ -884,14 +904,16 @@ const Pages = Object.freeze({
          */
         const openRemoveClassForm = () => {
             DOM.divs.content.innerHTML = `
-                <button id="btnBack">◀️ Voltar</button>
-                <br><br>
+                <aside>
+                    <img src="../src/Lesson-cuate.svg" class="form-icon">
+                    <button id="btnBack"><span class="material-symbols-outlined">arrow_back</span> Voltar</button>
 
-                <div id="formRemoveClass">
-                    <label for="classId">Remover turma de id:</label>&nbsp;
-                    <input type="number" id="classId">&nbsp;
-                    <button id="btnSubmitRemoveClass">Remover</button>
-                </div>
+                    <div class="form" id="formRemoveClass">
+                        <label for="classId">Remover turma de id:</label>&nbsp;
+                        <input type="number" id="classId">&nbsp;
+                        <button id="btnSubmitRemoveClass">Remover</button>
+                    </div>
+                </aside>
             `;
 
             addClassList();
