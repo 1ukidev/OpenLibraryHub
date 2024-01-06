@@ -60,6 +60,8 @@ const Pages = Object.freeze({
         if (localStorage.getItem("lock") != null) {
             throw new Error("localStorage: já existe um bloqueio criado!");
         }
+        
+        DOM.id("lock").style.height = "100vh"
 
         DOM.divs.lock.innerHTML = `
             <div class="lock-container">
@@ -100,6 +102,8 @@ const Pages = Object.freeze({
         } else if (localStorage.getItem("lock") == null) {
             throw new Error("localStorage: não existe um bloqueio criado!");
         }
+
+        DOM.id("lock").style.height = "100vh"
 
         DOM.divs.lock.innerHTML = `
             <div class="lock-container">
@@ -964,7 +968,7 @@ const Pages = Object.freeze({
         const back = DOM.id("back");
         back.onclick = () => {
             DOM.divs.others.innerHTML = "";
-            Pages.openLockScreen();
+            Pages.openLockScreen(); 
         }
 
         Lists.showBookListForStudents();
