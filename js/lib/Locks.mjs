@@ -18,6 +18,7 @@ const Locks = Object.freeze({
             const lock = new Lock(passwordHash, "unlocked");
             localStorage.setItem("lock", JSON.stringify(lock));
             DOM.divs.lock.innerHTML = "";
+            DOM.id("lock").style.height = "0"
             Pages.openMainHeader();
             Pages.route();
         } else {
@@ -43,6 +44,7 @@ const Locks = Object.freeze({
                 lock.status = "unlocked";
                 localStorage.setItem("lock", JSON.stringify(lock));
                 DOM.divs.lock.innerHTML = "";
+                DOM.id("lock").style.height = "0"
                 Pages.openMainHeader();
                 Pages.route();
                 console.log("Desbloqueado com sucesso!");
