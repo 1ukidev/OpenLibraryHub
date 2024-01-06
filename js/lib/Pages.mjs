@@ -65,7 +65,7 @@ const Pages = Object.freeze({
 
         DOM.divs.lock.innerHTML = `
             <div class="lock-container">
-                <img class="lock-icon" src="../src/Library-rafiki.svg">
+                <img class="lock-icon" src="/src/Library-rafiki.svg">
                 <h1>Bem-vindo ao OpenLibraryHub!</h1>
                 <h2>(${version})</h2>
 
@@ -107,7 +107,7 @@ const Pages = Object.freeze({
 
         DOM.divs.lock.innerHTML = `
             <div class="lock-container">
-                <img class="lock-icon" src="../src/Library-rafiki.svg">
+                <img class="lock-icon" src="/src/Library-rafiki.svg">
                 <h1>Bem-vindo ao OpenLibraryHub!</h1>
                 <h2>(${version})</h2>
                 <div class="lock-buttons">
@@ -269,7 +269,7 @@ const Pages = Object.freeze({
 
             DOM.id("content").appendChild(table);
         } else {
-            mainText2.innerHTML += "nenhum...";
+            mainText2.innerHTML += "nenhum.";
         }
     },
 
@@ -342,7 +342,7 @@ const Pages = Object.freeze({
         const openSaveBookForm = () => {
             DOM.divs.content.innerHTML = `
                 <aside>
-                    <img src="../src/Reading glasses-bro.svg" class="form-icon">
+                    <img src="/src/Reading glasses-bro.svg" class="form-icon">
                     <button id="btnBack"><span class="material-symbols-outlined">arrow_back</span> Voltar</button>
 
                     <div class="form" id="formAddBook">
@@ -405,7 +405,7 @@ const Pages = Object.freeze({
         const openLendBookForm = () => {
             DOM.divs.content.innerHTML = `
                 <aside>
-                    <img src="../src/Notebook-bro.svg" class="form-icon">
+                    <img src="/src/Notebook-bro.svg" class="form-icon">
                     <button id="btnBack"><span class="material-symbols-outlined">arrow_back</span> Voltar</button>
 
                     <div class="form" id="formLendBook">
@@ -464,7 +464,7 @@ const Pages = Object.freeze({
         const openReturnBookForm = () => {
             DOM.divs.content.innerHTML = `
                 <aside>
-                    <img src="../src/To do list-rafiki.svg" class="form-icon">
+                    <img src="/src/To do list-rafiki.svg" class="form-icon">
                     <button id="btnBack"><span class="material-symbols-outlined">arrow_back</span> Voltar</button>
 
                     <div class="form" id="formReturnBook">
@@ -503,7 +503,7 @@ const Pages = Object.freeze({
         const openEditBookForm = () => {
             DOM.divs.content.innerHTML = `
             <aside>
-                <img src="../src/Hand holding pen-amico.svg" class="form-icon">
+                <img src="/src/Hand holding pen-amico.svg" class="form-icon">
                 <button id="btnBack"><span class="material-symbols-outlined">arrow_back</span> Voltar</button>
 
                 <div class="form" id="formEditBook">
@@ -553,7 +553,7 @@ const Pages = Object.freeze({
         const openRemoveBookForm = () => {
             DOM.divs.content.innerHTML = `
                 <aside>
-                    <img src="../src/Team work-bro.svg" class="form-icon">
+                    <img src="/src/Team work-bro.svg" class="form-icon">
                     <button id="btnBack"><span class="material-symbols-outlined">arrow_back</span> Voltar</button>
                     <br><br>
 
@@ -640,7 +640,7 @@ const Pages = Object.freeze({
         const openSaveStudentForm = () => {
             DOM.divs.content.innerHTML = `
                 <aside>
-                    <img src="../src/Team work-bro.svg" class="form-icon">
+                    <img src="/src/Team work-bro.svg" class="form-icon">
                     <button id="btnBack"><span class="material-symbols-outlined">arrow_back</span> Voltar</button>
 
                     <div class="form" id="formAddStudent">
@@ -692,7 +692,7 @@ const Pages = Object.freeze({
         const openEditStudentForm = () => {
             DOM.divs.content.innerHTML = `
                 <aside>
-                    <img src="../src/Team work-bro.svg" class="form-icon">
+                    <img src="/src/Team work-bro.svg" class="form-icon">
                     <button id="btnBack"><span class="material-symbols-outlined">arrow_back</span> Voltar</button>
 
                     <div class="form" id="formEditStudent">
@@ -746,7 +746,7 @@ const Pages = Object.freeze({
         const openRemoveStudentForm = () => {
             DOM.divs.content.innerHTML = `
                 <aside>
-                    <img src="../src/Team work-bro.svg" class="form-icon">
+                    <img src="/src/Team work-bro.svg" class="form-icon">
                     <button id="btnBack"><span class="material-symbols-outlined">arrow_back</span> Voltar</button>
 
                     <div class="form" id="formRemoveStudent">
@@ -832,7 +832,7 @@ const Pages = Object.freeze({
         const openSaveClassForm = () => {
             DOM.divs.content.innerHTML = `
             <aside>
-                <img src="../src/college class-pana.svg" class="form-icon">
+                <img src="/src/college class-pana.svg" class="form-icon">
                 <button id="btnBack"><span class="material-symbols-outlined">arrow_back</span> Voltar</button>
 
                 <div class="form" id="formAddClass">
@@ -862,7 +862,7 @@ const Pages = Object.freeze({
         const openEditClassForm = () => {
             DOM.divs.content.innerHTML = `
                 <aside>
-                    <img src="../src/Lesson-amico.svg" class="form-icon">
+                    <img src="/src/Lesson-amico.svg" class="form-icon">
                     <button id="btnBack"><span class="material-symbols-outlined">arrow_back</span> Voltar</button>
 
                     <div class="form" id="formEditClass">
@@ -905,7 +905,7 @@ const Pages = Object.freeze({
         const openRemoveClassForm = () => {
             DOM.divs.content.innerHTML = `
                 <aside>
-                    <img src="../src/Lesson-cuate.svg" class="form-icon">
+                    <img src="/src/Lesson-cuate.svg" class="form-icon">
                     <button id="btnBack"><span class="material-symbols-outlined">arrow_back</span> Voltar</button>
 
                     <div class="form" id="formRemoveClass">
