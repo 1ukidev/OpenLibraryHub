@@ -127,18 +127,21 @@ const Lists = Object.freeze({
                 <td>${studentObject.schoolClass}</td>
             `;
 
-            if(studentObject.lentBook != null){
+            const lentBookSize = Object.keys(studentObject.lentBook).length;
+            if (lentBookSize > 0) {
                 let td = DOM.element("td");
-                const lentBookSize = Object.keys(studentObject.lentBook).length;
                 for (let i = 0; i < lentBookSize; i++) {
                     const book = Books.getBookById(studentObject.lentBook[i].id);
-                    td.innerHTML += `${book.name}`;
+                    td.innerHTML += book.name;
+                    if (i < lentBookSize - 1) {
+                        td.innerHTML += ' / ';
+                    }
                 }
                 tr.appendChild(td);
             } else {
                 let td = DOM.element("td");
                 td.innerHTML = "nenhum";
-                tr.appendChild(td)
+                tr.appendChild(td);
             }
             
             tbody.appendChild(tr);
@@ -251,8 +254,11 @@ const Lists = Object.freeze({
 
             if(bookObject.lent){
                 let td = DOM.element("td");
-                const student = Students.getStudentById(bookObject.lentTo);
-                td.innerHTML = `Emprestado para: ${student.name} (${student.schoolClass})`;
+                if (bookObject.lentTo.length == 1) {
+                    td.innerHTML = `Emprestado para ${bookObject.lentTo.length} estudante`;
+                } else {
+                    td.innerHTML = `Emprestado para ${bookObject.lentTo.length} estudantes`;
+                }
                 tr.appendChild(td)
             } else {
                 let td = DOM.element("td");
@@ -328,6 +334,7 @@ const Lists = Object.freeze({
 
     /**
      * Adiciona a funcionalidade de busca no input selecionado.
+     * TODO: Fix this
      * 
      * @param {HTMLElement} ul - Elemento HTML que contém a lista.
      * @param {HTMLElement} input - Elemento HTML que contém o input de busca.
