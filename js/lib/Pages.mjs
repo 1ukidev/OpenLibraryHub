@@ -96,7 +96,7 @@ const Pages = Object.freeze({
      * 
      * @returns {void}
      */
-    openLocksrceen: () => {
+    openLockScreen: () => {
         if (JSON.parse(localStorage.getItem("lock")).status == "unlocked") {
             throw new Error("localStorage: o bloqueio já foi desbloqueado!");
         } else if (localStorage.getItem("lock") == null) {
@@ -326,7 +326,7 @@ const Pages = Object.freeze({
                 <section>
                     <h2>Lista de estudantes:</h2>
                     <label for="search">Pesquise pelo nome:</label>&nbsp;
-                    <input type="text" id="search2">
+                    <input type="text" id="search">
                     <div class="table-container"></div>
                 </section>
             `;
@@ -990,7 +990,7 @@ const Pages = Object.freeze({
         const back = DOM.id("btnBack");
         back.onclick = () => {
             DOM.divs.others.innerHTML = "";
-            Pages.openLocksrceen(); 
+            Pages.openLockScreen(); 
         }
 
         Lists.showBookListForStudents();
