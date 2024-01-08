@@ -146,6 +146,7 @@ const RootPages = Object.freeze({
         linkOpenAllBooks.onclick = () => {
             DOM.divs.lock.innerHTML = "";
             RootPages.openAllBooksPage();
+            Lists.addSearch(DOM.id("bookSearch"));
         }
 
         submit.onclick = () => Locks.unlock();
@@ -411,7 +412,7 @@ const RootPages = Object.freeze({
                 <button id="btnBack"><span class="material-symbols-outlined">arrow_back</span> Voltar</button>
                 <h1>Lista de livros:</h1>
                 <label for="search">Pesquise pelo nome:</label>&nbsp;
-                <input type="text" id="search">
+                <input type="text" id="bookSearch">
                 <div class="table-container"></div>
             </section>
         `;

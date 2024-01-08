@@ -102,8 +102,8 @@ const BookPages = {
             </aside>
         `;
 
-        Lists.addBookList();
-        Lists.addStudentList("search2");
+        Lists.addBookList("bookSearch");
+        Lists.addStudentList("studentSearch");
 
         DOM.id("btnBack").onclick = () => RootPages.openBookPage();
         DOM.id("btnSubmitLendBook").onclick = () => Forms.runFormLendBook();
