@@ -1,6 +1,6 @@
-import { Books } from "./Books.mjs";
-import { Students } from "./Students.mjs";
-import { Classes } from "./Classes.mjs";
+import { Books } from "./Book/Books.mjs";
+import { Students } from "./Student/Students.mjs";
+import { Classes } from "./Class/Classes.mjs";
 import { DOM } from "./DOM.mjs";
 
 const Lists = Object.freeze({
@@ -28,6 +28,8 @@ const Lists = Object.freeze({
         ano.innerHTML = "Ano";
         let paginas = DOM.element("th");
         paginas.innerHTML = "Páginas";
+        let estoque = DOM.element("th");
+        estoque.innerHTML = "Estoque";
         let estado = DOM.element("th");
         estado.innerHTML = "Estado";
 
@@ -36,6 +38,7 @@ const Lists = Object.freeze({
         tr.appendChild(autor);
         tr.appendChild(ano);
         tr.appendChild(paginas);
+        tr.appendChild(estoque);
         tr.appendChild(estado);
 
         thead.appendChild(tr)
@@ -51,12 +54,16 @@ const Lists = Object.freeze({
                 <td>${bookObject.author}</td>
                 <td>${bookObject.year}</td>
                 <td>${bookObject.pages}</td>
+                <td>${bookObject.stock}</td>
             `;
 
             if(bookObject.lent){
                 let td = DOM.element("td");
-                const student = Students.getStudentById(bookObject.lentTo);
-                td.innerHTML = `Emprestado para: ${student.name} (${student.schoolClass})`;
+                if (bookObject.lentTo.length == 1) {
+                    td.innerHTML = `Emprestado para ${bookObject.lentTo.length} estudante`;
+                } else {
+                    td.innerHTML = `Emprestado para ${bookObject.lentTo.length} estudantes`;
+                }
                 tr.appendChild(td)
             } else {
                 let td = DOM.element("td");
@@ -100,7 +107,7 @@ const Lists = Object.freeze({
         let turma = DOM.element("th");
         turma.innerHTML = "Turma";
         let emprestimo = DOM.element("th");
-        emprestimo.innerHTML = "Livro Emprestado";
+        emprestimo.innerHTML = "Livros emprestados";
 
         tr.appendChild(id);
         tr.appendChild(nome);
@@ -120,15 +127,21 @@ const Lists = Object.freeze({
                 <td>${studentObject.schoolClass}</td>
             `;
 
-            if(studentObject.lentBook != null){
+            const lentBookSize = Object.keys(studentObject.lentBook).length;
+            if (lentBookSize > 0) {
                 let td = DOM.element("td");
-                const book = Books.getBookById(studentObject.lentBook)
-                td.innerHTML = `Sim / ${book.name}`;
+                for (let i = 0; i < lentBookSize; i++) {
+                    const book = Books.getBookById(studentObject.lentBook[i].id);
+                    td.innerHTML += book.name;
+                    if (i < lentBookSize - 1) {
+                        td.innerHTML += ' / ';
+                    }
+                }
                 tr.appendChild(td);
             } else {
                 let td = DOM.element("td");
                 td.innerHTML = "nenhum";
-                tr.appendChild(td)
+                tr.appendChild(td);
             }
             
             tbody.appendChild(tr);
@@ -241,8 +254,11 @@ const Lists = Object.freeze({
 
             if(bookObject.lent){
                 let td = DOM.element("td");
-                const student = Students.getStudentById(bookObject.lentTo);
-                td.innerHTML = `Emprestado para: ${student.name} (${student.schoolClass})`;
+                if (bookObject.lentTo.length == 1) {
+                    td.innerHTML = `Emprestado para ${bookObject.lentTo.length} estudante`;
+                } else {
+                    td.innerHTML = `Emprestado para ${bookObject.lentTo.length} estudantes`;
+                }
                 tr.appendChild(td)
             } else {
                 let td = DOM.element("td");
@@ -260,7 +276,65 @@ const Lists = Object.freeze({
     },
 
     /**
+     * Adiciona a lista de livros.
+     * 
+     * @param {string} [idSearch="search"] - Id do elemento input de busca.
+     * @returns {void}
+     */
+    addBookList: (idSearch = "search") => {
+        DOM.divs.content.innerHTML += `
+            <section>
+                <h2>Lista de livros:</h2>
+                <label for="search">Pesquise pelo nome:</label>&nbsp;
+                <input type="text" id="${idSearch}">
+                <div class="table-container"></div>
+            </section>
+        `;
+
+        Lists.showBookList();
+    },
+
+    /**
+     * Adiciona a lista de estudantes.
+     * 
+     * @param {string} [idSearch="search"] - Id do elemento input de busca.
+     * @returns {void}
+     */
+    addStudentList: (idSearch = "search") => {
+        DOM.divs.content.innerHTML += `
+            <section>
+                <h2>Lista de estudantes:</h2>
+                <label for="search">Pesquise pelo nome:</label>&nbsp;
+                <input type="text" id="${idSearch}">
+                <div class="table-container"></div>
+            </section>
+        `;
+
+        Lists.showStudentList();
+    },
+
+    /**
+     * Adiciona a lista de turmas.
+     * 
+     * @param {string} [idSearch="search"] - Id do elemento input de busca.
+     * @returns {void}
+     */
+    addClassList: (idSearch = "search") => {
+        DOM.divs.content.innerHTML += `
+            <section>
+                <h2>Lista de turmas:</h2>
+                <label for="search">Pesquise pelo nome:</label>&nbsp;
+                <input type="text" id="${idSearch}">
+                <div class="table-container"></div>
+            </section>
+        `;
+
+        Lists.showClassList();
+    },
+
+    /**
      * Adiciona a funcionalidade de busca no input selecionado.
+     * TODO: Fix this
      * 
      * @param {HTMLElement} ul - Elemento HTML que contém a lista.
      * @param {HTMLElement} input - Elemento HTML que contém o input de busca.

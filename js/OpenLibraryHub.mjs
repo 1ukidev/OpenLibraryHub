@@ -1,14 +1,14 @@
 /**
  * OpenLibraryHub
  * 
- * @version 0.5.7
+ * @version 0.5.8
  * @license GPL-3.0-or-later
- * @author 1ukidev <me@1uki.cloud>
  * @author Leonardo Monteiro <leo.monteiro06@live.com>
+ * @author Emanuel Ferreira <emanuel2005batista@gmail.com>
  */
 
 import { DOM } from './lib/DOM.mjs';
-import { Pages } from './lib/Pages.mjs';
+import { RootPages } from './lib/RootPages.mjs';
 import { version } from './lib/Constants.mjs';
 
 // Inicialização do site
@@ -16,20 +16,20 @@ DOM.body.onload = () => {
     console.log(`Inicializando OpenLibraryHub (${version})...`);
 
     if (localStorage.getItem("lock") == null) {
-        Pages.openCreateLock();
+        RootPages.openCreateLock();
     } else {
         const lock = JSON.parse(localStorage.getItem("lock"));
         if (lock && lock.status == "unlocked") {
-            Pages.openMainHeader();
-            Pages.route();
+            RootPages.openMainHeader();
+            RootPages.route();
         } else {
-            Pages.openLockScreen();
+            RootPages.openLockScreen();
         }
     }
 
     // Eventos
     window.addEventListener("hashchange", () => {
-        Pages.route();
+        RootPages.route();
     });
 
     console.log("Inicializado com sucesso!");
