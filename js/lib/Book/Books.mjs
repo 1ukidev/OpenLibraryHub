@@ -1,6 +1,6 @@
-import { Book } from "./Abstract.mjs";
-import { Students } from "./Students.mjs";
-import { Lists } from "./Lists.mjs";
+import { Book } from "../Abstract.mjs";
+import { Students } from "../Student/Students.mjs";
+import { Lists } from "../Lists.mjs";
 
 const Books = Object.freeze({
     /**
@@ -11,11 +11,12 @@ const Books = Object.freeze({
      * @param {string} author - Autor do livro.
      * @param {number} pages - Quantidade de páginas do livro.
      * @param {number} year - Ano do livro.
+     * @param {number} stock - Quantidade de livros em estoque.
      * @returns {void}
      */
-    addBook: (id, name, author, pages, year) => {
+    addBook: (id, name, author, pages, year, stock) => {
         console.log(`localStorage: salvando livro "${name}"...`);
-        const book = new Book(id, name, author, pages, year);
+        const book = new Book(id, name, author, pages, year, stock);
         book.type = "Book";
         localStorage.setItem(id, JSON.stringify(book));
         console.log(`localStorage: livro "${name}" salvo com sucesso!`);
@@ -47,7 +48,6 @@ const Books = Object.freeze({
      * @returns {boolean} Retorna false se o livro não foi encontrado.
      */
     getBookById: (id) => {
-        console.log(`localStorage: procurando livro com id "${id}"...`);
         const book = localStorage.getItem(id);
         const bookOject = JSON.parse(book);
 
@@ -71,10 +71,16 @@ const Books = Object.freeze({
         const book = Books.getBookById(id);
 
         if (book) {
-            if (book.lentTo != null) {
+            if (book.lentTo.length > 0) {
                 const student = Students.getStudentById(book.lentTo);
-                student.lentBook = null;
-                localStorage.setItem(student.id, JSON.stringify(student));
+                const lentBook = student.lentBook;
+                const lentBookSize = Object.keys(lentBook).length;
+                for (let i = 0; i < lentBookSize; i++) {
+                    if (lentBook[i].id == book.id) {
+                        delete lentBook[i];
+                    }
+                }
+                Students.updateStudent(student);
             }
 
             localStorage.removeItem(id);
@@ -89,6 +95,17 @@ const Books = Object.freeze({
     },
 
     /**
+     * Atualiza um livro no localStorage.
+     *  
+     * @param {Object} book - Objeto do livro.
+     */
+    updateBook: (book) => {
+        console.log(`localStorage: atualizando livro "${book.name}"...`);
+        localStorage.setItem(book.id, JSON.stringify(book));
+        console.log(`localStorage: livro "${book.name}" atualizado com sucesso!`);
+    },
+
+    /**
      * Empresta um livro para um estudante.
      * 
      * @param {number} bookId - Id do livro.
@@ -100,14 +117,64 @@ const Books = Object.freeze({
         console.log(`localStorage: emprestando livro "${bookId}" para o estudante "${studentId}"...`);
         const book = Books.getBookById(bookId);
         const student = Students.getStudentById(studentId);
+        const lentBookSize = Object.keys(student.lentBook).length;
+
+        for (let i = 0; i < lentBookSize; i++) {
+            if (student.lentBook[i].id == book.id) {
+                alert(`O estudante "${student.name}" já está com o livro "${book.name}" emprestado.`);
+                throw new Error(`O estudante "${student.name}" já está com o livro "${book.name}" emprestado.`);
+            }
+        }
+
+        if (book.stock <= 0) {
+            alert(`O livro "${book.name}" não está em estoque.`);
+            throw new Error(`O livro "${book.name}" não está em estoque.`);
+        }
+    
+        book.stock--;
         book.lent = true;
-        book.lentTo = studentId;
-        book.lentDate = lentDate.replace("-", "/").replace("-", "/");
-        student.lentBook = bookId;
-        localStorage.setItem(bookId, JSON.stringify(book));
-        localStorage.setItem(studentId, JSON.stringify(student));
+        book.lentTo.push(studentId);
+    
+        const updatedLentBook = {...student.lentBook, [lentBookSize]: {id: bookId, lentDate: lentDate.replaceAll("-", "/")}};
+        student.lentBook = updatedLentBook;
+
+        Books.updateBook(book);
+        Students.updateStudent(student);
         console.log(`localStorage: livro "${bookId}" emprestado para o estudante "${studentId}" com sucesso!`);
+    },
+
+    /**
+     * Devolve um livro.
+     * 
+     * @param {Object} book - Objeto do livro.
+     * @param {Object} student - Objeto do estudante.
+     * @returns {void}
+     */
+    returnBook: (book, student) => {
+        console.log(`localStorage: devolvendo livro "${book.name}" do estudante "${student.name}"...`);
+        book.stock++;
+
+        const index = book.lentTo.indexOf(student.id);
+        book.lentTo.splice(index, 1);
+        if (book.lentTo.length < 1) {
+            book.lent = false;
+        }
+    
+        const lentBook = student.lentBook;
+        const lentBookSize = Object.keys(lentBook).length;
+    
+        for (let i = 0; i < lentBookSize; i++) {
+            if (lentBook[i].id == book.id) {
+                delete lentBook[i];
+            }
+        }
+    
+        student.lentBook = lentBook;
+    
+        Books.updateBook(book);
+        Students.updateStudent(student);
+        console.log(`localStorage: livro "${book.name}" devolvido do estudante "${student.name}" com sucesso!`);
     }
 });
 
-export { Books };
+export { Books }

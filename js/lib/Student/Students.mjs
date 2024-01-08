@@ -1,6 +1,6 @@
-import { Student } from "./Abstract.mjs";
-import { Books } from "./Books.mjs";
-import { Lists } from "./Lists.mjs";
+import { Student } from "../Abstract.mjs";
+import { Books } from "../Book/Books.mjs";
+import { Lists } from "../Lists.mjs";
 
 const Students = Object.freeze({
     /**
@@ -69,12 +69,13 @@ const Students = Object.freeze({
         const student = Students.getStudentById(id);
 
         if (student) {
-            if (student.lentBook != null) {
-                const book = Books.getBookById(student.lentBook);
-                book.lent = false;
-                book.lentTo = null;
-                book.lentDate = null;
-                localStorage.setItem(book.id, JSON.stringify(book));
+            const lentBookSize = Object.keys(student.lentBook).length;
+            if (lentBookSize > 0) {
+                const lentBook = student.lentBook;
+                for (let i = 0; i < lentBookSize; i++) {
+                    const book = Books.getBookById(lentBook[i].id);
+                    Books.returnBook(book, student);
+                }
             }
 
             localStorage.removeItem(id);
@@ -86,6 +87,17 @@ const Students = Object.freeze({
             console.error(`localStorage: estudante com id "${id}" não encontrado...`);
             return false;
         }
+    },
+
+    /**
+     * Atualiza um estudante no localStorage.
+     *  
+     * @param {Object} student - Objeto do estudante.
+     */
+    updateStudent: (student) => {
+        console.log(`localStorage: atualizando estudante "${student.name}"...`);
+        localStorage.setItem(student.id, JSON.stringify(student));
+        console.log(`localStorage: estudante "${student.name}" atualizado com sucesso!`);
     }
 });
 

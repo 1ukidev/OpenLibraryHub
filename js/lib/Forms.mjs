@@ -1,7 +1,7 @@
 
-import { Books } from "./Books.mjs";
-import { Students } from "./Students.mjs";
-import { Classes } from "./Classes.mjs";
+import { Books } from "./Book/Books.mjs";
+import { Students } from "./Student/Students.mjs";
+import { Classes } from "./Class/Classes.mjs";
 import { Lists } from "./Lists.mjs";
 import { DOM } from "./DOM.mjs";
 
@@ -16,13 +16,15 @@ const Forms = Object.freeze({
         const bookAuthor = DOM.id("bookAuthor");
         const bookPages = DOM.id("bookPages");
         const bookYear = DOM.id("bookYear");
+        const bookStock = DOM.id("bookStock");
 
-        if (bookName.value && bookAuthor.value && bookPages.value && bookYear.value) {
-            Books.addBook(localStorage.length, bookName.value, bookAuthor.value, bookPages.value, bookYear.value);
+        if (bookName.value && bookAuthor.value && bookPages.value && bookYear.value && bookStock.value) {
+            Books.addBook(localStorage.length, bookName.value, bookAuthor.value, bookPages.value, bookYear.value, bookStock.value);
             bookName.value = "";
             bookAuthor.value = "";
             bookPages.value = "";
             bookYear.value = "";
+            bookStock.value = "";
             document.querySelector(".table-container").innerHTML = "";
             Lists.showBookList();
         } else {
@@ -108,19 +110,15 @@ const Forms = Object.freeze({
      */
     runFormReturnBook: () => {
         const bookId = DOM.id("bookId");
+        const studentId = DOM.id("studentId");
 
-        if (bookId.value) {
+        if (bookId.value && studentId.value) {
             const book = Books.getBookById(bookId.value);
+            const student = Students.getStudentById(studentId.value);
 
             if (book) {
                 if (book.lent) {
-                    const student = Students.getStudentById(book.lentTo);
-                    book.lent = false;
-                    book.lentTo = null;
-                    book.lentDate = null;
-                    student.lentBook = null;
-                    localStorage.setItem(bookId.value, JSON.stringify(book));
-                    localStorage.setItem(student.id, JSON.stringify(student));
+                    Books.returnBook(book, student);
                     document.querySelector(".table-container").innerHTML = "";
                     document.querySelectorAll(".table-container").forEach(e => {
                         e.innerHTML = ""
@@ -151,19 +149,21 @@ const Forms = Object.freeze({
         const bookAuthor = DOM.id("bookAuthor");
         const bookPages = DOM.id("bookPages");
         const bookYear = DOM.id("bookYear");
+        const bookStock = DOM.id("bookStock");
 
         if (!booksSelectId) {
             alert("Por favor, selecione um livro.");
             return;
         }
 
-        if (bookName.value && bookAuthor.value && bookPages.value && bookYear.value) {
-            Books.addBook(booksSelectId, bookName.value, bookAuthor.value, bookPages.value, bookYear.value);
+        if (bookName.value && bookAuthor.value && bookPages.value && bookYear.value && bookStock.value) {
+            Books.addBook(booksSelectId, bookName.value, bookAuthor.value, bookPages.value, bookYear.value, bookStock.value);
             booksSelect.value = "";
             bookName.value = "";
             bookAuthor.value = "";
             bookPages.value = "";
             bookYear.value = "";
+            bookStock.value = "";
             document.querySelector(".table-container").innerHTML = "";
             Lists.showBookList();
             alert("Livro editado com sucesso!");
@@ -241,6 +241,7 @@ const Forms = Object.freeze({
         const bookId = DOM.id("bookId");
 
         if (bookId.value) {
+            document.querySelector(".table-container").innerHTML = "";
             Books.removeBookById(bookId.value);
         } else {
             alert("Por favor, insira o id do livro.");
@@ -256,6 +257,7 @@ const Forms = Object.freeze({
         const studentId = DOM.id("studentId");
 
         if (studentId.value) {
+            document.querySelector(".table-container").innerHTML = "";
             Students.removeStudentById(studentId.value);
         } else {
             alert("Por favor, insira o id do estudante.");
@@ -271,6 +273,7 @@ const Forms = Object.freeze({
         const classId = DOM.id("classId");
 
         if (classId.value) {
+            document.querySelector(".table-container").innerHTML = "";
             Classes.removeClassById(classId.value);
         } else {
             alert("Por favor, insira o id da turma.");
