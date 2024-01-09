@@ -87,6 +87,7 @@ select {
     padding: 1rem 1.5rem;
     cursor: pointer;
     transition: .2s;
+    user-select: none;
 }
 
 .menu-item span {

@@ -9,7 +9,7 @@ const Lists = Object.freeze({
      * 
      * @returns {void}
      */
-    showBookList: (search) => {
+    showBookList: (search, filterType) => {
         const books = Books.getAllBooks();
 
         const table = DOM.element("table");
@@ -24,6 +24,8 @@ const Lists = Object.freeze({
         nome.innerHTML = "Nome";
         let autor = DOM.element("th");
         autor.innerHTML = "Autor";
+        let secao = DOM.element("th");
+        secao.innerHTML = "Seção";
         let ano = DOM.element("th");
         ano.innerHTML = "Ano";
         let paginas = DOM.element("th");
@@ -36,6 +38,7 @@ const Lists = Object.freeze({
         tr.appendChild(id);
         tr.appendChild(nome);
         tr.appendChild(autor);
+        tr.appendChild(secao);
         tr.appendChild(ano);
         tr.appendChild(paginas);
         tr.appendChild(estoque);
@@ -49,7 +52,12 @@ const Lists = Object.freeze({
             const filteredBooks = books.filter((book) => {
                 const bookObject = JSON.parse(book);
 
-                return regex.test(bookObject.name);
+                if(filterType == "bookName"){
+                    return regex.test(bookObject.name);
+                } else if(filterType == "bookSection") {
+                    return regex.test(bookObject.section);
+                }
+                
             });
 
             filteredBooks.forEach((filteredBook) => {
@@ -61,6 +69,7 @@ const Lists = Object.freeze({
                     <td>${bookObject.id}</td>
                     <td>${bookObject.name}</td>
                     <td>${bookObject.author}</td>
+                    <td>${bookObject.section}</td>
                     <td>${bookObject.year}</td>
                     <td>${bookObject.pages}</td>
                     <td>${bookObject.stock}</td>
@@ -92,6 +101,7 @@ const Lists = Object.freeze({
                     <td>${bookObject.id}</td>
                     <td>${bookObject.name}</td>
                     <td>${bookObject.author}</td>
+                    <td>${bookObject.section}</td>
                     <td>${bookObject.year}</td>
                     <td>${bookObject.pages}</td>
                     <td>${bookObject.stock}</td>
@@ -395,6 +405,7 @@ const Lists = Object.freeze({
                     <td>${bookObject.id}</td>
                     <td>${bookObject.name}</td>
                     <td>${bookObject.author}</td>
+                    <td>${bookObject.section}</td>
                     <td>${bookObject.year}</td>
                     <td>${bookObject.pages}</td>
                 `;
@@ -432,19 +443,22 @@ const Lists = Object.freeze({
      * @param {string} [idSearch="search"] - Id do elemento input de busca.
      * @returns {void}
      */
-    addBookList: (idSearch = "bookSearch") => {
+    addBookList: (idSearch = ["bookSearch", "sectionSearch"]) => {
         const section = document.createElement('section');
         section.innerHTML = `
             <h2>Lista de livros:</h2>
             <label for="search">Pesquise pelo nome:</label>&nbsp;
-            <input type="text" id="${idSearch}">
+            <input type="text" id="${idSearch[0]}">
+            <label for="search">Pesquise pela seção:</label>&nbsp;
+            <input type="text" id="${idSearch[1]}">
             <div class="table-container"></div>
         `;
 
         DOM.divs.content.appendChild(section);
 
         Lists.showBookList();
-        Lists.addSearch(DOM.id(idSearch));
+        Lists.addSearch(DOM.id(idSearch[0]));
+        Lists.addSearch(DOM.id(idSearch[1]));
     },
 
     /**
@@ -505,7 +519,10 @@ const Lists = Object.freeze({
 
             switch(input.id){
                 case 'bookSearch':
-                    Lists.showBookList(searchValue);
+                    Lists.showBookList(searchValue, "bookName");
+                    break;
+                case 'sectionSearch':
+                    Lists.showBookList(searchValue, "bookSection");
                     break;
                 case 'studentSearch':
                     Lists.showStudentList(searchValue);
