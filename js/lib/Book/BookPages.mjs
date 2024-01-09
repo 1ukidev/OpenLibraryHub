@@ -20,6 +20,7 @@ const BookPages = {
                 <div class="form" id="formAddBook">
                     <input type="text" id="bookName" placeholder="Nome">&nbsp;
                     <input type="text" id="bookAuthor" placeholder="Autor">&nbsp;
+                    <input type="text" id="bookSection" placeholder="Seção">&nbsp;
                     <input type="number" id="bookPages" placeholder="Quantidade de páginas">&nbsp;
                     <input type="number" id="bookYear" placeholder="Ano">&nbsp;
                     <input type="number" id="bookStock" placeholder="Quantidade em estoque">&nbsp;
@@ -35,6 +36,7 @@ const BookPages = {
 
         const bookName = DOM.id("bookName");
         const bookAuthor = DOM.id("bookAuthor");
+        const bookSection = DOM.id("bookSection");
         const bookPages = DOM.id("bookPages");
         const bookYear = DOM.id("bookYear");
         const bookStock = DOM.id("bookStock");
@@ -47,6 +49,12 @@ const BookPages = {
             }
         });
         bookAuthor.addEventListener("keypress", (event) => {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                bookPages.focus();
+            }
+        });
+        bookSection.addEventListener("keypress", (event) => {
             if (event.key === "Enter") {
                 event.preventDefault();
                 bookPages.focus();
@@ -102,8 +110,8 @@ const BookPages = {
             </aside>
         `;
 
-        Lists.addBookList("bookSearch");
-        Lists.addStudentList("studentSearch");
+        Lists.addBookList();
+        Lists.addStudentList();
 
         DOM.id("btnBack").onclick = () => RootPages.openBookPage();
         DOM.id("btnSubmitLendBook").onclick = () => Forms.runFormLendBook();
@@ -152,6 +160,8 @@ const BookPages = {
                 <div class="form" id="formReturnBook">
                     <label for="bookId">Devolver livro de id:</label>&nbsp;
                     <input type="number" id="bookId">&nbsp;
+                    <label for="studentId">Do aluno de id:</label>&nbsp;
+                    <input type="number" id="studentId">&nbsp;
                     <button id="btnSubmitReturnBook">Devolver</button>
                 </div>
             </aside>
@@ -196,6 +206,7 @@ const BookPages = {
                 <br><br>
                 <input type="text" id="bookName" placeholder="Nome">&nbsp;
                 <input type="text" id="bookAuthor" placeholder="Autor">&nbsp;
+                <input type="text" id="bookSection" placeholder="Seção">&nbsp;
                 <input type="number" id="bookPages" placeholder="Quantidade de páginas">&nbsp;
                 <input type="number" id="bookStock" placeholder="Quantidade em estoque">&nbsp;
                 <input type="number" id="bookYear" placeholder="Ano">&nbsp;
@@ -220,6 +231,7 @@ const BookPages = {
             const bookObject = Books.getBookById(DOM.id("books").value.split(" - Id: ")[1]);
             DOM.id("bookName").value = bookObject.name;
             DOM.id("bookAuthor").value = bookObject.author;
+            DOM.id("bookSection").value = bookObject.section;
             DOM.id("bookPages").value = bookObject.pages;
             DOM.id("bookYear").value = bookObject.year;
             DOM.id("bookStock").value = bookObject.stock;

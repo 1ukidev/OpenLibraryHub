@@ -27,10 +27,11 @@ const Lock = class {
  * @param {Array} lentTo - Estudantes que estão com o livro emprestado. Padrão: []
  */
 const Book = class {
-    constructor(id, name, author, pages, year, stock) {
+    constructor(id, name, author, section, pages, year, stock) {
         this.id = id;
         this.name = name;
         this.author = author;
+        this.section = section;
         this.pages = pages;
         this.year = year;
         this.stock = stock;

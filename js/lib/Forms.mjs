@@ -14,14 +14,16 @@ const Forms = Object.freeze({
     runFormAddBook: () => {
         const bookName = DOM.id("bookName");
         const bookAuthor = DOM.id("bookAuthor");
+        const bookSection = DOM.id("bookSection");
         const bookPages = DOM.id("bookPages");
         const bookYear = DOM.id("bookYear");
         const bookStock = DOM.id("bookStock");
 
-        if (bookName.value && bookAuthor.value && bookPages.value && bookYear.value && bookStock.value) {
-            Books.addBook(localStorage.length, bookName.value, bookAuthor.value, bookPages.value, bookYear.value, bookStock.value);
+        if (bookName.value && bookAuthor.value && bookSection.value && bookPages.value && bookYear.value && bookStock.value) {
+            Books.addBook(localStorage.length, bookName.value, bookAuthor.value, bookSection.value, bookPages.value, bookYear.value, bookStock.value);
             bookName.value = "";
             bookAuthor.value = "";
+            bookSection.value = "";
             bookPages.value = "";
             bookYear.value = "";
             bookStock.value = "";
@@ -147,6 +149,7 @@ const Forms = Object.freeze({
         const booksSelectId = booksSelect.value.split(" - Id: ")[1];
         const bookName = DOM.id("bookName");
         const bookAuthor = DOM.id("bookAuthor");
+        const bookSection = DOM.id("bookSection");
         const bookPages = DOM.id("bookPages");
         const bookYear = DOM.id("bookYear");
         const bookStock = DOM.id("bookStock");
@@ -157,10 +160,11 @@ const Forms = Object.freeze({
         }
 
         if (bookName.value && bookAuthor.value && bookPages.value && bookYear.value && bookStock.value) {
-            Books.addBook(booksSelectId, bookName.value, bookAuthor.value, bookPages.value, bookYear.value, bookStock.value);
+            Books.addBook(booksSelectId, bookName.value, bookAuthor.value, bookSection.value, bookPages.value, bookYear.value, bookStock.value);
             booksSelect.value = "";
             bookName.value = "";
             bookAuthor.value = "";
+            bookSection.value = "";
             bookPages.value = "";
             bookYear.value = "";
             bookStock.value = "";
