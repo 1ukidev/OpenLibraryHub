@@ -11,6 +11,10 @@
     --cor-verde: #479c74;
 }
 
+h2 {
+    margin-bottom: .5rem;
+}
+
 .button {
     background-color: var(--cor-verde);
     color: var(--cor-branco);
