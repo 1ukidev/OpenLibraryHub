@@ -3,6 +3,6 @@
  * 
  * @type {string}
  */
-const version = "0.5.9";
+const version = "0.6.0";
 
 export { version }

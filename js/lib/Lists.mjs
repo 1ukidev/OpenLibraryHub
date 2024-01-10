@@ -120,6 +120,12 @@ const Lists = Object.freeze({
                     td.innerHTML = "Disponivel";
                     tr.appendChild(td);
                 }
+
+                if(DOM.id("formEditBook") != null){
+                    let td = DOM.element("td");
+                    td.innerHTML = "<button class='button selecionarLivro'>selecionar</button>";
+                    tr.appendChild(td);
+                }
     
                 tbody.appendChild(tr);
             });

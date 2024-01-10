@@ -193,17 +193,13 @@ const BookPages = {
      * @returns {void}
      */
     openEditBookForm: () => {
+        Lists.addBookList();
         DOM.divs.content.innerHTML = `
         <aside>
             <img src="/OpenLibraryHub/src/Hand holding pen-amico.svg" class="form-icon">
             <button id="btnBack"><span class="material-symbols-outlined">arrow_back</span> Voltar</button>
 
             <div class="form" id="formEditBook">
-                <label for="books">Livro:</label>&nbsp;
-                <select id="books">
-                    <option value="" disabled selected>Selecione o livro</option>
-                </select>
-                <br><br>
                 <input type="text" id="bookName" placeholder="Nome">&nbsp;
                 <input type="text" id="bookAuthor" placeholder="Autor">&nbsp;
                 <input type="text" id="bookSection" placeholder="Seção">&nbsp;
@@ -218,24 +214,17 @@ const BookPages = {
 
         Lists.addBookList();
 
-        const books = Books.getAllBooks();
-        const booksSelect = DOM.id("books");
-        books.forEach((book) => {
-            const bookObject = JSON.parse(book);
-            const option = DOM.element("option");
-            option.textContent = `${bookObject.name} - Id: ${bookObject.id}`;
-            booksSelect.appendChild(option);
-        });
-
-        DOM.id("books").onchange = () => {
-            const bookObject = Books.getBookById(DOM.id("books").value.split(" - Id: ")[1]);
-            DOM.id("bookName").value = bookObject.name;
-            DOM.id("bookAuthor").value = bookObject.author;
-            DOM.id("bookSection").value = bookObject.section;
-            DOM.id("bookPages").value = bookObject.pages;
-            DOM.id("bookYear").value = bookObject.year;
-            DOM.id("bookStock").value = bookObject.stock;
-        }
+        document.querySelectorAll(".selecionarLivro").forEach(button => {
+            button.onclick = () => {
+                const bookObject = Books.getBookById(button.parentNode.parentNode.children[0].textContent);
+                DOM.id("bookName").value = bookObject.name;
+                DOM.id("bookAuthor").value = bookObject.author;
+                DOM.id("bookSection").value = bookObject.section;
+                DOM.id("bookPages").value = bookObject.pages;
+                DOM.id("bookYear").value = bookObject.year;
+                DOM.id("bookStock").value = bookObject.stock;
+            }
+        })
 
         DOM.id("btnBack").onclick = () => RootPages.openBookPage();
         DOM.id("btnSubmitEditBook").onclick = () => Forms.runFormEditBook();
