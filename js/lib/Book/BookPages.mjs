@@ -296,6 +296,13 @@ const BookPages = {
                 event.preventDefault();
             }
         });
+
+        document.querySelectorAll(".selecionarLivro").forEach(button => {
+            button.onclick = () => {
+                const bookObject = Books.getBookById(button.parentNode.parentNode.children[0].textContent);
+                bookId.value = bookObject.id;
+            }
+        });
     }
 }
 
