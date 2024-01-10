@@ -169,6 +169,11 @@ select {
     padding: 1rem;
 }
 
+#sectionSearch {
+    padding-right: 1rem;
+    margin-left: .5rem;
+}
+
 aside {
     position: absolute;
     top: 0;

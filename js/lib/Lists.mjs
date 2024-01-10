@@ -46,7 +46,7 @@ const Lists = Object.freeze({
 
         thead.appendChild(tr)
 
-        if(search != null){
+        if(search != null && search != "TODOS"){
             const regex = new RegExp(search.replace(/%/g, ".*"), "i");
 
             const filteredBooks = books.filter((book) => {
@@ -449,8 +449,9 @@ const Lists = Object.freeze({
             <h2>Lista de livros:</h2>
             <label for="search">Pesquise pelo nome:</label>&nbsp;
             <input type="text" id="${idSearch[0]}">
-            <label for="search">Pesquise pela seção:</label>&nbsp;
-            <input type="text" id="${idSearch[1]}">
+            <select id="${idSearch[1]}">
+                <option>todos</option>
+            </select>
             <div class="table-container"></div>
         `;
 
@@ -459,6 +460,26 @@ const Lists = Object.freeze({
         Lists.showBookList();
         Lists.addSearch(DOM.id(idSearch[0]));
         Lists.addSearch(DOM.id(idSearch[1]));
+
+        const sections = [];
+        const table = document.querySelectorAll(".table-container")[0];
+
+        table.childNodes[0].childNodes[1].childNodes.forEach(row => {
+           let section = row.children[3].textContent
+            if(sections.length == 0){
+                sections.push(section)
+            } else {
+                if(!sections.includes(section)){
+                    sections.push(section)
+                }
+            }
+        })
+
+        sections.forEach(section => {
+            const option = DOM.element("option");
+            option.innerHTML = section
+            DOM.id("sectionSearch").appendChild(option)
+        })
     },
 
     /**
@@ -514,26 +535,31 @@ const Lists = Object.freeze({
 
     addSearch: (input) => {
         //const table = input.parentNode.children[3];
-        input.onkeyup = () => {
-            const searchValue = input.value.toUpperCase();
-
-            switch(input.id){
-                case 'bookSearch':
-                    Lists.showBookList(searchValue, "bookName");
-                    break;
-                case 'sectionSearch':
-                    Lists.showBookList(searchValue, "bookSection");
-                    break;
-                case 'studentSearch':
-                    Lists.showStudentList(searchValue);
-                    break;
-                case 'classSearch':
-                    Lists.showClassList(searchValue);
-                    break;
-                default:
-                    alert("erro na funcionalidade de pesquisa, informar desenvolvedores")
+        if(input.id == "sectionSearch"){
+            input.addEventListener("change", () => {
+                const searchValue = input.value.toUpperCase();
+                Lists.showBookList(searchValue, "bookSection");
+            })
+        } else {
+            input.onkeyup = () => {
+                const searchValue = input.value.toUpperCase();
+    
+                switch(input.id){
+                    case 'bookSearch':
+                        Lists.showBookList(searchValue, "bookName");
+                        break;
+                    case 'studentSearch':
+                        Lists.showStudentList(searchValue);
+                        break;
+                    case 'classSearch':
+                        Lists.showClassList(searchValue);
+                        break;
+                    default:
+                        alert("erro na funcionalidade de pesquisa, informar desenvolvedores")
+                }
             }
         }
+        
     }
 });
 
