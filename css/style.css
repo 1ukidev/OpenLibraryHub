@@ -9,7 +9,10 @@
     --cor-cinza: #303030;
     --cor-branco: #EAEAEA;
     --cor-verde: #479c74;
-    --cor-verde-claro: #B7E4C7;
+}
+
+h2 {
+    margin-bottom: .5rem;
 }
 
 .button {
@@ -167,6 +170,11 @@ select {
     width: 100%;
     margin: 0 auto;
     padding: 1rem;
+}
+
+#sectionSearch {
+    padding-right: 1rem;
+    margin-left: .5rem;
 }
 
 aside {

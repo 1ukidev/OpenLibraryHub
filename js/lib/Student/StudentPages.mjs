@@ -102,15 +102,24 @@ const StudentPages = {
             DOM.id("studentClass").value = studentObject.schoolClass;
         }
 
-        DOM.id("btnBack").onclick = () => RootPages.openStudentPage();
-        DOM.id("btnSubmitEditStudent").onclick = () => Forms.runFormEditStudent();
-
         Classes.getAllClasses().forEach((schoolClass) => {
             const option = DOM.element("option");
             const schoolClassObject = JSON.parse(schoolClass);
             option.textContent = schoolClassObject.name;
             DOM.id("studentClass").appendChild(option);
         });
+        
+        document.querySelectorAll(".selecionarEstudante").forEach(button => {
+            button.onclick = () => {
+                const studentObject = Students.getStudentById(button.parentNode.parentNode.children[0].textContent);
+                DOM.id("students").value = `${studentObject.name} - Id: ${studentObject.id}`;
+                DOM.id("studentName").value = studentObject.name;
+                DOM.id("studentClass").value = studentObject.schoolClass;
+            }
+        })
+
+        DOM.id("btnBack").onclick = () => RootPages.openStudentPage();
+        DOM.id("btnSubmitEditStudent").onclick = () => Forms.runFormEditStudent();
     },
 
     /**
@@ -149,6 +158,13 @@ const StudentPages = {
                 event.preventDefault();
             }
         });
+        
+        document.querySelectorAll(".selecionarEstudante").forEach(button => {
+            button.onclick = () => {
+                const studentObject = Students.getStudentById(button.parentNode.parentNode.children[0].textContent);
+                studentId.value = studentObject.id;
+            }
+        })
     }
 
 }
