@@ -4,6 +4,7 @@ import { RootPages } from "../RootPages.mjs";
 import { Forms } from "../Forms.mjs";
 import { Books } from "./Books.mjs";
 import { Others } from "../Others.mjs";
+import { Students } from "../Student/Students.mjs";
 
 const BookPages = {
     /**
@@ -144,6 +145,20 @@ const BookPages = {
                 bookId.focus();
             }
         });
+        
+        document.querySelectorAll(".selecionarLivro").forEach(button => {
+            button.onclick = () => {
+                const bookObject = Books.getBookById(button.parentNode.parentNode.children[0].textContent);
+                bookId.value = bookObject.id
+            }
+        })
+        
+        document.querySelectorAll(".selecionarEstudante").forEach(button => {
+            button.onclick = () => {
+                const studentObject = Students.getStudentById(button.parentNode.parentNode.children[0].textContent);
+                studentId.value = studentObject.id
+            }
+        })
     },
 
     /**
@@ -185,6 +200,20 @@ const BookPages = {
                 event.preventDefault();
             }
         });
+        
+        document.querySelectorAll(".selecionarLivro").forEach(button => {
+            button.onclick = () => {
+                const bookObject = Books.getBookById(button.parentNode.parentNode.children[0].textContent);
+                bookId.value = bookObject.id
+            }
+        })
+        
+        document.querySelectorAll(".selecionarEstudante").forEach(button => {
+            button.onclick = () => {
+                const studentObject = Students.getStudentById(button.parentNode.parentNode.children[0].textContent);
+                studentId.value = studentObject.id
+            }
+        })
     },
 
     /**

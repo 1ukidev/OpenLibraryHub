@@ -89,6 +89,12 @@ const Lists = Object.freeze({
                     tr.appendChild(td);
                 }
 
+                if(DOM.id("formEditBook") != null || DOM.id("formLendBook") != null || DOM.id("formReturnBook") != null){
+                    let td = DOM.element("td");
+                    td.innerHTML = "<button class='button selecionarLivro'>selecionar</button>";
+                    tr.appendChild(td);
+                }
+
                 tbody.appendChild(tr);
             });
         } else {
@@ -121,7 +127,7 @@ const Lists = Object.freeze({
                     tr.appendChild(td);
                 }
 
-                if(DOM.id("formEditBook") != null){
+                if(DOM.id("formEditBook") != null || DOM.id("formLendBook") != null || DOM.id("formReturnBook") != null){
                     let td = DOM.element("td");
                     td.innerHTML = "<button class='button selecionarLivro'>selecionar</button>";
                     tr.appendChild(td);
@@ -211,6 +217,12 @@ const Lists = Object.freeze({
                     td.innerHTML = "nenhum";
                     tr.appendChild(td);
                 }
+
+                if(DOM.id("formLendBook") != null || DOM.id("formReturnBook") != null || DOM.id("formEditStudent") != null || DOM.id("formRemoveStudent") != null){
+                    let td = DOM.element("td");
+                    td.innerHTML = "<button class='button selecionarEstudante'>selecionar</button>";
+                    tr.appendChild(td);
+                }
                 
                 tbody.appendChild(tr);
             });
@@ -240,6 +252,12 @@ const Lists = Object.freeze({
                 } else {
                     let td = DOM.element("td");
                     td.innerHTML = "nenhum";
+                    tr.appendChild(td);
+                }
+
+                if(DOM.id("formLendBook") != null || DOM.id("formReturnBook") != null || DOM.id("formEditStudent") != null || DOM.id("formRemoveStudent") != null){
+                    let td = DOM.element("td");
+                    td.innerHTML = "<button class='button selecionarEstudante'>selecionar</button>";
                     tr.appendChild(td);
                 }
                 
@@ -497,7 +515,7 @@ const Lists = Object.freeze({
     addStudentList: (idSearch = "studentSearch") => {
         const section = document.createElement('section');
         section.innerHTML = `
-            <h2>Lista de livros:</h2>
+            <h2>Lista de estudantes:</h2>
             <label for="search">Pesquise pelo nome:</label>&nbsp;
             <input type="text" id="${idSearch}">
             <div class="table-container"></div>
