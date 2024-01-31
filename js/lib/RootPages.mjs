@@ -171,7 +171,6 @@ const RootPages = Object.freeze({
                     <li><a id="a-6" class="menu-item"><span class="material-symbols-outlined">exit_to_app</span> Sair</a></li>
                 </ul>
             </div>
-            <br>
         `;
 
         DOM.id("a-1").onclick = () => RootPages.changePage("");
@@ -332,7 +331,6 @@ const RootPages = Object.freeze({
                 <button class="button" id="btnOpenEditStudentForm">Editar estudante</button>&nbsp;&nbsp;
                 <button class="button" id="btnOpenRemoveStudentForm">Remover estudante</button>
             </div>
-            <br>
         `;
 
         Lists.addStudentList();
@@ -362,7 +360,6 @@ const RootPages = Object.freeze({
                 <button class="button" id="btnOpenEditClassForm">Editar turma</button>&nbsp;&nbsp;
                 <button class="button" id="btnOpenRemoveClassForm">Remover turma</button>
             </div>
-            <br>
         `;
 
         Lists.addClassList();

@@ -536,7 +536,7 @@ const Lists = Object.freeze({
     addClassList: (idSearch = "classSearch") => {
         const section = document.createElement('section');
         section.innerHTML = `
-            <h2>Lista de livros:</h2>
+            <h2>Lista de turmas:</h2>
             <label for="search">Pesquise pelo nome:</label>&nbsp;
             <input type="text" id="${idSearch}">
             <div class="table-container"></div>
