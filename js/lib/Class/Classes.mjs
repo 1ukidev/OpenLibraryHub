@@ -9,11 +9,18 @@ const Classes = Object.freeze({
      * @param {string} name - Nome da turma.
      */
     addClass: (id, name) => {
-        console.log(`localStorage: salvando turma "${name}"...`);
-        const schoolClass = new Class(id, name);
-        schoolClass.type = "Class";
-        localStorage.setItem(id, JSON.stringify(schoolClass));
-        console.log(`localStorage: turma "${name}" salva com sucesso!`);
+        Classes.getAllClasses().forEach(classObj => {
+            if(JSON.parse(classObj).id != id && JSON.parse(classObj).name != name){
+                console.log(`localStorage: salvando turma "${name}"...`);
+                const schoolClass = new Class(id, name);
+                schoolClass.type = "Class";
+                localStorage.setItem(id, JSON.stringify(schoolClass));
+                console.log(`localStorage: turma "${name}" salva com sucesso!`);
+            } else {
+                alert("Já existe registro com essas mesmas caracteristicas");
+            }
+        })
+        
     },
 
     /**

@@ -80,6 +80,14 @@ const ClassPages = {
             DOM.id("className").value = schoolClassObject.name;
         }
 
+        document.querySelectorAll(".selecionarTurma").forEach(button => {
+            button.onclick = () => {
+                const classObject = Classes.getClassById(button.parentNode.parentNode.children[0].textContent);
+                DOM.id("classes").value = `${classObject.name} - Id: ${classObject.id}`;
+                DOM.id("className").value = classObject.name;
+            }
+        })
+
         DOM.id("btnBack").onclick = () => RootPages.openClassPage();
         DOM.id("btnSubmitEditClass").onclick = () => Forms.runFormEditClass();
     },
