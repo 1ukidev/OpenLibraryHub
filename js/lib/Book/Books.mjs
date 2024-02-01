@@ -17,7 +17,6 @@ const Books = Object.freeze({
     addBook: (id, name, author, section, pages, year, stock) => {
         console.log(`localStorage: salvando livro "${name}"...`);
         const book = new Book(id, name, author, section, pages, year, stock);
-        console.log(book)
         book.type = "Book";
         localStorage.setItem(id, JSON.stringify(book));
         console.log(`localStorage: livro "${name}" salvo com sucesso!`);

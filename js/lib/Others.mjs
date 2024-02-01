@@ -133,6 +133,19 @@ const Others = Object.freeze({
         } else {
             return false;
         }
+    },
+
+    /**
+     * Verifica aonde o site está sendo acessado.
+     * 
+     * @returns {string} Retorna a pasta correta das imagens.
+     */
+    checkURL: () => {
+        if (location.href.indexOf("github")) {
+            return "/src";
+        } else {
+            return "/OpenLibraryHub/src";
+        }
     }
 });
 
