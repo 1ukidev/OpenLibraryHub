@@ -1,7 +1,7 @@
 /**
  * OpenLibraryHub
  * 
- * @version 0.5.8
+ * @version 0.6.2
  * @license GPL-3.0-or-later
  * @author Leonardo Monteiro <leo.monteiro06@live.com>
  * @author Emanuel Ferreira <emanuel2005batista@gmail.com>

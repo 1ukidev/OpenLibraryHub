@@ -7,6 +7,8 @@ const Lists = Object.freeze({
     /**
      * Mostra todos os livros no elemento bookList.
      * 
+     * @param {*} search
+     * @param {*} filterType
      * @returns {void}
      */
     showBookList: (search, filterType) => {
@@ -91,7 +93,7 @@ const Lists = Object.freeze({
 
                 if(DOM.id("formEditBook") != null || DOM.id("formLendBook") != null || DOM.id("formReturnBook") != null || DOM.id("formRemoveBook") != null){
                     let td = DOM.element("td");
-                    td.innerHTML = "<button class='button selecionarLivro'>selecionar</button>";
+                    td.innerHTML = "<button class='button selecionarLivro'>Selecionar</button>";
                     tr.appendChild(td);
                 }
 
@@ -129,7 +131,7 @@ const Lists = Object.freeze({
 
                 if(DOM.id("formEditBook") != null || DOM.id("formLendBook") != null || DOM.id("formReturnBook") != null || DOM.id("formRemoveBook") != null){
                     let td = DOM.element("td");
-                    td.innerHTML = "<button class='button selecionarLivro'>selecionar</button>";
+                    td.innerHTML = "<button class='button selecionarLivro'>Selecionar</button>";
                     tr.appendChild(td);
                 }
     
@@ -154,6 +156,7 @@ const Lists = Object.freeze({
     /**
      * Mostra todos os estudantes no elemento studentList.
      * 
+     * @param {*} search
      * @returns {void}
      */
     showStudentList: (search) => {
@@ -214,13 +217,13 @@ const Lists = Object.freeze({
                     tr.appendChild(td);
                 } else {
                     let td = DOM.element("td");
-                    td.innerHTML = "nenhum";
+                    td.innerHTML = "Nenhum";
                     tr.appendChild(td);
                 }
 
                 if(DOM.id("formLendBook") != null || DOM.id("formReturnBook") != null || DOM.id("formEditStudent") != null || DOM.id("formRemoveStudent") != null){
                     let td = DOM.element("td");
-                    td.innerHTML = "<button class='button selecionarEstudante'>selecionar</button>";
+                    td.innerHTML = "<button class='button selecionarEstudante'>Selecionar</button>";
                     tr.appendChild(td);
                 }
                 
@@ -251,13 +254,13 @@ const Lists = Object.freeze({
                     tr.appendChild(td);
                 } else {
                     let td = DOM.element("td");
-                    td.innerHTML = "nenhum";
+                    td.innerHTML = "Nenhum";
                     tr.appendChild(td);
                 }
 
                 if(DOM.id("formLendBook") != null || DOM.id("formReturnBook") != null || DOM.id("formEditStudent") != null || DOM.id("formRemoveStudent") != null){
                     let td = DOM.element("td");
-                    td.innerHTML = "<button class='button selecionarEstudante'>selecionar</button>";
+                    td.innerHTML = "<button class='button selecionarEstudante'>Selecionar</button>";
                     tr.appendChild(td);
                 }
                 
@@ -277,6 +280,7 @@ const Lists = Object.freeze({
     /**
      * Mostra todas as turmas no elemento classList.
      * 
+     * @param {*} search
      * @returns {void}
      */
     showClassList: (search) => {
@@ -347,6 +351,7 @@ const Lists = Object.freeze({
      * Mostra todos os livros no elemento bookList.
      * Método para estudantes.
      * 
+     * @param {*} search
      * @returns {void}
      */
     showBookListForStudents: (search) => {
@@ -471,10 +476,10 @@ const Lists = Object.freeze({
         const section = document.createElement('section');
         section.innerHTML = `
             <h2>Lista de livros:</h2>
-            <label for="search">Pesquise pelo nome:</label>&nbsp;
+            <label for="${idSearch[0]}">Pesquise pelo nome:</label>&nbsp;
             <input type="text" id="${idSearch[0]}">
             <select id="${idSearch[1]}">
-                <option>todos</option>
+                <option>Todos</option>
             </select>
             <div class="table-container"></div>
         `;
@@ -516,7 +521,7 @@ const Lists = Object.freeze({
         const section = document.createElement('section');
         section.innerHTML = `
             <h2>Lista de estudantes:</h2>
-            <label for="search">Pesquise pelo nome:</label>&nbsp;
+            <label for="${idSearch}">Pesquise pelo nome:</label>&nbsp;
             <input type="text" id="${idSearch}">
             <div class="table-container"></div>
         `;
@@ -537,7 +542,7 @@ const Lists = Object.freeze({
         const section = document.createElement('section');
         section.innerHTML = `
             <h2>Lista de turmas:</h2>
-            <label for="search">Pesquise pelo nome:</label>&nbsp;
+            <label for="${idSearch}">Pesquise pelo nome:</label>&nbsp;
             <input type="text" id="${idSearch}">
             <div class="table-container"></div>
         `;
@@ -550,9 +555,7 @@ const Lists = Object.freeze({
 
     /**
      * Adiciona a funcionalidade de busca no input selecionado.
-     * TODO: Fix this
      * 
-     * @param {HTMLElement} ul - Elemento HTML que contém a lista.
      * @param {HTMLElement} input - Elemento HTML que contém o input de busca.
      * @returns {void}
      */

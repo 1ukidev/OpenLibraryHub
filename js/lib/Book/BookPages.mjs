@@ -15,7 +15,7 @@ const BookPages = {
     openSaveBookForm: () => {
         DOM.divs.content.innerHTML = `
             <aside>
-                <img src="/OpenLibraryHub/src/Reading glasses-bro.svg" class="form-icon">
+                <img src="${Others.checkURL()}/Reading glasses-bro.svg" class="form-icon">
                 <button id="btnBack"><span class="material-symbols-outlined">arrow_back</span> Voltar</button>
 
                 <div class="form" id="formAddBook">
@@ -52,7 +52,7 @@ const BookPages = {
         bookAuthor.addEventListener("keypress", (event) => {
             if (event.key === "Enter") {
                 event.preventDefault();
-                bookPages.focus();
+                bookSection.focus();
             }
         });
         bookSection.addEventListener("keypress", (event) => {
@@ -96,7 +96,7 @@ const BookPages = {
     openLendBookForm: () => {
         DOM.divs.content.innerHTML = `
             <aside>
-                <img src="/OpenLibraryHub/src/Notebook-bro.svg" class="form-icon">
+                <img src="${Others.checkURL()}/Notebook-bro.svg" class="form-icon">
                 <button id="btnBack"><span class="material-symbols-outlined">arrow_back</span> Voltar</button>
 
                 <div class="form" id="formLendBook">
@@ -169,7 +169,7 @@ const BookPages = {
     openReturnBookForm: () => {
         DOM.divs.content.innerHTML = `
             <aside>
-                <img src="/OpenLibraryHub/src/To do list-rafiki.svg" class="form-icon">
+                <img src="${Others.checkURL()}/To do list-rafiki.svg" class="form-icon">
                 <button id="btnBack"><span class="material-symbols-outlined">arrow_back</span> Voltar</button>
 
                 <div class="form" id="formReturnBook">
@@ -225,7 +225,7 @@ const BookPages = {
         Lists.addBookList();
         DOM.divs.content.innerHTML = `
         <aside>
-            <img src="/OpenLibraryHub/src/Hand holding pen-amico.svg" class="form-icon">
+            <img src="${Others.checkURL()}/Hand holding pen-amico.svg" class="form-icon">
             <button id="btnBack"><span class="material-symbols-outlined">arrow_back</span> Voltar</button>
 
             <div class="form" id="formEditBook">
@@ -243,9 +243,11 @@ const BookPages = {
 
         Lists.addBookList();
 
+        let id;
         document.querySelectorAll(".selecionarLivro").forEach(button => {
             button.onclick = () => {
                 const bookObject = Books.getBookById(button.parentNode.parentNode.children[0].textContent);
+                id = button.parentNode.parentNode.children[0].textContent;
                 DOM.id("bookName").value = bookObject.name;
                 DOM.id("bookAuthor").value = bookObject.author;
                 DOM.id("bookSection").value = bookObject.section;
@@ -256,7 +258,7 @@ const BookPages = {
         })
 
         DOM.id("btnBack").onclick = () => RootPages.openBookPage();
-        DOM.id("btnSubmitEditBook").onclick = () => Forms.runFormEditBook();
+        DOM.id("btnSubmitEditBook").onclick = () => Forms.runFormEditBook(id);
     },
 
     /**
@@ -267,9 +269,8 @@ const BookPages = {
     openRemoveBookForm: () => {
         DOM.divs.content.innerHTML = `
             <aside>
-                <img src="/OpenLibraryHub/src/Team work-bro.svg" class="form-icon">
+                <img src="${Others.checkURL()}/Team work-bro.svg" class="form-icon">
                 <button id="btnBack"><span class="material-symbols-outlined">arrow_back</span> Voltar</button>
-                <br><br>
 
                 <div class="form" id="formRemoveBook">
                     <label for="bookId">Remover livro de id:</label>&nbsp;

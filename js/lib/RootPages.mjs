@@ -66,7 +66,7 @@ const RootPages = Object.freeze({
 
         DOM.divs.lock.innerHTML = `
             <div class="lock-container">
-                <img class="lock-icon" src="/OpenLibraryHub/src/Library-rafiki.svg">
+                <img class="lock-icon" src="${Others.checkURL()}/Library-rafiki.svg">
                 <h1>Bem-vindo ao OpenLibraryHub!</h1>
                 <h2>(${version})</h2>
 
@@ -108,7 +108,7 @@ const RootPages = Object.freeze({
 
         DOM.divs.lock.innerHTML = `
             <div class="lock-container">
-                <img class="lock-icon" src="/OpenLibraryHub/src/Library-rafiki.svg">
+                <img class="lock-icon" src="${Others.checkURL()}/Library-rafiki.svg">
                 <h1>Bem-vindo ao OpenLibraryHub!</h1>
                 <h2>(${version})</h2>
                 <div class="lock-buttons">
@@ -407,6 +407,7 @@ const RootPages = Object.freeze({
         DOM.divs.others.innerHTML = `
             <section>
                 <button id="btnBack"><span class="material-symbols-outlined">arrow_back</span> Voltar</button>
+                <br>
                 <h1>Lista de livros:</h1>
                 <label for="search">Pesquise pelo nome:</label>&nbsp;
                 <input type="text" id="bookSearch">
@@ -417,7 +418,7 @@ const RootPages = Object.freeze({
         const back = DOM.id("btnBack");
         back.onclick = () => {
             DOM.divs.others.innerHTML = "";
-            RootPages.openLockScreen(); 
+            RootPages.openLockScreen();
         }
 
         Lists.showBookListForStudents();

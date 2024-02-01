@@ -15,7 +15,7 @@ const StudentPages = {
     openSaveStudentForm: () => {
         DOM.divs.content.innerHTML = `
             <aside>
-                <img src="/OpenLibraryHub/src/Students-amico.svg" class="form-icon">
+                <img src="${Others.checkURL()}/Students-amico.svg" class="form-icon">
                 <button id="btnBack"><span class="material-symbols-outlined">arrow_back</span> Voltar</button>
 
                 <div class="form" id="formAddStudent">
@@ -67,7 +67,7 @@ const StudentPages = {
     openEditStudentForm: () => {
         DOM.divs.content.innerHTML = `
             <aside>
-                <img src="/OpenLibraryHub/src/Teacher student-amico.svg" class="form-icon">
+                <img src="${Others.checkURL()}/Teacher student-amico.svg" class="form-icon">
                 <button id="btnBack"><span class="material-symbols-outlined">arrow_back</span> Voltar</button>
 
                 <div class="form" id="formEditStudent">
@@ -130,7 +130,7 @@ const StudentPages = {
     openRemoveStudentForm: () => {
         DOM.divs.content.innerHTML = `
             <aside>
-                <img src="/OpenLibraryHub/src/Student stress-pana.svg" class="form-icon">
+                <img src="${Others.checkURL()}/Student stress-pana.svg" class="form-icon">
                 <button id="btnBack"><span class="material-symbols-outlined">arrow_back</span> Voltar</button>
 
                 <div class="form" id="formRemoveStudent">
