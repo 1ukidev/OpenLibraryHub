@@ -243,9 +243,11 @@ const BookPages = {
 
         Lists.addBookList();
 
+        let id;
         document.querySelectorAll(".selecionarLivro").forEach(button => {
             button.onclick = () => {
                 const bookObject = Books.getBookById(button.parentNode.parentNode.children[0].textContent);
+                id = button.parentNode.parentNode.children[0].textContent;
                 DOM.id("bookName").value = bookObject.name;
                 DOM.id("bookAuthor").value = bookObject.author;
                 DOM.id("bookSection").value = bookObject.section;
@@ -256,7 +258,7 @@ const BookPages = {
         })
 
         DOM.id("btnBack").onclick = () => RootPages.openBookPage();
-        DOM.id("btnSubmitEditBook").onclick = () => Forms.runFormEditBook();
+        DOM.id("btnSubmitEditBook").onclick = () => Forms.runFormEditBook(id);
     },
 
     /**
@@ -269,7 +271,6 @@ const BookPages = {
             <aside>
                 <img src="${Others.checkURL()}/Team work-bro.svg" class="form-icon">
                 <button id="btnBack"><span class="material-symbols-outlined">arrow_back</span> Voltar</button>
-                <br><br>
 
                 <div class="form" id="formRemoveBook">
                     <label for="bookId">Remover livro de id:</label>&nbsp;
