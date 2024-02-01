@@ -141,7 +141,7 @@ const Others = Object.freeze({
      * @returns {string} Retorna a pasta correta das imagens.
      */
     checkURL: () => {
-        if (!location.href.indexOf("github") !== -1) {
+        if (!location.href.indexOf("github") > -1) {
             return "/src";
         } else {
             return "/OpenLibraryHub/src";
