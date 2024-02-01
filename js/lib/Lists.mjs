@@ -471,7 +471,7 @@ const Lists = Object.freeze({
         const section = document.createElement('section');
         section.innerHTML = `
             <h2>Lista de livros:</h2>
-            <label for="search">Pesquise pelo nome:</label>&nbsp;
+            <label for="${idSearch[0]}">Pesquise pelo nome:</label>&nbsp;
             <input type="text" id="${idSearch[0]}">
             <select id="${idSearch[1]}">
                 <option>Todos</option>
@@ -516,7 +516,7 @@ const Lists = Object.freeze({
         const section = document.createElement('section');
         section.innerHTML = `
             <h2>Lista de estudantes:</h2>
-            <label for="search">Pesquise pelo nome:</label>&nbsp;
+            <label for="${idSearch}">Pesquise pelo nome:</label>&nbsp;
             <input type="text" id="${idSearch}">
             <div class="table-container"></div>
         `;
@@ -537,7 +537,7 @@ const Lists = Object.freeze({
         const section = document.createElement('section');
         section.innerHTML = `
             <h2>Lista de turmas:</h2>
-            <label for="search">Pesquise pelo nome:</label>&nbsp;
+            <label for="${idSearch}">Pesquise pelo nome:</label>&nbsp;
             <input type="text" id="${idSearch}">
             <div class="table-container"></div>
         `;
