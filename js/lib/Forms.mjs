@@ -19,8 +19,14 @@ const Forms = Object.freeze({
         const bookYear = DOM.id("bookYear");
         const bookStock = DOM.id("bookStock");
 
+        const existingIds = Object.keys(localStorage)
+            .map(Number)
+            .filter(id => !isNaN(id));
+        const maxId = existingIds.length > 0 ? Math.max(...existingIds) : 0;
+        const newBookId = maxId + 1;
+
         if (bookName.value && bookAuthor.value && bookSection.value && bookPages.value && bookYear.value && bookStock.value) {
-            Books.addBook(localStorage.length, bookName.value, bookAuthor.value, bookSection.value, bookPages.value, bookYear.value, bookStock.value);
+            Books.addBook(newBookId, bookName.value, bookAuthor.value, bookSection.value, bookPages.value, bookYear.value, bookStock.value);
             bookName.value = "";
             bookAuthor.value = "";
             bookSection.value = "";
@@ -43,12 +49,18 @@ const Forms = Object.freeze({
         const studentName = DOM.id("studentName");
         const studentClass = DOM.id("studentClass");
 
+        const existingIds = Object.keys(localStorage)
+            .map(Number)
+            .filter(id => !isNaN(id));
+        const maxId = existingIds.length > 0 ? Math.max(...existingIds) : 0;
+        const newStudentId = maxId + 1;
+
         if (studentName.value) {
             if (studentClass.value == null || studentClass.value == "" || studentClass.value == "Selecione a turma") {
                 alert("Por favor, selecione a turma do estudante.");
                 return;
             }
-            Students.addStudent(localStorage.length, studentName.value, studentClass.value);
+            Students.addStudent(newStudentId, studentName.value, studentClass.value);
             studentName.value = "";
             document.querySelector(".table-container").innerHTML = "";
             Lists.showStudentList();
@@ -65,8 +77,14 @@ const Forms = Object.freeze({
     runFormAddClass: () => {
         const className = DOM.id("className");
 
+        const existingIds = Object.keys(localStorage)
+            .map(Number)
+            .filter(id => !isNaN(id));
+        const maxId = existingIds.length > 0 ? Math.max(...existingIds) : 0;
+        const newClassId = maxId + 1;
+
         if (className.value) {
-            Classes.addClass(localStorage.length, className.value);
+            Classes.addClass(newClassId, className.value);
             className.value = "";
             document.querySelector(".table-container").innerHTML = "";
             Lists.showClassList();
