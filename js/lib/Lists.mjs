@@ -7,6 +7,8 @@ const Lists = Object.freeze({
     /**
      * Mostra todos os livros no elemento bookList.
      * 
+     * @param {*} search
+     * @param {*} filterType
      * @returns {void}
      */
     showBookList: (search, filterType) => {
@@ -154,6 +156,7 @@ const Lists = Object.freeze({
     /**
      * Mostra todos os estudantes no elemento studentList.
      * 
+     * @param {*} search
      * @returns {void}
      */
     showStudentList: (search) => {
@@ -277,6 +280,7 @@ const Lists = Object.freeze({
     /**
      * Mostra todas as turmas no elemento classList.
      * 
+     * @param {*} search
      * @returns {void}
      */
     showClassList: (search) => {
@@ -347,6 +351,7 @@ const Lists = Object.freeze({
      * Mostra todos os livros no elemento bookList.
      * Método para estudantes.
      * 
+     * @param {*} search
      * @returns {void}
      */
     showBookListForStudents: (search) => {
@@ -550,9 +555,7 @@ const Lists = Object.freeze({
 
     /**
      * Adiciona a funcionalidade de busca no input selecionado.
-     * TODO: Fix this
      * 
-     * @param {HTMLElement} ul - Elemento HTML que contém a lista.
      * @param {HTMLElement} input - Elemento HTML que contém o input de busca.
      * @returns {void}
      */

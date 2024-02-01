@@ -142,11 +142,10 @@ const Forms = Object.freeze({
     /**
      * Executa o formulário para editar um livro pelo o seu id.
      * 
+     * @param {number} id - O id do livro.
      * @returns {void}
      */
-    runFormEditBook: () => {
-        const booksSelect = DOM.id("books");
-        const booksSelectId = booksSelect.value.split(" - Id: ")[1];
+    runFormEditBook: (id) => {
         const bookName = DOM.id("bookName");
         const bookAuthor = DOM.id("bookAuthor");
         const bookSection = DOM.id("bookSection");
@@ -154,14 +153,13 @@ const Forms = Object.freeze({
         const bookYear = DOM.id("bookYear");
         const bookStock = DOM.id("bookStock");
 
-        if (!booksSelectId) {
+        if (!id) {
             alert("Por favor, selecione um livro.");
             return;
         }
 
         if (bookName.value && bookAuthor.value && bookPages.value && bookYear.value && bookStock.value) {
-            Books.addBook(booksSelectId, bookName.value, bookAuthor.value, bookSection.value, bookPages.value, bookYear.value, bookStock.value);
-            booksSelect.value = "";
+            Books.addBook(id, bookName.value, bookAuthor.value, bookSection.value, bookPages.value, bookYear.value, bookStock.value);
             bookName.value = "";
             bookAuthor.value = "";
             bookSection.value = "";
