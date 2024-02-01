@@ -12,7 +12,6 @@ const Lock = class {
     }
 }
 
-
 /**
  * Representa um livro.
  * 
@@ -47,7 +46,7 @@ const Book = class {
  * @param {Number} id - Id do estudante.
  * @param {String} name - Nome do estudante.
  * @param {String} schoolClass - Turma do estudante.
- * @param {Object} lentBook - Id do livro que o estudante pegou emprestado. Padrão: {}
+ * @param {Object} lentBook - Livro(s) que o estudante pediu emprestado. Padrão: {}
  */ 
 const Student = class {
     constructor(id, name, schoolClass) {

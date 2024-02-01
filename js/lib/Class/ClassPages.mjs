@@ -14,7 +14,7 @@ const ClassPages = {
     openSaveClassForm: () => {
         DOM.divs.content.innerHTML = `
         <aside>
-            <img src="/OpenLibraryHub/src/college class-pana.svg" class="form-icon">
+            <img src="${Others.checkURL()}/college class-pana.svg" class="form-icon">
             <button id="btnBack"><span class="material-symbols-outlined">arrow_back</span> Voltar</button>
 
             <div class="form" id="formAddClass">
@@ -49,7 +49,7 @@ const ClassPages = {
     openEditClassForm: () => {
         DOM.divs.content.innerHTML = `
             <aside>
-                <img src="/OpenLibraryHub/src/Lesson-amico.svg" class="form-icon">
+                <img src="${Others.checkURL()}/Lesson-amico.svg" class="form-icon">
                 <button id="btnBack"><span class="material-symbols-outlined">arrow_back</span> Voltar</button>
 
                 <div class="form" id="formEditClass">
@@ -92,7 +92,7 @@ const ClassPages = {
     openRemoveClassForm: () => {
         DOM.divs.content.innerHTML = `
             <aside>
-                <img src="/OpenLibraryHub/src/Lesson-cuate.svg" class="form-icon">
+                <img src="${Others.checkURL()}/Lesson-cuate.svg" class="form-icon">
                 <button id="btnBack"><span class="material-symbols-outlined">arrow_back</span> Voltar</button>
 
                 <div class="form" id="formRemoveClass">
