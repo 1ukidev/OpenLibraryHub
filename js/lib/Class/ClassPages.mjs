@@ -113,6 +113,13 @@ const ClassPages = Object.freeze({
 
         Lists.addClassList();
 
+        document.querySelectorAll(".selecionarTurma").forEach(button => {
+            button.onclick = () => {
+                const classObject = Classes.getClassById(button.parentNode.parentNode.children[0].textContent);
+                DOM.id("classId").value = classObject.id;
+            }
+        })
+
         DOM.id("btnBack").onclick = () => RootPages.openClassPage();
         DOM.id("btnSubmitRemoveClass").onclick = () => Forms.runFormRemoveClass();
 
