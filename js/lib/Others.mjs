@@ -146,6 +146,12 @@ const Others = Object.freeze({
         } else {
             return "/OpenLibraryHub/src";
         }
+    },
+
+    checkDuplicatedData: (name, dataType) => {
+        return dataType.some(data => {
+            return JSON.parse(data).name == name;
+        });
     }
 });
 

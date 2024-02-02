@@ -333,6 +333,12 @@ const Lists = Object.freeze({
                     <td>${schoolClassObject.id}</td>
                     <td>${schoolClassObject.name}</td>
                 `;
+
+                if(DOM.id("formEditClass") != null || DOM.id("formRemoveClass") != null){
+                    let td = DOM.element("td");
+                    td.innerHTML = "<button class='button selecionarTurma'>Selecionar</button>";
+                    tr.appendChild(td);
+                }
     
                 tbody.appendChild(tr);
             });
