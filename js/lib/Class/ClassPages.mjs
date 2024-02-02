@@ -5,7 +5,7 @@ import { Forms } from "../Forms.mjs";
 import { Classes } from "./Classes.mjs";
 import { Others } from "../Others.mjs";
 
-const ClassPages = {
+const ClassPages = Object.freeze({
     /**
      * Abre o formulário para adicionar uma turma.
      * 
@@ -129,6 +129,6 @@ const ClassPages = {
             }
         });
     }
-}
+});
 
 export { ClassPages };

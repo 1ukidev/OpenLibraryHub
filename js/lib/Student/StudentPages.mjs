@@ -6,7 +6,7 @@ import { Students } from "./Students.mjs";
 import { Classes } from "../Class/Classes.mjs";
 import { Others } from "../Others.mjs";
 
-const StudentPages = {
+const StudentPages = Object.freeze({
     /**
      * Abre o formulário para adicionar um estudante.
      * 
@@ -167,6 +167,6 @@ const StudentPages = {
         })
     }
 
-}
+});
 
 export { StudentPages };

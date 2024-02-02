@@ -6,7 +6,7 @@ import { Books } from "./Books.mjs";
 import { Others } from "../Others.mjs";
 import { Students } from "../Student/Students.mjs";
 
-const BookPages = {
+const BookPages = Object.freeze({
     /**
      * Abre o formulário para adicionar um livro.
      * 
@@ -305,6 +305,6 @@ const BookPages = {
             }
         });
     }
-}
+});
 
 export { BookPages };
