@@ -1,6 +1,7 @@
 import { Student } from "../Abstract.mjs";
 import { Books } from "../Book/Books.mjs";
 import { Lists } from "../Lists.mjs";
+import { Others } from "../Others.mjs";
 
 const Students = Object.freeze({
     /**
@@ -12,11 +13,15 @@ const Students = Object.freeze({
      * @returns {void}
      */
     addStudent: (id, name, schoolClass) => {
-        console.log(`localStorage: salvando estudante "${name}"...`);
-        const student = new Student(id, name, schoolClass);
-        student.type = "Student";
-        localStorage.setItem(id, JSON.stringify(student));
-        console.log(`localStorage: estudante "${name}" salvo com sucesso!`);
+        if(Others.checkDuplicatedData(name, Students.getAllStudents())){
+            alert("já existem registros com essas mesmas caracteristicas")
+        } else {
+            console.log(`localStorage: salvando estudante "${name}"...`);
+            const student = new Student(id, name, schoolClass);
+            student.type = "Student";
+            localStorage.setItem(id, JSON.stringify(student));
+            console.log(`localStorage: estudante "${name}" salvo com sucesso!`);
+        }
     },
 
     /**
